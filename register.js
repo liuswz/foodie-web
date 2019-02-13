@@ -4,12 +4,12 @@ const app = new Vue({
       errors: [],
       username: null,
       password: null,
-      shop_name: null,
-      shop_address: null,
-      shop_email: null,
-      shop_phone: null,
-      mch_id: null,
-      api_key: null,
+      shopName: null,
+      shopAddress: null,
+      shopEmail: null,
+      shopPhone: null,
+      mchId: null,
+      apiKey: null,
     },
     methods: {
       checkForm: function (e) {
@@ -27,21 +27,21 @@ const app = new Vue({
         } else if (!this.validPassword(this.password)) {
           this.errors.push('密码只能输入6-20个字母、数字、下划线 ');
         }
-        else if (!this.shop_name) {
+        else if (!this.shopName) {
           this.errors.push('店名不能为空');
         } 
-        else if (!this.shop_address) {
+        else if (!this.shopAddress) {
           this.errors.push('地址不能为空');
         } 
   
-        else if (!this.shop_email) {
+        else if (!this.shopEmail) {
           this.errors.push('邮件不能为空');
-        } else if (!this.validEmail(this.shop_email)) {
+        } else if (!this.validEmail(this.shopEmail)) {
           this.errors.push('邮件格式不正确 ');
         }
-        else if (!this.shop_phone) {
+        else if (!this.shopPhone) {
           this.errors.push('电话号码不能为空');
-        } else if (!this.validPhone(this.shop_phone)) {
+        } else if (!this.validPhone(this.shopPhone)) {
           this.errors.push('电话号码格式不正确');
         }
         
