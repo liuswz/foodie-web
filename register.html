@@ -15,7 +15,7 @@
 
 </head>
 
-<body>
+<body id = "app">
 	<div class="register py-container ">
 		<!--head-->
 		<div class="logoArea">
@@ -25,61 +25,61 @@
 		<div class="registerArea">
 			<h3>商家入驻申请<span class="go">我有账号，去<a href="shoplogin.html" target="_blank">登陆</a></span></h3>
 			<div class="info">
-				<form id="app"  @submit="checkForm" class="sui-form form-horizontal"    action="http://localhost:9001/consumer/shopdetail/register"  novalidate="true" method="post">
+				<form  @submit="checkForm" class="sui-form form-horizontal"    action="http://localhost:9001/consumer/shopdetail/register"  novalidate="true" method="post">
 				
 					<div class="control-group">
 						<label class="control-label">登陆名（不可修改）：</label>
 						<div class="controls">
-							<input type="text" v-model="username"  name ="username" placeholder="登陆名" class="input-xfat input-xlarge">
+							<input type="text" v-model="registDto.username"  name ="username" placeholder="登陆名" class="input-xfat input-xlarge">
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">登陆密码：</label>
 						<div class="controls">
-							<input type="password" v-model="password" name ="password" placeholder="登陆密码" class="input-xfat input-xlarge">
+							<input type="password" v-model="registDto.password" name ="password" placeholder="登陆密码" class="input-xfat input-xlarge">
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">店铺名称：</label>
 						<div class="controls">
-							<input type="text" v-model="shopName" name ="shopName"  placeholder="店铺名称" class="input-xfat input-xlarge">
+							<input type="text" v-model="registDto.shopName" name ="shopName"  placeholder="店铺名称" class="input-xfat input-xlarge">
 						</div>
 					</div>
 				  
 					<div class="control-group">
 						<label class="control-label">店铺地址：</label>
 						<div class="controls">
-							<input type="text" v-model="shopAddress" name ="shopAddress"  placeholder="店铺地址" class="input-xfat input-xlarge">
+							<input type="text" v-model="registDto.shopAddress" name ="shopAddress"  placeholder="店铺地址" class="input-xfat input-xlarge">
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">邮箱：</label>
 						<div class="controls">
-							<input type="email"  v-model="shopEmail" name ="shopEmail"  placeholder="邮箱" class="input-xfat input-xlarge">
+							<input type="email"  v-model="registDto.shopEmail" name ="shopEmail"  placeholder="邮箱" class="input-xfat input-xlarge">
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">电话：</label>
 						<div class="controls">
-							<input type="text"  v-model="shopPhone" name ="shopPhone"  placeholder="电话" class="input-xfat input-xlarge">
+							<input type="text"  v-model="registDto.shopPhone" name ="shopPhone"  placeholder="电话" class="input-xfat input-xlarge">
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">mch_id：</label>
 						<div class="controls">
-							<input type="text" v-model="mchId" name ="mchId"  placeholder="mch_id" class="input-xfat input-xlarge">
+							<input type="text" v-model="registDto.mchId" name ="mchId"  placeholder="mch_id" class="input-xfat input-xlarge">
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">app_key：</label>
 						<div class="controls">
-							<input type="text" v-model="apiKey" name ="apiKey"  placeholder="app_key" class="input-xfat input-xlarge">
+							<input type="text" v-model="registDto.apiKey" name ="apiKey"  placeholder="app_key" class="input-xfat input-xlarge">
 						</div>
 					</div>
 
@@ -99,7 +99,8 @@
 					<div class="control-group">
 						<label class="control-label"></label>
 						<div class="controls btn-reg">
-							<input class="sui-btn btn-block btn-xlarge btn-danger" type="submit" target="_blank" value="申请入驻"/>
+							<!-- <input class="sui-btn btn-block btn-xlarge btn-danger" type="submit" target="_blank" value="申请入驻"/> -->
+							<button class="sui-btn btn-block btn-xlarge btn-danger" v-on:click="register" target="_blank">申请入驻</button>
 						</div>
 					</div>
 				</form>
@@ -124,92 +125,8 @@
 		</div>
 	</div>
 
+<script type="text/javascript" src="register.js"></script>
 
-<script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery.easing/jquery.easing.min.js"></script>
-<script type="text/javascript" src="js/plugins/sui/sui.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery-placeholder/jquery.placeholder.min.js"></script>
-<script type="text/javascript" src="js/pages/register.js"></script>
-
-
-<script type = "text/javascript">
-	const app = new Vue({
-	  el: '#app',
-	  data: {
-		errors: [],
-		username: null,
-		password: null,
-		shopName: null,
-		shopAddress: null,
-		shopEmail: null,
-		shopPhone: null,
-		mchId: null,
-		apiKey: null,
-	  },
-	  methods: {
-		checkForm: function (e) {
-		  this.errors = [];
-	
-	   
-	
-		  if (!this.username) {
-			this.errors.push('用户名不能为空');
-		  } else if (!this.validUsername(this.username)) {
-			this.errors.push('用户名只能输入5-20个 以字母开头、可带数字');
-		  } 
-		  else if (!this.password) {
-			this.errors.push('密码不能为空');
-		  } else if (!this.validPassword(this.password)) {
-			this.errors.push('密码只能输入6-20个字母、数字、下划线 ');
-		  }
-		  else if (!this.shopName) {
-			this.errors.push('店名不能为空');
-		  } 
-		  else if (!this.shopAddress) {
-			this.errors.push('地址不能为空');
-		  } 
-	
-		  else if (!this.shopEmail) {
-			this.errors.push('邮件不能为空');
-		  } else if (!this.validEmail(this.shopEmail)) {
-			this.errors.push('邮件格式不正确 ');
-		  }
-		  else if (!this.shopPhone) {
-			this.errors.push('电话号码不能为空');
-		  } else if (!this.validPhone(this.shopPhone)) {
-			this.errors.push('电话号码格式不正确');
-		  }
-		  
-	
-		  if (!this.errors.length) {
-			return false;
-		  }
-	
-		  e.preventDefault();
-		},
-		validUsername: function (username) {
-		  var re = /^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$/;
-		  return re.test(username);
-		},
-		validPassword: function (password) {
-		  var re = /^(\w){6,20}$/;
-		  return re.test(password);
-		},
-		validEmail: function (email) {
-		  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		  return re.test(email);
-		},
-	
-		validPhone: function (phone) {
-		  var re = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
-		  return re.test(phone);
-		},
-	  }
-	})
-	
-	
-	
-	</script>
 </body>
 
 </html>
