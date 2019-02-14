@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>商品编辑</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+  
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+	<link rel="stylesheet" href="../css/style.css">
+	<link rel="stylesheet" href="../css/add.dishes.css">
+	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    
+	<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+	
+    
+    <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.4.4.min.js"></script>
+      
+    
+    
+</head>
+
+<body class="hold-transition skin-red sidebar-mini" >
+
+            <!-- 正文区域 -->
+            <section class="content" id="app">
+			<!-- <form @submit.prevent="upload" method="post" enctype="multipart/form-data"> -->
+                <div class="box-body">
+
+                    <!--tab页-->
+                    <div class="nav-tabs-custom">
+
+                        <!--tab头-->
+                        <ul class="nav nav-tabs">                       		
+                            <li class="active">
+                                <a href="#home" data-toggle="tab">新增菜品</a>                                                        
+                            </li>   
+                         
+                        </ul>
+                        <!--tab头/-->
+						
+                        <!--tab内容-->
+                        <div class="tab-content">
+					
+
+                            <!--表单内容-->
+                            <div class="tab-pane active" id="home">
+                                <div class="row data-type">                                  
+								   <div class="col-md-2 title">菜品分类</div>
+		                          
+								   <div class="col-md-10 data">
+									<select class="form-control" v-model="dish_type">
+											<option :value="type.id" v-for="type in typeList" >{{type.name}}</option>
+									</select>
+								   </div>            
+		                          	  
+								 
+		                           <div class="col-md-2 title">菜品名称</div>
+		                           <div class="col-md-10 data">
+		                               <input type="text" class="form-control"  v-model="dish_name"  placeholder="菜品名称" value="">
+		                           </div>
+		                           
+		                           <div class="col-md-2 title">价格</div>
+								   <div class="col-md-10 data">
+								   	   <input type="text" class="form-control"  v-model="dish_price" placeholder="价格" value="">
+								  </div>
+		
+								  <div class="col-md-2 title rowHeight2x">介绍</div>
+		                           <div class="col-md-10 data rowHeight2x">  
+										<textarea rows="4"  class="form-control" v-model="dish_introduce"  placeholder="介绍"></textarea>
+									</div>
+		                           
+		                            <div class="col-md-2 title rowHeight2x">备注</div>
+								   <div class="col-md-10 data rowHeight2x">
+										<textarea rows="4"  class="form-control" v-model="dish_remark"  placeholder="备注"></textarea>
+								   </div>
+		                           
+		                           <!-- <div class="col-md-2 title editer">商品介绍</div>
+                                   <div class="col-md-10 data editer">
+                                       <textarea name="content" style="width:800px;height:400px;visibility:hidden;" ></textarea>
+                                   </div>
+		                           
+		                           <div class="col-md-2 title rowHeight2x">包装列表</div>
+		                           <div class="col-md-10 data rowHeight2x">
+		                               
+		                           	<textarea rows="4"  class="form-control"   placeholder="包装列表"></textarea>
+		                           </div>
+		                           
+		                           <div class="col-md-2 title rowHeight2x">售后服务</div>
+		                           <div class="col-md-10 data rowHeight2x">
+		                               <textarea rows="4"  class="form-control"    placeholder="售后服务"></textarea>
+								   </div>                         -->
+								 
+								   <div class="col-md-2 title editer">菜品图片</div>
+		                           <div class="col-md-10 data editer">  
+										
+											<div class="dish_file">
+												<input type="file" id="file" @change="look_photo" accept="image/gif, image/jpeg,image/png"/>	
+											</div>		
+											
+											<div class="">
+												<button class="btn btn-primary" type="button" v-on:click="upload_photo">
+														   上传
+												</button>	
+												
+												<img class="dish_img" id="imgshow" src="" width="200px" height="200px">
+												
+
+											</div>
+									</div>
+
+
+                                    
+                                </div>
+                            </div>
+                            
+                       
+                           
+							<p v-if="errors.length">
+					
+									<ul>
+									  <li v-for="error in errors">{{ error }}</li>
+									</ul>
+						    </p>
+                         
+                      
+                         
+                            
+                        </div>
+                        <!--tab内容/-->
+						<!--表单内容/-->
+							 
+                    </div>
+                 	
+                 	
+                 	
+                 	
+                   </div>
+                  <div class="btn-toolbar list-toolbar">
+				      <button class="btn btn-primary"  v-on:click="submit_dish" ><i class="fa fa-save"></i>上传</button>
+					 		 <!-- v-on:click="submit_dish" -->
+				  </div>
+				<!-- </form> -->
+			
+            </section>
+            
+            
+
+
+            
+            <!-- 正文区域 /-->
+<script type="text/javascript">
+var dish_photo=null;
+
+
+ new Vue({
+            el:"#app",
+            //data用于存放数据或者变量
+            data:{     
+				typeList:null,
+				errors: [],
+				dish_type:null,
+				dish_name: null,
+				dish_price: null,
+				dish_introduce: null,
+				
+				dish_remark: null,
+			//	dish_photo:null,
+			
+            },
+            //用于数据初始化
+            created:function(){
+			// 	client.list({
+            //       'max-keys': 10
+            //       }).then(function (result) {
+			// 		console.log(JSON.stringify(result.objects))
+            //       }).catch(function (err) {
+			// 		alert(err);
+            //   });
+				this.getDishType()
+            },
+            //用于存放所有的事件方法集合
+            methods: {
+			 
+               getDishType(){
+				
+				this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishType/1').then(function(response){  
+							// response.data中获取ResponseData实体
+							
+							this.typeList = response.body;
+							this.dish_type=this.typeList[0].id;
+                         //   alert(response.body)
+                        },function(response){  
+                            // 发生错误
+                            alert("发生错误")
+                        });
+				},
+				look_photo:function (event){
+					var file =$('input[type="file"]')[0].files[0];
+					console.log(file);	
+					var reader = new FileReader();
+					//使用该对象读取file文件
+					reader.readAsDataURL(file);
+					//读取文件成功后执行的方法函数
+					reader.onload=function(e){
+					//读取成功后返回的一个参数e，整个的一个进度事件
+					
+						$('#imgshow').get(0).src = e.target.result;
+					}
+				},
+				upload_photo:function (event){
+					var file =$('input[type="file"]')[0].files[0];
+					var fileExt = file.name.substring(file.name.lastIndexOf("."))
+                	.toLowerCase();
+
+					if (!this.checkFileExt(fileExt)) {
+						alert("您上传的文件不是图片,请重新上传！");
+						//img.value = "";
+						return;
+					}else{
+
+						var photo_name = new Date().getTime()+""+parseInt(Math.random()*10000+1);
+						client.multipartUpload("/dishes/"+photo_name, file).then(function (result) {
+						//	console.log(result.url);
+							
+							
+							if(result.url){
+								dish_photo=result.url;
+							
+								
+								alert("上传成功");
+							}
+							
+						}).catch(function (err) {
+							console.log(err);
+						});
+					}
+
+					
+					
+					
+				},
+				submit_dish(){
+					
+					if (!this.dish_type) {
+						this.errors.push('类型不能为空');
+					} else if (!this.dish_name) {
+						this.errors.push('名称不能为空');
+					} else if (!this.dish_price) {
+						this.errors.push('价格不能为空');
+					} else if (!this.dish_introduce) {
+						this.errors.push('简介不能为空');
+					// } else if (!this.dish_remark) {
+					// 	this.errors.push('用户名不能为空');
+					} else if (!dish_photo) {
+						
+						this.errors.push('图片不能为空');
+					} else{
+						this.upload_dish();
+					}
+
+				},
+				upload_dish(){
+					this.$http.post('http://localhost:9002/consumer/shopdishes/adddishes',{  
+
+								name:this.dish_name,
+								price:this.dish_price,
+								introduction:this.dish_introduce,
+								remark:this.dish_remark,
+								photoUrl:dish_photo,
+								typeId:this.dish_type
+						
+							},{  
+								emulateJSON:true  
+							}).then(function(response){  
+								// response.data中获取ResponseData实体
+								alert(response.body.result)
+							},function(response){  
+								// 发生错误
+								alert("发生错误")
+							});
+				},
+				checkFileExt(ext) {
+					if (!ext.match(/.jpg|.gif|.png|.bmp/i)) {
+						return false;
+					}
+					return true;
+				}
+			
+			}
+        
+		})  
+		
+
+	var client = new OSS.Wrapper({
+		region: 'oss-cn-beijing',//你的oss地址 ，具体位置见下图
+		accessKeyId: 'LTAICYbxfcsN4mvc',//你的ak
+		accessKeySecret: 'Q3JmnUHAV0OvREvyhfpsxDuFEUyQSH',//你的secret
+		secure:true,
+		//stsToken: '<Your securityToken(STS)>',//这里我暂时没用，注销掉
+		bucket: 'lanke-foodie'//你的oss名字
+	});
+	//  $("#file").change(function(){
+
+	// 	 console.log(this.files[0]);
+	// 	 var reader = new FileReader();
+	// 	//使用该对象读取file文件
+	// 	reader.readAsDataURL(this.files[0]);
+	// 	//读取文件成功后执行的方法函数
+	// 	reader.onload=function(e){
+	// 	//读取成功后返回的一个参数e，整个的一个进度事件
+	// 		console.log(e);
+		
+	// 		$('#imgshow').get(0).src = e.target.result;
+	// 	}
+    //         //console.log("change");
+    //     //     client.multipartUpload("/dishes/testImg", this.files[0]).then(function (result) {
+    //     //         console.log(result);
+    //     //       }).catch(function (err) {
+    //     //         console.log(err);
+    //     //       });
+    //       });
+
+</script>
+       
+</body>
+
+</html>
