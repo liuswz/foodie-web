@@ -8,76 +8,77 @@
     <title>商家完善资料</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
-  
+
     <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
     <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="../css/style.css">
-	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-   
-    
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue-validator/2.1.3/vue-validator.js"></script>
+
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" >
+<body class="hold-transition skin-red sidebar-mini">
 
 
 
-            <!-- 正文区域 -->
-            <section class="content">
+    <!-- 正文区域 -->
+    <section class="content" id="app">
 
-                <div class="box-body">
+        <div class="box-body">
 
-                    <!--tab页-->
-                    <div class="nav-tabs-custom">
+            <!--tab页-->
+            <div class="nav-tabs-custom">
 
-                        <!--tab头-->
-                        <ul class="nav nav-tabs">
-                       		
-                            <li class="active">
-                                <a href="#home" data-toggle="tab">商家信息</a>                             
-                            </li>                            
-                        </ul>
-                        <!--tab头/-->
-						
-                        <!--tab内容-->
-                        <div class="tab-content">
+                <!--tab头-->
+                <ul class="nav nav-tabs">
 
-                            <!--表单内容-->
-                            <div class="tab-pane active" id="home">
-                                <div class="row data-type">                                  
+                    <li class="active">
+                        <a href="#home" data-toggle="tab">商家信息</a>
+                    </li>
+                </ul>
+                <!--tab头/-->
 
-                                    <div class="col-md-2 title">公司名称</div>
-                                    <div class="col-md-10 data">
-                                        <input type="text" class="form-control"   placeholder="公司名称" value="">
-                                    </div>
-									
-									<div class="col-md-2 title">公司手机</div>
-                                    <div class="col-md-10 data">
-                                        <input type="text" class="form-control"  placeholder="公司手机" value="">
-                                    </div>
-                                    
-                                    <div class="col-md-2 title">公司电话</div>
-                                    <div class="col-md-10 data">
-                                        <input type="text" class="form-control"    placeholder="公司电话" value="">
-                                    </div>
-                                    
-                                    <div class="col-md-2 title">公司详细地址</div>
-                                    <div class="col-md-10 data">
-                                        <input type="text" class="form-control"    placeholder="公司详细地址" value="">
-                                    </div>
-                                    
-                                    <div class="col-md-2 title">联系人姓名</div>
-                                    <div class="col-md-10 data">
-                                        <input type="text" class="form-control"   placeholder="联系人姓名" value="">
-                                    </div>
-                                    
-                                    <div class="col-md-2 title">联系人QQ</div>
-                                    <div class="col-md-10 data">
-                                        <input type="text" class="form-control"   placeholder="联系人QQ" value="">
-                                    </div>
-                                    
-                                    <div class="col-md-2 title">联系人手机</div>
+                <!--tab内容-->
+                <div class="tab-content">
+                    <!--表单内容-->
+                    <div class="tab-pane active" id="home">
+                        <div class="row data-type">
+
+                            <div class="col-md-2 title">商家名称</div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control" placeholder="商家名称" v-model='shopInfoDto.shopName'>
+                            </div>
+
+                            <div class="col-md-2 title">商家电话</div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control" placeholder="商家电话" v-model="shopInfoDto.shopPhone">
+                            </div>
+
+                            <div class="col-md-2 title">商家邮箱</div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control" placeholder="商家邮箱" v-model="shopInfoDto.shopEmail">
+                            </div>
+
+                            <div class="col-md-2 title">商家地址</div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control" placeholder="商家地址" v-model="shopInfoDto.shopAddress">
+                            </div>
+
+                            <div class="col-md-2 title">mch_id</div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control" placeholder="mch_id" v-model="shopInfoDto.mchId">
+                            </div>
+
+                            <div class="col-md-2 title">api_key</div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control" placeholder="api_key" v-model="shopInfoDto.apiKey">
+                            </div>
+
+                            <!-- <div class="col-md-2 title">联系人手机</div>
                                     <div class="col-md-10 data">
                                         <input type="text" class="form-control"    placeholder="联系人手机" value="">
                                     </div>
@@ -125,33 +126,124 @@
                                     <div class="col-md-2 title">银行账号</div>
                                     <div class="col-md-10 data">
                                         <input type="text" class="form-control"   placeholder="银行账号" value="">
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                            
-                            
-                           
-                            
+                                    </div> -->
+
                         </div>
-                        <!--tab内容/-->
-						<!--表单内容/-->
-							 
+
                     </div>
-                 	
-                 	
-                 	
-                 	
-                   </div>
-                  <div class="btn-toolbar list-toolbar">
-				      <button class="btn btn-primary" ><i class="fa fa-save"></i>保存</button>
-				      <a  data-toggle="modal" class="btn btn-danger">提交</a>
-				  </div>
-			
-            </section>
-            <!-- 正文区域 /-->
-			
-       
+
+
+
+                </div>
+                <!--tab内容/-->
+                <!--表单内容/-->
+
+            </div>
+
+
+
+
+        </div>
+        <div class="btn-toolbar list-toolbar">
+            <button class="btn btn-primary" @click="updateshop">保存</button>
+            <!-- <a data-toggle="modal" class="btn btn-danger">提交</a> -->
+
+        </div>
+
+    </section>
+    <!-- 正文区域 /-->
+    <!-- <script type="text/javascript" src="seller.js"></script> -->
+    <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                errors: [],
+                shopInfoDto: {
+                    id: null,
+                    username: null,
+                    password: null,
+                    shopName: null,
+                    shopAddress: null,
+                    shopEmail: null,
+                    shopPhone: null,
+                    mchId: null,
+                    apiKey: null,
+                }
+
+
+            },
+            created: function () {
+                this.getById();
+            },
+            methods: {
+                getById: function () {
+                    // var _this = this;
+                    this.$http.get('http://localhost:9001/consumer/shopdetail/getById/23').then(function (response) {
+                        this.shopInfoDto = response.body.result;
+                    }, function (response) {
+                        // 发生错误
+                        alert("发生错误")
+                    });
+
+                },
+                updateshop: function (e) {
+                    
+                  
+                    if (!this.shopInfoDto.shopName) {
+                        alert('店名不能为空');
+                        return false;
+                    } 
+                    else if (!this.shopInfoDto.shopAddress) {
+                        alert('地址不能为空');
+                        return false;
+                    }
+                    else if (!this.shopInfoDto.shopEmail) {
+                        alert('邮件不能为空');
+                        return false;
+                    } else if (!this.validEmail(this.shopInfoDto.shopEmail)) {
+                        alert('邮件格式不正确 ');
+                        return false;
+                    }
+                    else if (!this.shopInfoDto.shopPhone) {
+                        alert('电话号码不能为空');
+                        return false;
+                    } else if (!this.validPhone(this.shopInfoDto.shopPhone)) {
+                        alert('电话号码格式不正确');
+                        return false;
+                    }
+
+
+                    
+                    this.$http.post('http://localhost:9001/consumer/shopdetail/update', this.shopInfoDto, { emulateJSON: true }).then(function (response) {
+                        if(response.body.result.code == 0){
+                               alert("保存成功");
+                        }
+                    }, function (res) {
+                        console.log(res.status);
+                    });
+                },
+                validUsername: function (username) {
+                    var re = /^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$/;
+                    return re.test(username);
+                },
+                validPassword: function (password) {
+                    var re = /^(\w){6,20}$/;
+                    return re.test(password);
+                },
+                validEmail: function (email) {
+                    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return re.test(email);
+                },
+
+                validPhone: function (phone) {
+                    var re = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
+                    return re.test(phone);
+                }
+
+            }
+        })
+    </script>
+
 </body>
 
 </html>

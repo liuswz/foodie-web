@@ -30,56 +30,56 @@
 					<div class="control-group">
 						<label class="control-label">登陆名（不可修改）：</label>
 						<div class="controls">
-							<input type="text" v-model="username"  name ="username" placeholder="登陆名" class="input-xfat input-xlarge">
+							<input type="text" v-model="registDto.username"  name ="username" placeholder="登陆名" class="input-xfat input-xlarge">
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">登陆密码：</label>
 						<div class="controls">
-							<input type="password" v-model="password" name ="password" placeholder="登陆密码" class="input-xfat input-xlarge">
+							<input type="password" v-model="registDto.password" name ="password" placeholder="登陆密码" class="input-xfat input-xlarge">
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">店铺名称：</label>
 						<div class="controls">
-							<input type="text" v-model="shopName" name ="shopName"  placeholder="店铺名称" class="input-xfat input-xlarge">
+							<input type="text" v-model="registDto.shopName" name ="shopName"  placeholder="店铺名称" class="input-xfat input-xlarge">
 						</div>
 					</div>
 				  
 					<div class="control-group">
 						<label class="control-label">店铺地址：</label>
 						<div class="controls">
-							<input type="text" v-model="shopAddress" name ="shopAddress"  placeholder="店铺地址" class="input-xfat input-xlarge">
+							<input type="text" v-model="registDto.shopAddress" name ="shopAddress"  placeholder="店铺地址" class="input-xfat input-xlarge">
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">邮箱：</label>
 						<div class="controls">
-							<input type="email"  v-model="shopEmail" name ="shopEmail"  placeholder="邮箱" class="input-xfat input-xlarge">
+							<input type="email"  v-model="registDto.shopEmail" name ="shopEmail"  placeholder="邮箱" class="input-xfat input-xlarge">
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">电话：</label>
 						<div class="controls">
-							<input type="text"  v-model="shopPhone" name ="shopPhone"  placeholder="电话" class="input-xfat input-xlarge">
+							<input type="text"  v-model="registDto.shopPhone" name ="shopPhone"  placeholder="电话" class="input-xfat input-xlarge">
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">mch_id：</label>
 						<div class="controls">
-							<input type="text" v-model="mchId" name ="mchId"  placeholder="mch_id" class="input-xfat input-xlarge">
+							<input type="text" v-model="registDto.mchId" name ="mchId"  placeholder="mch_id" class="input-xfat input-xlarge">
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">app_key：</label>
 						<div class="controls">
-							<input type="text" v-model="apiKey" name ="apiKey"  placeholder="app_key" class="input-xfat input-xlarge">
+							<input type="text" v-model="registDto.apiKey" name ="apiKey"  placeholder="app_key" class="input-xfat input-xlarge">
 						</div>
 					</div>
 
@@ -99,7 +99,8 @@
 					<div class="control-group">
 						<label class="control-label"></label>
 						<div class="controls btn-reg">
-							<input class="sui-btn btn-block btn-xlarge btn-danger" type="submit" target="_blank" value="申请入驻"/>
+							<!-- <input class="sui-btn btn-block btn-xlarge btn-danger" type="submit" target="_blank" value="申请入驻"/> -->
+							<button class="sui-btn btn-block btn-xlarge btn-danger" v-on:click="register" target="_blank">申请入驻</button>
 						</div>
 					</div>
 				</form>
