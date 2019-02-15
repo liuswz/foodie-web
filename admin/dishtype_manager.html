@@ -74,12 +74,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="box-tools pull-right">
-                                <div class="has-feedback">
-
-                                    <button class="btn btn-default">查询</button>
-                                </div>
-                            </div>
+                           
                             <!--工具栏/-->
 
                             <!--数据列表-->
@@ -92,7 +87,7 @@
                                         </th>
                                         <th class="sorting_asc">菜品分类序号</th>
                                         <th class="sorting">菜品分类名称</th>
-                                        <th class="text-center">操作</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -101,9 +96,7 @@
                                         <!-- <td><input type="checkbox" value="{{dishType.id}}" v-model="ids"></td> -->
                                         <td>1</td>
                                         <td>{{dishType.typeName}}</td>
-                                        <td class="text-center">
-                                            <button type="button" class="btn bg-olive btn-xs">修改</button>
-                                        </td>
+                                        
                                     </tr>
                                 </tbody>
                             </table>
@@ -186,9 +179,10 @@
                     }
                     this.$http.post('http://localhost:9002/consumer/shopdishes/getIfDishByTypeId', { ids: str, shopId: 1 }, { emulateJSON: true }).then(function (response) {
                         console.log(response.body.code);
+                       // alert(response.body.code);
                         if (response.body.code == 0) {
                             if (confirm("若删除分类，分类下的菜品也将删除，确定删除吗？")) {
-                                this.$http.get('http://localhost:9002/consumer/shopdishes/delDishById/' + str).then(function (response) {
+                                this.$http.get('http://localhost:9002/consumer/shopdishes/delDishTypeById/' + str).then(function (response) {
                                     alert("删除成功");
                                     this.pageHandler(this.page);
                                 }, function (response) {
@@ -200,6 +194,14 @@
                                 return false;
                             }
 
+                        }else{
+                            this.$http.get('http://localhost:9002/consumer/shopdishes/delDishTypeById/' + str).then(function (response) {
+                                    alert("删除成功");
+                                    this.pageHandler(this.page);
+                                }, function (response) {
+                                    // 发生错误
+                                    alert("发生错误")
+                                });
                         }
                     }, function (res) {
                         console.log(res.status);

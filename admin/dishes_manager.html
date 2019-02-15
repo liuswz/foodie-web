@@ -62,15 +62,15 @@
                                             新建</a>
                                         <button type="button" class="btn btn-default" title="删除"  @click="delSelected"><i class="fa fa-trash-o"></i>
                                             删除</button>
-                                        <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i
+                                        <button type="button" class="btn btn-default" title="刷新" @click="window.location.reload();"><i
                                                 class="fa fa-refresh"></i> 刷新</button>
                                     </div>
                                 </div>
                             </div>
                             <div class="box-tools pull-right">
                                 <div class="has-feedback">
-                                    商品名称：<input>
-                                    <button class="btn btn-default">查询</button>
+                                    商品名称：<input v-model="value">
+                                    <button class="btn btn-default" @click="findDishes">查询</button>
                                 </div>
                             </div>
                             <!--工具栏/-->
@@ -103,7 +103,7 @@
                                         <td><img class="dish_img" id="imgshow" :src="dish.photoUrl" width="100px" height="100px"></td>
                                         <td>{{dish.typeName}}</td>
                                         <td class="text-center">
-                                            <button type="button" class="btn bg-olive btn-xs">修改</button>
+                                            <button type="button"  class="btn bg-olive btn-xs" @click="updateDish(dish.id)" >修改</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -129,11 +129,11 @@
 
 
         </div>
-<div class="wrap" id="wrap">
-    <zpagenav v-bind:page="page" v-bind:page-size="pageSize" v-bind:total="total" 
-        v-bind:max-page="maxPage"  v-on:pagehandler="pageHandler">
-    <zpagenav>
-</div>
+        <div class="wrap" id="wrap">
+            <zpagenav v-bind:page="page" v-bind:page-size="pageSize" v-bind:total="total" 
+                v-bind:max-page="maxPage"  v-on:pagehandler="pageHandler">
+            <zpagenav>
+        </div>
 
 
     </section>
@@ -150,7 +150,7 @@
                 ids: [],
                 checkedAll: [],
                 page: 1,  //显示的是哪一页
-                pageSize: 10, //每一页显示的数据条数
+                pageSize: 5, //每一页显示的数据条数
                 total: 10, //记录总数
                 maxPage:2,
                 shopId:1,
@@ -197,7 +197,7 @@
                     this.page = page;
                    
                     this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
-                    this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value).then(function (response) {
+                        this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value).then(function (response) {
                     //     console.log('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
                     // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
                         this.dishList = response.body.rows;
@@ -209,6 +209,26 @@
                         alert("发生错误")
                     }); 
                     
+                },
+                findDishes(){
+               
+                    this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
+                        this.shopId+'&page=1&size='+this.pageSize+'&value='+this.value).then(function (response) {
+                    //     console.log('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
+                    // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
+                        this.dishList = response.body.rows;
+                        this.total=response.body.total;
+                        this.maxPage=this.total/this.pageSize+1;
+                    }, function (response) {
+                        // 发生错误
+                        console.log(response);
+                        alert("发生错误")
+                    }); 
+                },
+                updateDish: function (id) {
+                    location.href="update_dishes.html?id="+encodeURI(id);
+
+
                 }
             },
             watch: {

@@ -48,7 +48,7 @@
 						
                         <!--tab内容-->
                         <div class="tab-content">
-					
+                          
 
                             <!--表单内容-->
                             <div class="tab-pane active" id="home">
@@ -56,30 +56,30 @@
 								   <div class="col-md-2 title">菜品分类</div>
 		                          
 								   <div class="col-md-10 data">
-									<select class="form-control" v-model="dish_type">
+									<select class="form-control" v-model="dish.typeId">
 											<option :value="type.id" v-for="type in typeList" >{{type.typeName}}</option>
 									</select>
 								   </div>            
-		                          	  
-								 
+		                          	   
+                                   
 		                           <div class="col-md-2 title">菜品名称</div>
 		                           <div class="col-md-10 data">
-		                               <input type="text" class="form-control"  v-model="dish_name"  placeholder="菜品名称" value="">
+		                               <input type="text" class="form-control"  v-model="dish.name"  placeholder="菜品名称" value="">
 		                           </div>
 		                           
 		                           <div class="col-md-2 title">价格</div>
 								   <div class="col-md-10 data">
-								   	   <input type="text" class="form-control"  v-model="dish_price" placeholder="价格" value="">
+								   	   <input type="text" class="form-control"  v-model="dish.price" placeholder="价格" value="">
 								  </div>
 		
 								  <div class="col-md-2 title rowHeight2x">介绍</div>
 		                           <div class="col-md-10 data rowHeight2x">  
-										<textarea rows="4"  class="form-control" v-model="dish_introduce"  placeholder="介绍"></textarea>
+										<textarea rows="4"  class="form-control" v-model="dish.introduction"  placeholder="介绍"></textarea>
 									</div>
 		                           
 		                            <div class="col-md-2 title rowHeight2x">备注</div>
 								   <div class="col-md-10 data rowHeight2x">
-										<textarea rows="4"  class="form-control" v-model="dish_remark"  placeholder="备注"></textarea>
+										<textarea rows="4"  class="form-control" v-model="dish.remark"  placeholder="备注"></textarea>
 								   </div>
 		                           
 		                           <!-- <div class="col-md-2 title editer">商品介绍</div>
@@ -110,7 +110,7 @@
 														   上传
 												</button>	
 												
-												<img class="dish_img" id="imgshow" src="" width="200px" height="200px">
+												<img class="dish_img" id="imgshow" :src="dish.photoUrl" width="200px" height="200px">
 												
 
 											</div>
@@ -166,45 +166,60 @@ var dish_photo=null;
             data:{     
 				typeList:null,
 				errors: [],
-				dish_type:null,
-				dish_name: null,
-				dish_price: null,
-				dish_introduce: null,
-				
-				dish_remark: null,
-			//	dish_photo:null,
+				// dish_type:null,
+				 //dish_name: null,
+				// dish_price: null,
+				// dish_introduce: null,			
+                // dish_remark: null,
+                dish:{
+                    typeId:null,
+                    name:null,
+                    price:null,
+                    introduction:null,
+                    remark:null,
+                    photoUrl:null
+                },
+                shopId:1,
+                id:0,			//	dish_photo:null,
 			
             },
             //用于数据初始化
             created:function(){
-			// 	client.list({
-            //       'max-keys': 10
-            //       }).then(function (result) {
-			// 		console.log(JSON.stringify(result.objects))
-            //       }).catch(function (err) {
-			// 		alert(err);
-            //   });
-				this.getDishType()
+                var loc=location.href;
+               
+                var n1=loc.length;//地址的总长度
+                var n2=loc.indexOf("=");//取得=号的位置
+                var id=decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
+                this.id = id;
+
+				this.getDishAndType()
             },
             //用于存放所有的事件方法集合
             methods: {
-			 
-               getDishType(){
-			
-				this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishType/1').then(function(response){  
+			   
+                getDishAndType(){
+                this.shopId=1;
+				this.$http.get('http://localhost:9002/consumer/shopdishes/getDishAndTypeById/'+this.id +'/'+this.shopId).then(function(response){  
 							// response.data中获取ResponseData实体
 						
-							this.typeList = response.body;
-							this.dish_type=this.typeList[0].id;
-                         //   alert(response.body)
+							this.typeList = response.body.typelist;
+                           
+                            var dish = response.body.dish;
+                            this.dish= dish;
+                           // this.dish_name=dish.name;
+                           
+                           // alert(JSON.stringify(this.dish) );
                         },function(response){  
                             // 发生错误
                             alert("发生错误")
                         });
+                       
+
 				},
 				look_photo:function (event){
 					var file =$('input[type="file"]')[0].files[0];
-					console.log(file);	
+                    console.log(file);	
+                 
 					var reader = new FileReader();
 					//使用该对象读取file文件
 					reader.readAsDataURL(file);
@@ -248,18 +263,21 @@ var dish_photo=null;
 					
 				},
 				submit_dish(){
-					
-					if (!this.dish_type) {
+                    if(dish_photo){
+                        this.dish.photoUrl=dish_photo;
+                    }
+					    
+					if (!this.dish.typeId) {
 						this.errors.push('类型不能为空');
-					} else if (!this.dish_name) {
+					} else if (!this.dish.name) {
 						this.errors.push('名称不能为空');
-					} else if (!this.dish_price) {
+					} else if (!this.dish.price) {
 						this.errors.push('价格不能为空');
-					} else if (!this.dish_introduce) {
+					} else if (!this.dish.introduction) {
 						this.errors.push('简介不能为空');
 					// } else if (!this.dish_remark) {
 					// 	this.errors.push('用户名不能为空');
-					} else if (!dish_photo) {
+					} else if (!this.dish.photoUrl) {
 						
 						this.errors.push('图片不能为空');
 					} else{
@@ -270,23 +288,16 @@ var dish_photo=null;
 				upload_dish(){
 
 
-					this.$http.post('http://localhost:9002/consumer/shopdishes/adddishes',{  
-
-								name:this.dish_name,
-								price:this.dish_price,
-								introduction:this.dish_introduce,
-								remark:this.dish_remark,
-								photoUrl:dish_photo,
-								typeId:this.dish_type
-						
-							},{  
+					this.$http.post('http://localhost:9002/consumer/shopdishes/updateDish',this.dish,{  
 								emulateJSON:true  
 							}).then(function(response){  
 								// response.data中获取ResponseData实体
 							//	console.log(response);
-								alert(response.body.result)
+                                alert(response.body.result);
+                                window.location.reload();
 							},function(response){  
-								// 发生错误
+                                // 发生错误
+                                console.log(response);
 								alert("发生错误")
 							});
 				},
@@ -310,26 +321,7 @@ var dish_photo=null;
 		//stsToken: '<Your securityToken(STS)>',//这里我暂时没用，注销掉
 		bucket: 'lanke-foodie'//你的oss名字
 	});
-	//  $("#file").change(function(){
-
-	// 	 console.log(this.files[0]);
-	// 	 var reader = new FileReader();
-	// 	//使用该对象读取file文件
-	// 	reader.readAsDataURL(this.files[0]);
-	// 	//读取文件成功后执行的方法函数
-	// 	reader.onload=function(e){
-	// 	//读取成功后返回的一个参数e，整个的一个进度事件
-	// 		console.log(e);
-		
-	// 		$('#imgshow').get(0).src = e.target.result;
-	// 	}
-    //         //console.log("change");
-    //     //     client.multipartUpload("/dishes/testImg", this.files[0]).then(function (result) {
-    //     //         console.log(result);
-    //     //       }).catch(function (err) {
-    //     //         console.log(err);
-    //     //       });
-    //       });
+	
 
 </script>
        
