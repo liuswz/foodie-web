@@ -78,7 +78,7 @@
                                 <thead>
                                     <tr>
                                         <th class="" style="padding-right:0px">
-                                            <input id="selall" type="checkbox" class="icheckbox_square-blue">
+                                            <input id="selall" type="checkbox" class="icheckbox_square-blue" v-model="checked" @click="changeAllChecked()">
                                         </th>
                                         <th class="sorting_asc">序号</th>
                                         <th class="sorting">菜品名称</th>
@@ -92,7 +92,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="dish in dishList">
-                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox" :value="dish.id" v-model="ids"></td>
                                         <td>1</td>
                                         <td>{{dish.name}}</td>
                                         <td>{{dish.price}}</td>
@@ -160,7 +160,7 @@
                 changeAllChecked: function () {
                     var _this = this;
                     if (!this.checked) {
-                        this.dishTypeList.forEach(function (item) {
+                        this.dishList.forEach(function (item) {
                             _this.ids.push(item.id);
                         });
                         console.log(this.ids);
@@ -180,12 +180,12 @@
                         }
                     }
                     console.log(str);
-                    // this.$http.get('http://localhost:9002/consumer/shopdishes/delDishById/'+str).then(function (response) {
-                    //     alert("删除成功");
-                    // }, function (response) {
-                    //     // 发生错误
-                    //     alert("发生错误")
-                    // });
+                    this.$http.get('http://localhost:9002/consumer/shopdishes/delDishById/'+str).then(function (response) {
+                        alert("删除成功");
+                    }, function (response) {
+                        // 发生错误
+                        alert("发生错误")
+                    });
 
                 }
             },
