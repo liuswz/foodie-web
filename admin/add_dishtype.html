@@ -107,7 +107,8 @@
                 if (this.dish_name) {
              
                     this.$http.post('http://localhost:9002/consumer/shopdishes/adddishtype',{  
-                            name:this.dish_name
+                            shopId:1,
+                            typeName:this.dish_name
                         
                         },{  
                             emulateJSON:true  
