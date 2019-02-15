@@ -13,13 +13,15 @@
     <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
     <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link href="../css/zpageNav.css" rel="stylesheet" />
+
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
 
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 
-
+    <script src="../js/zpageNav.js"></script>
 
 
 
@@ -56,9 +58,9 @@
                             <div class="pull-left">
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default" title="新建"><i class="fa fa-file-o"></i>
-                                            新建</button>
-                                        <button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i>
+                                        <a  href="add_dishes.html" class="btn btn-default" title="新建"><i class="fa fa-file-o"></i>
+                                            新建</a>
+                                        <button type="button" class="btn btn-default" title="删除"  @click="delSelected"><i class="fa fa-trash-o"></i>
                                             删除</button>
                                         <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i
                                                 class="fa fa-refresh"></i> 刷新</button>
@@ -127,6 +129,11 @@
 
 
         </div>
+<div class="wrap" id="wrap">
+    <zpagenav v-bind:page="page" v-bind:page-size="pageSize" v-bind:total="total" 
+        v-bind:max-page="maxPage"  v-on:pagehandler="pageHandler">
+    <zpagenav>
+</div>
 
 
     </section>
@@ -141,22 +148,21 @@
                 checked: false,
                 dishList: [],
                 ids: [],
-                checkedAll: []
+                checkedAll: [],
+                page: 1,  //显示的是哪一页
+                pageSize: 10, //每一页显示的数据条数
+                total: 10, //记录总数
+                maxPage:2,
+                shopId:1,
+                value:''
             },
             created: function () {
-                this.getDishList();
+                this.shopId=1;
+                this.maxPage=this.total/this.pageSize+1,
+                this.pageHandler(1);
             },
             methods: {
-                getDishList: function () {
-                    this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishes/1/1/5').then(function (response) {
-                        this.dishList = response.body.rows;
-                        console.log(this.dishList);
-
-                    }, function (response) {
-                        // 发生错误
-                        alert("发生错误")
-                    });
-                },
+              
                 changeAllChecked: function () {
                     var _this = this;
                     if (!this.checked) {
@@ -173,20 +179,36 @@
                 delSelected: function () {
                     var str = '';
                     for (var i = 0; i < this.ids.length; i++) {
-                        if (i != this.ids.length - 1) {
-                            str = str + this.ids[i] + ',';
-                        } else {
-                            str += this.ids[i];
-                        }
+                        str = str + this.ids[i] + ',';
+                       
                     }
-                    console.log(str);
+                   // console.log(str);
                     this.$http.get('http://localhost:9002/consumer/shopdishes/delDishById/'+str).then(function (response) {
                         alert("删除成功");
+                        this.pageHandler(this.page);
                     }, function (response) {
                         // 发生错误
                         alert("发生错误")
                     });
 
+                },
+                pageHandler: function (page) {
+                    //here you can do custom state update
+                    this.page = page;
+                   
+                    this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
+                    this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value).then(function (response) {
+                    //     console.log('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
+                    // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
+                        this.dishList = response.body.rows;
+                        this.total=response.body.total;
+                        
+                    }, function (response) {
+                        // 发生错误
+                        console.log(response);
+                        alert("发生错误")
+                    }); 
+                    
                 }
             },
             watch: {

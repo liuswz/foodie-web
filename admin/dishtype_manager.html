@@ -13,12 +13,16 @@
     <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
     <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link href="../css/zpageNav.css" rel="stylesheet" />
+
+
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
 
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-
+   
+    <script src="../js/zpageNav.js"></script>
 
 
 
@@ -56,30 +60,23 @@
                             <div class="pull-left">
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default" title="新建"><i class="fa fa-file-o"></i>
-                                            新建</button>
+                                        <a href="add_dishtype.html" class="btn btn-default" title="新建"><i class="fa fa-file-o"></i>
+                                            新建</a>
                                         <button type="button" class="btn btn-default" title="删除" @click="delSelected"><i
                                                 class="fa fa-trash-o"></i>
                                             删除</button>
                                         <!-- <button type="button" class="btn btn-default" title="提交审核"><i class="fa fa-check"></i>
                                             提交审核</button>
                                         <button type="button" class="btn btn-default" title="屏蔽" onclick='confirm("你确认要屏蔽吗？")'><i
-                                                class="fa fa-ban"></i> 屏蔽</button>
-                                        <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i
-                                                class="fa fa-refresh"></i> 刷新</button> -->
+                                                class="fa fa-ban"></i> 屏蔽</button> -->
+                                        <button type="button" class="btn btn-default" title="刷新" @click="window.location.reload();"><i
+                                                class="fa fa-refresh"></i> 刷新</button>
                                     </div>
                                 </div>
                             </div>
                             <div class="box-tools pull-right">
                                 <div class="has-feedback">
-                                    状态：<select>
-                                        <option value="">全部</option>
-                                        <option value="0">未申请</option>
-                                        <option value="1">申请中</option>
-                                        <option value="2">审核通过</option>
-                                        <option value="3">已驳回</option>
-                                    </select>
-                                    商品名称：<input>
+                                  
                                     <button class="btn btn-default">查询</button>
                                 </div>
                             </div>
@@ -131,7 +128,12 @@
 
 
         </div>
-
+<!-- pagination start-->
+<div class="wrap" id="wrap">
+    <zpagenav v-bind:page="page" v-bind:page-size="pageSize" v-bind:total="total" 
+        v-bind:max-page="maxPage"  v-on:pagehandler="pageHandler">
+    <zpagenav>
+</div>
 
     </section>
 
@@ -145,26 +147,28 @@
                 checked: false,
                 dishTypeList: [],
                 ids: [],
-                checkedAll: []
+                checkedAll: [],
+                page: 1,  //显示的是哪一页
+                pageSize: 10, //每一页显示的数据条数
+                total: 10, //记录总数
+                maxPage:2,
+                shopId:1
             },
             created: function () {
-                this.getDishTypeList();
+                    
+                this.shopId=1;
+                this.maxPage=this.total/this.pageSize+1,
+                this.pageHandler(1);
             },
             methods: {
                 getDishTypeList: function () {
-                    this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishType/1/1/5').then(function (response) {
-                        this.dishTypeList = response.body;
-
-
-                    }, function (response) {
-                        // 发生错误
-                        alert("发生错误")
-                    });
+                   
                 },
                 changeAllChecked: function () {
                     var _this = this;
                     if (!this.checked) {
                         this.dishTypeList.forEach(function (item) {
+                           
                             _this.ids.push(item.id);
                         });
                         console.log(this.ids);
@@ -177,19 +181,31 @@
                 delSelected: function () {
                     var str = '';
                     for(var i=0;i<this.ids.length;i++){
-                        if(i != this.ids.length-1){
-                             str = str + this.ids[i] + ',';
-                        }else{
-                            str += this.ids[i];
-                        }
+                        str = str + this.ids[i] + ',';
+                        
                     }
                     console.log(str);
-                    // this.$http.get('http://localhost:9002/consumer/shopdishes/delDishById/'+str).then(function (response) {
-                    //     alert("删除成功");
-                    // }, function (response) {
-                    //     // 发生错误
-                    //     alert("发生错误")
-                    // });
+                    this.$http.get('http://localhost:9002/consumer/shopdishes/delDishById/'+str).then(function (response) {
+                        alert("删除成功");
+                        this.pageHandler(this.page);
+                    }, function (response) {
+                        // 发生错误
+                        alert("发生错误")
+                    });
+                    
+                },
+                pageHandler: function (page) {
+                    //here you can do custom state update
+                    this.page = page;
+                   
+                    this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishType/'+this.shopId+'/'+this.page+'/'+this.pageSize).then(function (response) {
+                        this.dishTypeList = response.body.rows;
+                        this.total=response.body.total;
+
+                    }, function (response) {
+                        // 发生错误
+                        alert("发生错误")
+                    }); 
                     
                 }
             },
