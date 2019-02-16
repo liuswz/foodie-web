@@ -76,7 +76,7 @@
 					<div class="control-group">
 						<label class="control-label">公告：</label>
 						<div class="controls">
-							<textarea rows="4" cols="50"	class="form-control" v-model="registDto.notice" placeholder="公告"></textarea>
+							<textarea rows="4" cols="50"	class="form-control" v-model="registDto.shopNotice" placeholder="公告"></textarea>
 							<!-- <input type="text" v-model="registDto.notice" name="notice" placeholder="公告" class="input-xfat input-xlarge"> -->
 						</div>
 					</div>
@@ -99,7 +99,7 @@
 					<div class="control-group">
 							<label class="control-label"></label>
 							<div class="controls">
-									<img class="register_shop_image" id="imgshow" src="" width="200px" height="200px">
+									<img id="imgshow" src="" width="200px" height="200px">
 							</div>
                        
 					</div>
@@ -175,7 +175,7 @@
 					shopPhone: null,
 					mchId: null,
 					apiKey: null,
-					notice: null,
+					shopNotice: null,
 					photoUrl: null
 				}
 
@@ -200,7 +200,7 @@
 					var file = $('input[type="file"]')[0].files[0];
 					var fileExt = file.name.substring(file.name.lastIndexOf("."))
 						.toLowerCase();
-
+                    var _this = this;
 					if (!this.checkFileExt(fileExt)) {
 						alert("您上传的文件不是图片,请重新上传！");
 						//img.value = "";
@@ -219,7 +219,7 @@
 								console.log(requestUrl);
 								if (requestUrl) {
 									var imgUrl = requestUrl.substring(0, requestUrl.indexOf("?"));
-									this.photoUrl = imgUrl;
+									_this.registDto.photoUrl = imgUrl;
 									console.log(imgUrl);
 
 
@@ -227,7 +227,7 @@
 								}
 							} else {
 								if (requestUrl) {
-									this.photoUrl = requestUrl;
+									_this.registDto.photoUrl = requestUrl;
 
 
 									alert("上传成功");
@@ -280,7 +280,7 @@
 
 
 					this.$http.post('http://localhost:9001/consumer/shopdetail/register', this.registDto, { emulateJSON: true }).then(function (response) {
-						console.log(response);
+						alert("注册成功");
 					}, function (res) {
 						console.log(res.status);
 					});
