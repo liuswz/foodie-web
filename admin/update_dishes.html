@@ -246,11 +246,30 @@ var dish_photo=null;
 						//	console.log(result.url);
 							
 							
-							if(result.url){
-								dish_photo=result.url;
 							
-								
-								alert("上传成功");
+							//判断系统
+							var agent = navigator.userAgent.toLowerCase();
+							var isMac = /macintosh|mac os x/i.test(navigator.userAgent);
+						
+							var requestUrl = result.res.requestUrls[0];
+							if (isMac) {
+							
+								console.log(requestUrl);
+								if (requestUrl) {
+									var imgUrl = requestUrl.substring(0,requestUrl.indexOf("?"));
+									dish_photo = imgUrl;
+									console.log(imgUrl);
+
+
+									alert("上传成功");
+								}
+							}else{
+								if (requestUrl) {
+									dish_photo = requestUrl;
+
+
+									alert("上传成功");
+								}
 							}
 							
 						}).catch(function (err) {

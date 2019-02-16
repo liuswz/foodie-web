@@ -85,7 +85,7 @@
                                             <input id="selall" type="checkbox" v-model="checked" @click="changeAllChecked()"
                                                 class="icheckbox_square-blue">
                                         </th>
-                                        <th class="sorting_asc">菜品分类序号</th>
+                                      
                                         <th class="sorting">菜品分类名称</th>
                                         
                                     </tr>
@@ -94,7 +94,7 @@
                                     <tr v-for="dishType in dishTypeList">
                                         <td><input type="checkbox" :value="dishType.id" v-model="ids"></td>
                                         <!-- <td><input type="checkbox" value="{{dishType.id}}" v-model="ids"></td> -->
-                                        <td>1</td>
+                                      
                                         <td>{{dishType.typeName}}</td>
                                         
                                     </tr>
