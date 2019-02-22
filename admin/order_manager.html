@@ -197,11 +197,11 @@
                 	var time1 = JSON.stringify(this.value9).split(",")[0];
                 	var time2 = JSON.stringify(this.value9).split(",")[1];
                 	this.$http.get('http://localhost:9003/consumer/shoporder/findOrderByTime?page='+this.page+'&size='this.size+'&fromTime='+time1+'&toTime='+time2+'&shopId='+this.shopId).then(function (response) {
-                        alert("删除成功");
+                        //alert("删除成功");
                         this.pageHandler(this.page);
                     }, function (response) {
                         // 发生错误
-                        alert("发生错误")
+                      //  alert("发生错误")
                     }); 
                 },
            //详情查询
@@ -218,7 +218,7 @@
 <<<<<<< HEAD
                     this.$http.get('http://localhost:9003/consumer/shoporder/findAllOrder?page='+this.page+'&size='+this.pageSize+'&shopId='+this.shopId).then(function (response) {
 =======
-                    this.$http.get('http://localhost:9003/consumer/shoporder/findAllOrder/'+this.page+'/'+this.pageSize+'/='+this.shopId).then(function (response) {
+                  //  this.$http.get('http://localhost:9003/consumer/shoporder/findAllOrder/'+this.page+'/'+this.pageSize+'/='+this.shopId).then(function (response) {
 >>>>>>> 2cb727d2ebccc217c0d8316abb0d0cf87f897648
                     //     console.log('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
                     // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
