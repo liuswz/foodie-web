@@ -101,10 +101,11 @@
 										<td class="text-center">
 											<button type="button" class="btn bg-olive btn-xs"
 												@click="detailDish(dish.id)">详情</button>
+												
 												<button type="button" class="btn bg-olive btn-xs"
-												@click="changeServing(dish.orderStatus,dish.id)">更改上菜状态</button>
+												@click="boxDish(dish.orderStatus,dish.id)">上菜</button>
 												<button type="button" class="btn bg-olive btn-xs"
-												@click="changePay(dish.orderStatus,dish.id)">更改支付状态</button>
+												@click="boxPay(dish.orderStatus,dish.id)">支付</button>
 										</td>
 									</tr>
 								</tbody>
@@ -174,20 +175,82 @@
                 	 location.href="order_details.html?orderId="+encodeURI(id);
                 },
                
-                //修改上菜状态
-                changeServing(status,id){
-                	//http://localhost:9003/consumer/shoporder/updatOrder/{orderStatus}/{id}
-                	//this.page = 1;
-                	
-                	//alert(status);
-                	if(status == 0){
-                		
-                	   	status=2;
-                		
-                	}else {
+               //massagebox
+               boxDish(status,id){
+                  if(status == 0){
+                	  status=2; 
+                	  this.$confirm('是否上菜?', '提示', {
+    			          confirmButtonText: '确定',
+    			          cancelButtonText: '取消',
+    			          type: 'warning'
+    			        }).then(() => {
+    			          this.updateServing(status,id);
+    			        }).catch(() => {
+    			          this.$message({
+    			            type: 'info',
+    			            message: '取消'
+    			          });          
+    			        });
+                	   	              		
+                	}else if(status ==1){
+                		status=3;
+                		this.$confirm('是否上菜?', '提示', {
+      			          confirmButtonText: '确定',
+      			          cancelButtonText: '取消',
+      			          type: 'warning'
+      			        }).then(() => {
+      			          this.updateServing(status,id);
+      			        }).catch(() => {
+      			          this.$message({
+      			            type: 'info',
+      			            message: '取消'
+      			          });          
+      			        });
+                	}else{
                 		status=3;
                 	}
-                	
+                
+                }, 
+                boxPay(status,id){
+                    if(status == 0){
+                  	  status=1; 
+                  	  this.$confirm('是否支付?', '提示', {
+      			          confirmButtonText: '确定',
+      			          cancelButtonText: '取消',
+      			          type: 'warning'
+      			        }).then(() => {
+      			          this.updatePay(status,id);
+      			        }).catch(() => {
+      			          this.$message({
+      			            type: 'info',
+      			            message: '取消'
+      			          });          
+      			        });
+                  	   	              		
+                  	}else if(status ==2){
+                  		status=3;
+                  		this.$confirm('是否支付?', '提示', {
+        			          confirmButtonText: '确定',
+        			          cancelButtonText: '取消',
+        			          type: 'warning'
+        			        }).then(() => {
+        			          this.updatePay(status,id);
+        			        }).catch(() => {
+        			          this.$message({
+        			            type: 'info',
+        			            message: '取消'
+        			          });          
+        			        });
+                  	}else{
+                  		status=3;
+                  	}
+                  
+                  },
+                //修改上菜状态
+                updateServing(status,id){
+                	//http://localhost:9003/consumer/shoporder/updatOrder/{orderStatus}/{id}
+                	//this.page = 1;
+                	//alert(status);             	
                 	   this.$http.get('http://localhost:9003/consumer/shoporder/updatOrder/'+status+'/'+id).then(function (response) {
 
                         
@@ -202,13 +265,9 @@
                     });    
                 },
                 //修改支付状态
-                changePay(status,id){
+                updatePay(status,id){
                 	
-                	if(status == 0){
-                		status=1;
-                	}else {
-                		status=3;
-                	}
+                	
                 	
                 	 this.$http.get('http://localhost:9003/consumer/shoporder/updatOrder/'+status+'/'+id).then(function (response) {
 
@@ -233,7 +292,7 @@
                     
                    //http://localhost:9003/consumer/shoporder/findAllOrder/1/5/23
 
-                    this.$http.get('http://localhost:9003/consumer/shoporder/findAllOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId).then(function (response) {
+                    this.$http.get('http://localhost:9003/consumer/shoporder/findNotFinishOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId).then(function (response) {
 
                
                         this.dishList = response.body.rows;
