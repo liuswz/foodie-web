@@ -259,8 +259,9 @@
                 }
             },
             mounted() {
+            
                 this.pageHandler(1);
-                setInterval(this.getElevatorList, 5000);
+                setInterval(this.pageHandler(1), 5000);
             }
         })
 
