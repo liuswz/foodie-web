@@ -165,7 +165,7 @@
                 ids: [],
                 checkedAll: [],
                 page: 1,  //显示的是哪一页
-                pageSize: 5, //每一页显示的数据条数
+                pageSize: 10, //每一页显示的数据条数
                 total: 10, //记录总数
                 maxPage:2,
                 shopId:1,
@@ -173,7 +173,7 @@
                 value9: ''
             },
             created: function () {
-                this.shopId=1;
+                this.shopId=23;
                 this.maxPage=this.total/this.pageSize+1,
                 this.pageHandler(1);
             },
@@ -197,39 +197,45 @@
                 },
                 //时间查询
                 date: function (){
-                	var time1 = JSON.stringify(this.value9).split(",")[0];
-                	var time2 = JSON.stringify(this.value9).split(",")[1];
+                	var time1 = JSON.stringify(this.value9).split(",")[0].split("[")[1].replace(/\"/g, "");;
+                	var time2 = JSON.stringify(this.value9).split(",")[1].split("]")[0].replace(/\"/g, "");;
 
                     this.page = 1;
-                    this.shopId = 23;
-              /*   	this.$http.get('http://localhost:9003/consumer/shoporder/findOrderByTime?page='+this.page+'&size='this.size+'&fromTime='+time1+'&toTime='+time2+'&shopId='+this.shopId).then(function (response) {
-                        //alert("删除成功");
-======= */
-                	this.$http.post('http://localhost:9003/consumer/shoporder/findOrderByTime?page='+this.page+'&size='+this.pageSize+'&fromTime='+time1+'&toTime='+time2+'&shopId='+this.shopId).then(function (response) {
-                     //   alert("删除成功");
+                 
+          
+                    this.$http.post('http://localhost:9003/consumer/shoporder/findOrderByTime', {
 
-                        this.pageHandler(this.page);
-						this.dishList = response.body.rows;
-						this.total=response.body.total;
-                    }, function (response) {
-                        // 发生错误
-                      //  alert("发生错误")
-                    }); 
+                        page: this.page,
+                        size: this.pageSize,
+                        fromTime: time1,
+                        toTime: time2,               
+                        shopId: this.shopId
+
+                        }, {
+                            emulateJSON: true
+                        }).then(function (response) {
+                            // response.data中获取ResponseData实体
+                            //	console.log(response);
+                            this.dishList = response.body.rows;
+                            this.total=response.body.total;
+                        }, function (response) {
+                            // 发生错误
+                            console.log(response);
+                            alert("发生错误")
+                        });
+                
                 },
            //详情查询
            
                 pageHandler: function (page) {
                     //here you can do custom state update
                     this.page = page;
-                    this.shopId = 23;
+                    
                    //http://localhost:9003/consumer/shoporder/findAllOrder/1/5/23
 
-                    this.$http.get('http://localhost:9003/consumer/shoporder/findAllOrder?page='+this.page+'&size='+this.pageSize+'&shopId='+this.shopId).then(function (response) {
+                    this.$http.get('http://localhost:9003/consumer/shoporder/findAllOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId).then(function (response) {
 
-                   /*  this.$http.get('http://localhost:9003/consumer/shoporder/findAllOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId).then(function (response) {
->>>>>>> 8756bd6048f021c31e6228b10a02b9c09d218f2b */
-                    //     console.log('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
-                    // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
+               
                         this.dishList = response.body.rows;
                         this.total=response.body.total;
                         
