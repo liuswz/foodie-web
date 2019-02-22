@@ -61,18 +61,7 @@
 							<!--工具栏-->
 							<div class="pull-left">
 								<div class="form-group form-inline">
-									<div class="btn-group">
-										<div class="block">
-
-											<el-date-picker v-model="value9" type="daterange"
-												value-format="yyyy-MM-dd" start-placeholder="开始日期"
-												end-placeholder="结束日期" default-value="2019-2-21">
-											</el-date-picker>
-											<button type="button" class="btn btn-default" title="查询"
-												@click="date">
-												<i class="fa fa-refresh"></i> 查询
-											</button>
-										</div>
+									
 										<button type="button" class="btn btn-default" title="刷新"
 											@click="window.location.reload();">
 											<i class="fa fa-refresh"></i> 刷新
@@ -104,14 +93,18 @@
 										<td>{{dish.orderNo}}</td>
 										<td>{{dish.tableNum}}</td>										
 										<td>{{dish.cost}}元</td>
-										<td v-if="dish.orderStatus == 0">未支付 未上菜</td>
-										<td v-else="dish.orderStatus == 1">已支付 未上菜</td>
-										<td v-else="dish.orderStatus == 2">未支付 已上菜</td>
-										<td v-else="dish.orderStatus == 3">已支付 已上菜</td>
+										<td v-if="dish.orderStatus == 0" ><h5 ref="status">未支付 未上菜</h5></td>
+										<td v-else-if="dish.orderStatus == 1" ><h5 value="1" id="status2">已支付 未上菜</h5></td>
+										<td v-else-if="dish.orderStatus == 2" ><h5 value="2" id="status3">未支付 已上菜</h5></td>
+										<td v-else > <h5 value="3" id="status4">已支付 已上菜</h5></td>
 										<td>{{dish.createTime}}</td>
 										<td class="text-center">
 											<button type="button" class="btn bg-olive btn-xs"
 												@click="detailDish(dish.id)">详情</button>
+												<button type="button" class="btn bg-olive btn-xs"
+												@click="changeServing(dish.orderStatus,dish.id)">更改上菜状态</button>
+												<button type="button" class="btn bg-olive btn-xs"
+												@click="changePay(dish.orderStatus,dish.id)">更改支付状态</button>
 										</td>
 									</tr>
 								</tbody>
@@ -150,11 +143,13 @@
 
 	<!-- 正文区域 /-->
 	<script type="text/javascript">
+	var	orderStatus;
         new Vue({
             el: '#all',
             data: {
                 checked: false,
                 dishList: [],
+                status: 0,
                 ids: [],
                 checkedAll: [],
                 page: 1,  //显示的是哪一页
@@ -163,7 +158,7 @@
                 maxPage:2,
                 shopId:1,
                 value:'',
-                value9: ''
+                
             },
             created: function () {
                 this.shopId=23;
@@ -175,36 +170,61 @@
             	
                 detailDish(id){
                 	//alert(id);
-                	 location.href="goods_details.html?orderId="+encodeURI(id);
+                	 location.href="order_details.html?orderId="+encodeURI(id);
                 },
-                //时间查询
-                date: function (){
-                	var time1 = JSON.stringify(this.value9).split(",")[0].split("[")[1].replace(/\"/g, "");;
-                	var time2 = JSON.stringify(this.value9).split(",")[1].split("]")[0].replace(/\"/g, "");;
+               
+                //修改上菜状态
+                changeServing(status,id){
+                	//http://localhost:9003/consumer/shoporder/updatOrder/{orderStatus}/{id}
+                	//this.page = 1;
+                	
+                	//alert(status);
+                	if(status == 0){
+                		
+                	   	status=2;
+                		
+                	}else {
+                		status=3;
+                	}
+                	
+                	   this.$http.get('http://localhost:9003/consumer/shoporder/updatOrder/'+status+'/'+id).then(function (response) {
 
-                    this.page = 1;
-                 
-          
-                    this.$http.post('http://localhost:9003/consumer/shoporder/findOrderByTime', {
+                        
+                        this.dishList = response.body.rows;
+                        
+                        this.total=response.body.total;
+                        this.pageHandler(1);
+                    }, function (response) {
+                        // 发生错误
+                     
+                        alert("发生错误")
+                    });    
+                },
+                //修改支付状态
+                changePay(status,id){
+                	
+                	if(status == 0){
+                		status=1;
+                	}else {
+                		status=3;
+                	}
+                	
+                	 this.$http.get('http://localhost:9003/consumer/shoporder/updatOrder/'+status+'/'+id).then(function (response) {
 
-                        page: this.page,
-                        size: this.pageSize,
-                        fromTime: time1,
-                        toTime: time2,               
-                        shopId: this.shopId
-                        }, {
-                            emulateJSON: true
-                        }).then(function (response) {
-                            this.dishList = response.body.rows;
-                           // alert(this.dishList);
-                            this.total=response.body.total;
-                        }, function (response) {
-                            // 发生错误
-                          
-                            alert("发生错误")
-                        });
+                        
+                        this.dishList = response.body.rows;
+                        
+                        this.total=response.body.total;
+                        this.pageHandler(1);
+                    }, function (response) {
+                        // 发生错误
+                     
+                        alert("发生错误")
+                    });  
+                },
                 
-                },
+           
+           //http://localhost:9003/consumer/shoporder/findNotFinishOrder/{page}/{size}/{shopId}
            //详情查询          
                 pageHandler: function (page) {
                     //here you can do custom state update
@@ -237,6 +257,10 @@
                         this.checked = true
                     }
                 }
+            },
+            mounted() {
+                this.pageHandler(1);
+                setInterval(this.getElevatorList, 5000);
             }
         })
 
