@@ -206,12 +206,20 @@
                 },
            //详情查询
            
+<<<<<<< HEAD
+=======
+              
+>>>>>>> 2cb727d2ebccc217c0d8316abb0d0cf87f897648
                 pageHandler: function (page) {
                     //here you can do custom state update
                     this.page = page;
                     this.shopId = 23;
                    //http://localhost:9003/consumer/shoporder/findAllOrder/1/5/23
+<<<<<<< HEAD
                     this.$http.get('http://localhost:9003/consumer/shoporder/findAllOrder?page='+this.page+'&size='+this.pageSize+'&shopId='+this.shopId).then(function (response) {
+=======
+                    this.$http.get('http://localhost:9003/consumer/shoporder/findAllOrder/'+this.page+'/'+this.pageSize+'/='+this.shopId).then(function (response) {
+>>>>>>> 2cb727d2ebccc217c0d8316abb0d0cf87f897648
                     //     console.log('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
                     // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
                         this.dishList = response.body.rows;
@@ -223,6 +231,7 @@
                         alert("发生错误")
                     }); 
                     
+<<<<<<< HEAD
                 },
                 findDishes(){
                
@@ -244,6 +253,9 @@
 
 
                 }
+=======
+           
+>>>>>>> 2cb727d2ebccc217c0d8316abb0d0cf87f897648
             },
             watch: {
                 "ids": function () {
