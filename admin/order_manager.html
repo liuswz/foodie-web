@@ -205,28 +205,13 @@
                 },
            //详情查询
            
-                delSelected: function () {
-                    var str = '';
-                    for (var i = 0; i < this.ids.length; i++) {
-                        str = str + this.ids[i] + ',';
-                       
-                    }
-                   // console.log(str);
-                    this.$http.get('http://localhost:9002/consumer/shopdishes/delDishById/?').then(function (response) {
-                        alert("删除成功");
-                        this.pageHandler(this.page);
-                    }, function (response) {
-                        // 发生错误
-                        alert("发生错误")
-                    });
-
-                },
+              
                 pageHandler: function (page) {
                     //here you can do custom state update
                     this.page = page;
                     this.shopId = 23;
                    //http://localhost:9003/consumer/shoporder/findAllOrder/1/5/23
-                    this.$http.get('http://localhost:9003/consumer/shoporder/findAllOrder?+page='+this.page+'&size='+this.pageSize+'&shopId='+this.shopId).then(function (response) {
+                    this.$http.get('http://localhost:9003/consumer/shoporder/findAllOrder/'+this.page+'/'+this.pageSize+'/='+this.shopId).then(function (response) {
                     //     console.log('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
                     // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
                         this.dishList = response.body.rows;
@@ -238,27 +223,7 @@
                         alert("发生错误")
                     }); 
                     
-                },
-                findDishes(){
-               
-                    this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
-                        this.shopId+'&page=1&size='+this.pageSize+'&value='+this.value).then(function (response) {
-                    //     console.log('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
-                    // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
-                        this.dishList = response.body.rows;
-                        this.total=response.body.total;
-                        this.maxPage=this.total/this.pageSize+1;
-                    }, function (response) {
-                        // 发生错误
-                        console.log(response);
-                        alert("发生错误")
-                    }); 
-                },
-                updateDish: function (id) {
-                    location.href="update_dishes.html?id="+encodeURI(id);
-
-
-                }
+           
             },
             watch: {
                 "ids": function () {
