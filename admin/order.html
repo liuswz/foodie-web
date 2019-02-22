@@ -164,6 +164,7 @@
                 this.shopId=23;
                 this.maxPage=this.total/this.pageSize+1,
                 this.pageHandler(1);
+                
             },
             methods: {
               
@@ -228,7 +229,7 @@
            //详情查询          
                 pageHandler: function (page) {
                     //here you can do custom state update
-                    this.page = page;
+                    this.page = 1;
                     
                    //http://localhost:9003/consumer/shoporder/findAllOrder/1/5/23
 
@@ -258,10 +259,9 @@
                     }
                 }
             },
-            mounted() {
-            
+            mounted() {           
                 this.pageHandler(1);
-                setInterval(this.pageHandler(1), 5000);
+                setInterval(this.pageHandler, 5000);
             }
         })
 
