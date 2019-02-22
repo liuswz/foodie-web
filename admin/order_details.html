@@ -156,7 +156,7 @@
           	 // console.info(JSON.stringify(id.cost));
                 this.orderId = id.split("&")[0];
                 this.shopId=23;
-                    
+                   
                 this.getData();
                
             },
@@ -171,7 +171,7 @@
                   
                     this.$http.get('http://localhost:9003/consumer/shoporder/findOrderItem/'+
                         this.orderId +'/'+this.shopId).then(function (response) {
-                            
+                        
                        // console.log(response);
 
                         this.dishList = response.body;
