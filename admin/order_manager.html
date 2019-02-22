@@ -20,7 +20,7 @@
 
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-   <script type="text/javascript" src="../js/vue.min.js" ></script>
+  
 	<script src="../js/element.min.js"></script>
     <script src="../js/zpageNav.js"></script>
 
@@ -82,12 +82,12 @@
                                     </div>                                 
                                 </div>
                             </div>
-                            <div class="box-tools pull-right">
+                            <!-- <div class="box-tools pull-right">
                                 <div class="has-feedback">
                                     商品名称：<input v-model="value">
                                     <button class="btn btn-default" @click="findDishes">查询</button>
                                 </div>
-                            </div>
+                            </div> -->
                             <!--工具栏/-->
 
                             <!--数据列表-->
@@ -117,7 +117,7 @@
                                         <td>{{dish.shopId}}</td>
                                         <td>{{dish.creatTime}}</td>
                                         <td class="text-center">
-                                           <button type="button"  class="btn bg-olive btn-xs" @click="updateDish(dish.id)" >修改</button>
+                                        
                                            <button type="button"  class="btn bg-olive btn-xs" @click="xqDish(dish.id)" >详情</button>            
                                         </td>
                                     </tr>
@@ -192,13 +192,25 @@
                     }
 
                 },
+                xqDish(id){
+                	 location.href="goods_xq.html?orderId="+encodeURI(id);
+                },
                 //时间查询
                 date: function (){
                 	var time1 = JSON.stringify(this.value9).split(",")[0];
                 	var time2 = JSON.stringify(this.value9).split(",")[1];
-                	this.$http.get('http://localhost:9003/consumer/shoporder/findOrderByTime?page='+this.page+'&size='this.size+'&fromTime='+time1+'&toTime='+time2+'&shopId='+this.shopId).then(function (response) {
+
+                    this.page = 1;
+                    this.shopId = 23;
+              /*   	this.$http.get('http://localhost:9003/consumer/shoporder/findOrderByTime?page='+this.page+'&size='this.size+'&fromTime='+time1+'&toTime='+time2+'&shopId='+this.shopId).then(function (response) {
                         //alert("删除成功");
+======= */
+                	this.$http.post('http://localhost:9003/consumer/shoporder/findOrderByTime?page='+this.page+'&size='+this.pageSize+'&fromTime='+time1+'&toTime='+time2+'&shopId='+this.shopId).then(function (response) {
+                     //   alert("删除成功");
+
                         this.pageHandler(this.page);
+						this.dishList = response.body.rows;
+						this.total=response.body.total;
                     }, function (response) {
                         // 发生错误
                       //  alert("发生错误")
@@ -206,20 +218,16 @@
                 },
            //详情查询
            
-<<<<<<< HEAD
-=======
-              
->>>>>>> 2cb727d2ebccc217c0d8316abb0d0cf87f897648
                 pageHandler: function (page) {
                     //here you can do custom state update
                     this.page = page;
                     this.shopId = 23;
                    //http://localhost:9003/consumer/shoporder/findAllOrder/1/5/23
-<<<<<<< HEAD
+
                     this.$http.get('http://localhost:9003/consumer/shoporder/findAllOrder?page='+this.page+'&size='+this.pageSize+'&shopId='+this.shopId).then(function (response) {
-=======
-                  //  this.$http.get('http://localhost:9003/consumer/shoporder/findAllOrder/'+this.page+'/'+this.pageSize+'/='+this.shopId).then(function (response) {
->>>>>>> 2cb727d2ebccc217c0d8316abb0d0cf87f897648
+
+                   /*  this.$http.get('http://localhost:9003/consumer/shoporder/findAllOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId).then(function (response) {
+>>>>>>> 8756bd6048f021c31e6228b10a02b9c09d218f2b */
                     //     console.log('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
                     // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
                         this.dishList = response.body.rows;
@@ -231,32 +239,10 @@
                         alert("发生错误")
                     }); 
                     
-<<<<<<< HEAD
                 },
-                findDishes(){
-               
-                    this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
-                        this.shopId+'&page=1'+'&size='+this.pageSize+'&value='+this.value).then(function (response) {
-                    //     console.log('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
-                    // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
-                        this.dishList = response.body.rows;
-                        this.total=response.body.total;
-                        this.maxPage=this.total/this.pageSize+1;
-                    }, function (response) {
-                        // 发生错误
-                        console.log(response);
-                        alert("发生错误")
-                    }); 
-                },
-                updateDish: function (id) {
-                    location.href="update_dishes.html?id="+encodeURI(id);
-
-
-                }
-=======
-           
->>>>>>> 2cb727d2ebccc217c0d8316abb0d0cf87f897648
+              
             },
+            
             watch: {
                 "ids": function () {
                     if (this.ids.length == this.checkedAll.length) {

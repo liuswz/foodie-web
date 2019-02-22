@@ -152,12 +152,19 @@
                 total: 10, //记录总数
                 maxPage:2,
                 shopId:1,
-                value:''
+                value:'',
+                orderId : ''
             },
             created: function () {
                 this.shopId=1;
                 this.maxPage=this.total/this.pageSize+1,
                 this.pageHandler(1);
+                var loc = location.href;
+         	   var n1 = loc.length;//地址的总长度
+         	   var n2 = loc.indexOf("=");//取得=号的位置
+         	   var id = decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
+         	 // console.info(JSON.stringify(id.cost));
+         	    orderId = id.split("&")[0];
             },
             methods: {
               
@@ -180,7 +187,7 @@
                     this.page = page;
                    ///consumer/shoporder/findOrderItem/{orderId}/{shopId}
                     this.$http.get('http://localhost:9002/consumer/shoporder/findOrderItem?shopId='+
-                        this.shopId+'&orderId='+this.dishList.orderId).then(function (response) {
+                        this.shopId+'&orderId='+this.orderId).then(function (response) {
                     //     console.log('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
                     // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
                         this.dishList = response.body.rows;
@@ -193,21 +200,7 @@
                     }); 
                     
                 },
-                findDishes(){
                
-                    this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
-                        this.shopId+'&page=1&size='+this.pageSize+'&value='+this.value).then(function (response) {
-                    //     console.log('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
-                    // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
-                        this.dishList = response.body.rows;
-                        this.total=response.body.total;
-                        this.maxPage=this.total/this.pageSize+1;
-                    }, function (response) {
-                        // 发生错误
-                        console.log(response);
-                        alert("发生错误")
-                    }); 
-                },
                 
             },
             watch: {
