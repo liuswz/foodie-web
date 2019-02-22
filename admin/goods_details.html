@@ -21,7 +21,7 @@
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 
-    <script src="../js/zpageNav.js"></script>
+  
 
 
 
@@ -72,27 +72,28 @@
                                     <tr>
                                                                             
                                         <th class="sorting">菜品名称</th>
-                                        <th class="sorting">菜品ID</th>
-                                        
+                                        <th class="sorting">桌号</th>
+                                        <th class="sorting">菜品名称</th>
                                         <th class="sorting">菜品数量</th>
                                         <th class="sorting">菜品总价</th>
-                                        <th class="sorting">订单号</th>                                    
-                                        <th class="sorting">shop-id</th>
+                                                                 
+                                       
                                       
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="dish in dishList">
-                                        <td><input type="checkbox" :value="dish.id" v-model="ids"></td>
+                                      
                                      
                                         <td>{{dish.name}}</td>
-                                        <td>{{dish.dishId}}</td>                                       
-                                       
+                                        
                                         <td>{{dish.dishNum}}</td>
                                         <td>{{dish.totalCost}}</td>
+
                                         <td>{{dish.orderId}}</td>
                                         
                                         <td>{{dish.shopId}}</td>
+
                                         
                                     </tr>
                                 </tbody>
@@ -118,11 +119,7 @@
 
 
         </div>
-        <div class="wrap" id="wrap">
-            <zpagenav v-bind:page="page" v-bind:page-size="pageSize" v-bind:total="total" 
-                v-bind:max-page="maxPage"  v-on:pagehandler="pageHandler">
-            <zpagenav>
-        </div>
+      
 
 
     </section>
@@ -154,26 +151,27 @@
           	 // console.info(JSON.stringify(id.cost));
                 this.orderId = id.split("&")[0];
                 this.shopId=23;
-                this.maxPage=this.total/this.pageSize+1;              
-                this.pageHandler(1);
+                    
+                this.getData();
                
             },
             methods: {
               
                 
-                pageHandler: function (page) {
+                getData: function () {
                     //here you can do custom state update
                   /*  console.log('http://localhost:9003/consumer/shoporder/findOrderItem/'+
                         this.orderId +'/'+this.shopId); */
                    ///consumer/shoporder/findOrderItem/{orderId}/{shopId}
-                    this.page = page;
+                  
                     this.$http.get('http://localhost:9003/consumer/shoporder/findOrderItem/'+
                         this.orderId +'/'+this.shopId).then(function (response) {
                             
                         console.log(response);
 
-                        this.dishList = response.body.rows;
-                        this.total=response.body.total;
+                        this.dishList = response.body;
+                       
+                        alert(this.dishList);
                         
                     }, function (response) {
                         // 发生错误
