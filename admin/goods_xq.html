@@ -147,7 +147,7 @@
                 ids: [],
                 checkedAll: [],
                 page: 1,  //显示的是哪一页
-                pageSize: 5, //每一页显示的数据条数
+                pageSize: 10, //每一页显示的数据条数
                 total: 10, //记录总数
                 maxPage:2,
                 shopId:1,
@@ -155,15 +155,16 @@
                 orderId : 0
             },
             created: function () {
-                this.shopId=1;
-                this.maxPage=this.total/this.pageSize+1,
-                this.pageHandler(1);
+                this.shopId=23;
+                this.maxPage=this.total/this.pageSize+1;
+               
                 var loc = location.href;
          	   var n1 = loc.length;//地址的总长度
          	   var n2 = loc.indexOf("=");//取得=号的位置
          	   var id = decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
          	 // console.info(JSON.stringify(id.cost));
-         	    orderId = id.split("&")[0];
+              this.orderId = id.split("&")[0];
+              this.pageHandler(1);
             },
             methods: {
               
@@ -181,14 +182,16 @@
 
                 },
                
-                pageHandler: function (page) {
+                pageHandler: function () {
                     //here you can do custom state update
-                    this.page = page;
+                   console.log('http://localhost:9003/consumer/shoporder/findOrderItem/'+
+                        this.orderId +'/'+this.shopId);
                    ///consumer/shoporder/findOrderItem/{orderId}/{shopId}
-                    this.$http.get('http://localhost:9002/consumer/shoporder/findOrderItem?shopId='+
-                        this.shopId+'&orderId='+this.orderId).then(function (response) {
-                    //     console.log('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
-                    // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
+                    this.$http.get('http://localhost:9003/consumer/shoporder/findOrderItem/'+
+                        this.orderId +'/'+this.shopId).then(function (response) {
+                            
+                        console.log(response);
+
                         this.dishList = response.body.rows;
                         this.total=response.body.total;
                         
