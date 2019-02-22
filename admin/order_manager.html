@@ -93,20 +93,22 @@
 
 										<th class="sorting">订单号</th>
 										<th class="sorting">桌号</th>
-										<th class="sorting">订单状态</th>
+										
 										<th class="sorting">订单总价</th>
+										<th class="sorting">订单状态</th>
 										<th class="sorting">下单时间</th>
 										<th class="text-center">操作</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr v-for="dish in dishList">
-										<td><input type="checkbox" :value="dish.id" v-model="ids"></td>
+									
 										<td>{{dish.orderNo}}</td>
 										<td>{{dish.tableNum}}</td>
+										
+										<td>{{dish.cost}}元</td>
 										<td v-if="dish.orderStatus > 0">已支付</td>
 										<td v-else>未支付</td>
-										<td>{{dish.cost}}</td>
 										<td>{{dish.createTime}}</td>
 										<td class="text-center">
 

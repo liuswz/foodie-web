@@ -88,7 +88,7 @@
                                         <td>{{dish.name}}</td>
                                         
                                         <td>{{dish.dishNum}}</td>
-                                        <td>{{dish.totalCost}}</td>
+                                        <td>{{dish.totalCost}}元</td>
                                       
                                         
                                     </tr>
@@ -167,7 +167,7 @@
 
                         this.dishList = response.body;
                        
-                        alert(this.dishList);
+                       // alert(this.dishList);
                         
                     }, function (response) {
                         // 发生错误
