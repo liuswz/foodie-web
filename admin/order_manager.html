@@ -185,7 +185,7 @@
                     this.page = 1;
                  
           
-                    this.$http.post('http://localhost:9003/consumer/shoporder/findOrderByTime', {
+                    this.$http.post('http://localhost:9527/shop/consumer/shoporder/findOrderByTime', {
 
                         page: this.page,
                         size: this.pageSize,
@@ -210,9 +210,9 @@
                     //here you can do custom state update
                     this.page = page;
                     
-                   //http://localhost:9003/consumer/shoporder/findAllOrder/1/5/23
+                   //http://localhost:9527/shop/consumer/shoporder/findAllOrder/1/5/23
 
-                    this.$http.get('http://localhost:9003/consumer/shoporder/findAllOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId).then(function (response) {
+                    this.$http.get('http://localhost:9527/shop/consumer/shoporder/findAllOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId).then(function (response) {
 
                
                         this.dishList = response.body.rows;

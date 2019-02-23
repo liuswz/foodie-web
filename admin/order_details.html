@@ -165,11 +165,11 @@
                 
                 getData: function () {
                     //here you can do custom state update
-                  /*  console.log('http://localhost:9003/consumer/shoporder/findOrderItem/'+
+                  /*  console.log('http://localhost:9527/shop/consumer/shoporder/findOrderItem/'+
                         this.orderId +'/'+this.shopId); */
                    ///consumer/shoporder/findOrderItem/{orderId}/{shopId}
                   
-                    this.$http.get('http://localhost:9003/consumer/shoporder/findOrderItem/'+
+                    this.$http.get('http://localhost:9527/shop/consumer/shoporder/findOrderItem/'+
                         this.orderId +'/'+this.shopId).then(function (response) {
                             
                        // console.log(response);

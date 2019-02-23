@@ -248,10 +248,10 @@
                   },
                 //修改上菜状态
                 updateServing(status,id){
-                	//http://localhost:9003/consumer/shoporder/updatOrder/{orderStatus}/{id}
+                	//http://localhost:9527/shop/consumer/shoporder/updatOrder/{orderStatus}/{id}
                 	//this.page = 1;
                 	//alert(status);             	
-                	   this.$http.get('http://localhost:9003/consumer/shoporder/updatOrder/'+status+'/'+id).then(function (response) {
+                	   this.$http.get('http://localhost:9527/shop/consumer/shoporder/updatOrder/'+status+'/'+id).then(function (response) {
 
                         
                         this.dishList = response.body.rows;
@@ -269,7 +269,7 @@
                 	
                 	
                 	
-                	 this.$http.get('http://localhost:9003/consumer/shoporder/updatOrder/'+status+'/'+id).then(function (response) {
+                	 this.$http.get('http://localhost:9527/shop/consumer/shoporder/updatOrder/'+status+'/'+id).then(function (response) {
 
                         
                         this.dishList = response.body.rows;
@@ -284,15 +284,15 @@
                 },
                 
            
-           //http://localhost:9003/consumer/shoporder/findNotFinishOrder/{page}/{size}/{shopId}
+           //http://localhost:9527/shop/consumer/shoporder/findNotFinishOrder/{page}/{size}/{shopId}
            //详情查询          
                 pageHandler: function (page) {
                     //here you can do custom state update
                     this.page = 1;
                     
-                   //http://localhost:9003/consumer/shoporder/findAllOrder/1/5/23
+                   //http://localhost:9527/shop/consumer/shoporder/findAllOrder/1/5/23
 
-                    this.$http.get('http://localhost:9003/consumer/shoporder/findNotFinishOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId).then(function (response) {
+                    this.$http.get('http://localhost:9527/shop/consumer/shoporder/findNotFinishOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId).then(function (response) {
 
                
                         this.dishList = response.body.rows;

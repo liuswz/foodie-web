@@ -183,7 +183,7 @@
                        
                     }
                    // console.log(str);
-                    this.$http.get('http://localhost:9002/consumer/shopdishes/delDishById/'+str).then(function (response) {
+                    this.$http.get('http://localhost:9527/shop/consumer/shopdishes/delDishById/'+str).then(function (response) {
                         alert("删除成功");
                         this.pageHandler(this.page);
                     }, function (response) {
@@ -196,9 +196,9 @@
                     //here you can do custom state update
                     this.page = page;
                    
-                    this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
+                    this.$http.get('http://localhost:9527/shop/consumer/shopdishes/getAllDishes?shopId='+
                         this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value).then(function (response) {
-                    //     console.log('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
+                    //     console.log('http://localhost:9527/shop/consumer/shopdishes/getAllDishes?shopId='+
                     // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
                         this.dishList = response.body.rows;
                         this.total=response.body.total;
@@ -212,9 +212,9 @@
                 },
                 findDishes(){
                
-                    this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
+                    this.$http.get('http://localhost:9527/shop/consumer/shopdishes/getAllDishes?shopId='+
                         this.shopId+'&page=1&size='+this.pageSize+'&value='+this.value).then(function (response) {
-                    //     console.log('http://localhost:9002/consumer/shopdishes/getAllDishes?shopId='+
+                    //     console.log('http://localhost:9527/shop/consumer/shopdishes/getAllDishes?shopId='+
                     // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
                         this.dishList = response.body.rows;
                         this.total=response.body.total;
