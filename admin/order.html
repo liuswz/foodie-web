@@ -103,9 +103,9 @@
 												@click="detailDish(dish.id)">详情</button>
 												
 												<button type="button" class="btn bg-olive btn-xs"
-												@click="boxDish(dish.orderStatus,dish.id)">上菜</button>
+												@click="boxDish(dish.orderStatus,dish.id)">已上菜</button>
 												<button type="button" class="btn bg-olive btn-xs"
-												@click="boxPay(dish.orderStatus,dish.id)">支付</button>
+												@click="boxPay(dish.orderStatus,dish.id)">已支付</button>
 										</td>
 									</tr>
 								</tbody>
@@ -154,7 +154,7 @@
                 ids: [],
                 checkedAll: [],
                 page: 1,  //显示的是哪一页
-                pageSize: 10, //每一页显示的数据条数
+                pageSize: 20, //每一页显示的数据条数
                 total: 10, //记录总数
                 maxPage:2,
                 shopId:1,
@@ -287,6 +287,7 @@
            //http://localhost:9527/shop/consumer/shoporder/findNotFinishOrder/{page}/{size}/{shopId}
            //详情查询          
                 pageHandler: function (page) {
+				
                     //here you can do custom state update
                     this.page = 1;
                     
