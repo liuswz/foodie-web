@@ -31,6 +31,18 @@
 			  }
 		 }
     
+		 
+		 
+		  window.onload=function(){
+			 $.get('http://localhost:9527/shop/getUsername')
+             .then(function (response) {
+                 username = response.data;
+             }, function (response) {
+            	 window.location.href="http://localhost:9527/shop/admin";
+               
+             }); 
+             
+         }
 	</script>    
 
 </head>
@@ -258,7 +270,7 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="../img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs">chendahai</span>
+                                <span class="hidden-xs">${username}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
@@ -266,8 +278,8 @@
                                     <img src="../img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                     <p>
-                                       chendahai 
-                                        <small>最后登录 11:20AM</small>
+                                      ${username}
+                                        
                                     </p>
                                 </li>
                                 
@@ -277,7 +289,7 @@
                                         <a href="#" class="btn btn-default btn-flat">修改密码</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">注销</a>
+                                        <a href="http://localhost:9527/shop/logout" class="btn btn-default btn-flat">注销</a>
                                     </div>
                                 </li>
                             </ul>
