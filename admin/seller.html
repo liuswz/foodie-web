@@ -79,19 +79,37 @@
                             <div class="col-md-10 data editer">  
                                  
                                      <div class="dish_file">
-                                         <input type="file" id="file" @change="look_photo" accept="image/gif, image/jpeg,image/png"/>	
+                                         <input type="file" id="file" @change="look_photo(1)" accept="image/gif, image/jpeg,image/png"/>	
                                      </div>		
                                      
                                      <div class="">
-                                         <button class="btn btn-primary" type="button" v-on:click="upload_photo">
+                                         <button class="btn btn-primary" type="button" v-on:click="upload_photo(1)">
                                                     上传
                                          </button>	
                                          
-                                         <img class="dish_img" id="imgshow" :src="shop.photoUrl" width="200px" height="200px">
+                                         <img class="dish_img" id="imgshow1" :src="shop.photoUrl" width="200px" height="200px">
                                          
 
                                      </div>
                              </div>
+
+                             <div class="col-md-2 title editer">转帐二维码</div>
+                             <div class="col-md-10 data editer">  
+                                  
+                                      <div class="dish_file">
+                                          <input type="file" id="file" @change="look_photo(2)" accept="image/gif, image/jpeg,image/png"/>	
+                                      </div>		
+                                      
+                                      <div class="">
+                                          <button class="btn btn-primary" type="button" v-on:click="upload_photo(2)">
+                                                     上传
+                                          </button>	
+                                          
+                                          <img class="dish_img" id="imgshow2" :src="shop.payPhoto" width="200px" height="200px">
+                                          
+ 
+                                      </div>
+                              </div>
                             <!-- <div class="col-md-2 title">mch_id</div>
                             <div class="col-md-10 data">
                                 <input type="text" class="form-control" placeholder="mch_id" v-model="shop.mchId">
@@ -176,7 +194,8 @@
     <!-- <script type="text/javascript" src="seller.js"></script> -->
     <script type="text/javascript">
 
-    var shop_photo=null;
+        var shop_photo=null;
+        var pay_photo=null;
         var app = new Vue({
             el: '#app',
             data: {
@@ -190,7 +209,8 @@
                     shopEmail: null,
                     shopPhone: null,
                     shopNotice:null,
-                    photoUrl:null
+                    photoUrl:null,
+                    payPhoto:null
                 },
                 shopId:23,
 
@@ -210,8 +230,8 @@
                     });
 
                 },
-                look_photo:function (event){
-					var file =$('input[type="file"]')[0].files[0];
+                look_photo:function (flag){
+					var file =$('input[type="file"]')[flag-1].files[0];
                     console.log(file);	
                  
 					var reader = new FileReader();
@@ -221,11 +241,11 @@
 					reader.onload=function(e){
 					//读取成功后返回的一个参数e，整个的一个进度事件
 					
-						$('#imgshow').get(0).src = e.target.result;
+						$('#imgshow'+flag).get(0).src = e.target.result;
 					}
 				},
-				upload_photo:function (event){
-					var file =$('input[type="file"]')[0].files[0];
+				upload_photo:function (flag){
+					var file =$('input[type="file"]')[flag-1].files[0];
 					var fileExt = file.name.substring(file.name.lastIndexOf("."))
                 	.toLowerCase();
 
@@ -234,9 +254,18 @@
 						//img.value = "";
 						return;
 					}else{
-
+                        var oss_name="";
+						switch(flag)
+						{
+						case 1:
+							oss_name="shop";
+							break;					
+						case 2:
+							oss_name="pay_photo";
+							break;
+						}
 						var photo_name = new Date().getTime()+""+parseInt(Math.random()*10000+1);
-						client.multipartUpload("/dishes/"+photo_name, file).then(function (result) {
+						client.multipartUpload("/"+oss_name+"/"+photo_name, file).then(function (result) {
 						//	console.log(result.url);
 							
 							
@@ -251,16 +280,16 @@
 								console.log(requestUrl);
 								if (requestUrl) {
 									var imgUrl = requestUrl.substring(0,requestUrl.indexOf("?"));
-									shop_photo = imgUrl;
+									//shop_photo = imgUrl;
 									console.log(imgUrl);
-
+                                    _this.insertPhotoname(flag,imgUrl);
 
 									alert("上传成功");
 								}
 							}else{
 								if (requestUrl) {
-									shop_photo = requestUrl;
-
+									//shop_photo = requestUrl;
+                                    _this.insertPhotoname(flag,requestUrl);
 
 									alert("上传成功");
 								}
@@ -275,10 +304,25 @@
 					
 					
 				},
+                insertPhotoname(flag,photoName){
+					switch(flag)
+					{
+						case 1:
+                            shop_photo = photoName;
+							break;
+						
+						case 2:
+                            pay_photo=photoName;
+							break;
+					}
+				},
                 updateshop: function (e) {
                    
                     if(shop_photo){
                         this.shop.photoUrl=shop_photo;
+                    }
+                    if(pay_photo){
+                        this.shop.payPhoto=pay_photo;
                     }
                     if (!this.shop.shopName) {
                         this.error='店名不能为空';
@@ -288,13 +332,13 @@
                         this.error='地址不能为空';
                        
                     }
-                    else if (!this.shop.shopEmail) {
-                        this.error='邮件不能为空';
+                    // else if (!this.shop.shopEmail) {
+                    //     this.error='邮件不能为空';
                        
-                    } else if (!this.validEmail(this.shop.shopEmail)) {
-                        this.error='邮件格式不正确 ';
+                    // } else if (!this.validEmail(this.shop.shopEmail)) {
+                    //     this.error='邮件格式不正确 ';
                      
-                    }
+                    // }
                     else if (!this.shop.shopPhone) {
                         this.error='电话号码不能为空';
                       
@@ -309,7 +353,7 @@
                         this.error='图片不能为空';
                        
 					}else{
-                        this.$http.post('http://localhost:9001/consumer/shopdetail/update', this.shop, { emulateJSON: true }).then(function (response) {
+                        this.$http.post('http://127.0.0.1:9527/shop/consumer/shopdetail/update', this.shop, { emulateJSON: true }).then(function (response) {
                             console.log(response);
                             alert(response.body.result);
                         // if(response.body.code == 0){

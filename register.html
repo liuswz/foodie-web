@@ -81,7 +81,7 @@
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label">商家图片：</label>
+						<label class="control-label">商家logo：</label>
 						<div class="controls">
 							<input type="file" id="file1" @change="look_photo(1)" accept="image/gif, image/jpeg,image/png" />
 						</div>
@@ -359,17 +359,17 @@
 						alert('地址不能为空');
 					}
 
-					else if (!this.shop.shopEmail) {
-						alert('邮件不能为空');
-					} else if (!this.validEmail(this.shop.shopEmail)) {
-						alert('邮件格式不正确 ');
-					}
+					// else if (!this.shop.shopEmail) {
+					// 	alert('邮件不能为空');
+					// } else if (!this.validEmail(this.shop.shopEmail)) {
+					// 	alert('邮件格式不正确 ');
+					// }
 					else if (!this.shop.shopPhone) {
 						alert('电话号码不能为空');
 					} else if (!this.validPhone(this.shop.shopPhone)) {
 						alert('电话号码格式不正确');
 					} else if (!this.shop.photoUrl) {
-						alert('商户图片不能为空');
+						alert('商家logo不能为空');
 					}else if (!this.shop.businessPhoto) {
 						alert('营业执照不能为空');
 					}else if (!this.shop.idcardPhoto) {
@@ -381,12 +381,12 @@
 								emulateJSON: true
 							}).then(function (response) {
 								// response.data中获取ResponseData实体
-								//	console.log(response);
+									console.log(response);
 								alert(response.body.result);
 							}, function (response) {
 								// 发生错误
 								alert("发生错误");
-								console.log(response.status);
+								console.log(response);
 						});
 						
 					}

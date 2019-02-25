@@ -35,15 +35,16 @@
 		 
 		 
 		  window.onload=function(){
-			//  $.get('http://localhost:9527/shop/getUsername')
-            //  .then(function (response) {
-            //     // var username = response.body.result;
-            //     //  $("#name").html(username);
-    		// 	//  $("#name1").html(username);
-            //  }, function (response) {
-            // 	// window.location.href="http://localhost:9527/shop/admin";
+			 $.get('http://127.0.0.1:9527/shop/getUsername')
+             .then(function (response) {
+                 console.log(response);
+                var username = response.body.result;
+                 $("#name").html(username);
+    			 $("#name1").html(username);
+             }, function (response) {
+            	// window.location.href="http://localhost:9527/shop/gotoAdmin";
                
-            //  }); 
+             }); 
              
          }
 	</script>    
