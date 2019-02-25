@@ -35,6 +35,7 @@
 		 
 		 
 		  window.onload=function(){
+
 			  
 			  $.get('http://localhost:9527/shop/getUsername')
              .then(function (response) {
@@ -42,9 +43,15 @@
                 username="123";
                  $("#name").html(username);
     			 $("#name1").html(username);
-             }, function (response) {           	 
-            	 window.location.href="http://localhost:9527/shop/gotoAdmin";
-               
+    			
+    			alert(response.code);
+    			/*  if(response.code == 1){
+				 window.location.href="http://localhost:9527/shop/gotoAdmin";
+			 } */
+             }, function (response) {       
+            	 alert("请求错误");
+            	 
+            	
              });  
              
          }

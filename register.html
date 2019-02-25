@@ -35,85 +35,146 @@
 					<div class="control-group">
 						<label class="control-label">登陆名（不可修改）：</label>
 						<div class="controls">
-							<input type="text" v-model="registDto.username" name="username" placeholder="登陆名" class="input-xfat input-xlarge">
+							<input type="text" v-model="shop.username" name="username" placeholder="登陆名" class="input-xfat input-xlarge">
 						</div>
 					</div>
 
 					<div class="control-group">
 						<label class="control-label">登陆密码：</label>
 						<div class="controls">
-							<input type="password" v-model="registDto.password" name="password" placeholder="登陆密码" class="input-xfat input-xlarge">
+							<input type="password" v-model="shop.password" name="password" placeholder="登陆密码" class="input-xfat input-xlarge">
 						</div>
 					</div>
 
 					<div class="control-group">
 						<label class="control-label">店铺名称：</label>
 						<div class="controls">
-							<input type="text" v-model="registDto.shopName" name="shopName" placeholder="店铺名称" class="input-xfat input-xlarge">
+							<input type="text" v-model="shop.shopName" name="shopName" placeholder="店铺名称" class="input-xfat input-xlarge">
 						</div>
 					</div>
 
 					<div class="control-group">
 						<label class="control-label">店铺地址：</label>
 						<div class="controls">
-							<input type="text" v-model="registDto.shopAddress" name="shopAddress" placeholder="店铺地址" class="input-xfat input-xlarge">
+							<input type="text" v-model="shop.shopAddress" name="shopAddress" placeholder="店铺地址" class="input-xfat input-xlarge">
 						</div>
 					</div>
 
 					<div class="control-group">
 						<label class="control-label">邮箱：</label>
 						<div class="controls">
-							<input type="email" v-model="registDto.shopEmail" name="shopEmail" placeholder="邮箱" class="input-xfat input-xlarge">
+							<input type="email" v-model="shop.shopEmail" name="shopEmail" placeholder="邮箱" class="input-xfat input-xlarge">
 						</div>
 					</div>
 
 					<div class="control-group">
 						<label class="control-label">电话：</label>
 						<div class="controls">
-							<input type="text" v-model="registDto.shopPhone" name="shopPhone" placeholder="电话" class="input-xfat input-xlarge">
+							<input type="text" v-model="shop.shopPhone" name="shopPhone" placeholder="电话" class="input-xfat input-xlarge">
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">公告：</label>
 						<div class="controls">
-							<textarea rows="4" cols="50"	class="form-control" v-model="registDto.shopNotice" placeholder="公告"></textarea>
-							<!-- <input type="text" v-model="registDto.notice" name="notice" placeholder="公告" class="input-xfat input-xlarge"> -->
+							<textarea rows="4" cols="50"	class="form-control" v-model="shop.shopNotice" placeholder="公告"></textarea>
+							<!-- <input type="text" v-model="shop.notice" name="notice" placeholder="公告" class="input-xfat input-xlarge"> -->
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label">商家图片：</label>
+						<label class="control-label">商家logo：</label>
 						<div class="controls">
-							<input type="file" id="file" @change="look_photo" accept="image/gif, image/jpeg,image/png" />
+							<input type="file" id="file1" @change="look_photo(1)" accept="image/gif, image/jpeg,image/png" />
 						</div>
 						<div class="">
-							<button class="btn btn-primary" type="button" v-on:click="upload_photo">
+							<button class="btn btn-primary" type="button" v-on:click="upload_photo(1)">
 								上传
 							</button>
-
-							
-
 
 						</div>
 						
 					</div>
+
+
+
 					<div class="control-group">
 							<label class="control-label"></label>
 							<div class="controls">
-									<img id="imgshow" src="" width="200px" height="200px">
+									<img id="imgshow1" src="" width="200px" height="200px">
 							</div>
                        
+					</div>
+
+
+
+					
+					<div class="control-group">
+						<label class="control-label">营业执照：</label>
+						<div class="controls">
+							<input type="file" id="file2" @change="look_photo(2)" accept="image/gif, image/jpeg,image/png" />
+						</div>
+						<div class="">
+							<button class="btn btn-primary" type="button" v-on:click="upload_photo(2)">
+								上传
+							</button>
+						</div>		
+					</div>
+					<div class="control-group">
+						<label class="control-label"></label>
+						<div class="controls">
+								<img id="imgshow2" src="" width="200px" height="200px">
+						</div>
+				   
+					</div>
+
+
+
+				   <div class="control-group">
+						<label class="control-label">身份证正反面图片：</label>
+						<div class="controls">
+							<input type="file" id="file3" @change="look_photo(3)" accept="image/gif, image/jpeg,image/png" />
+						</div>
+						<div class="">
+							<button class="btn btn-primary" type="button" v-on:click="upload_photo(3)">
+								上传
+							</button>
+						</div>		
+					</div>
+					<div class="control-group">
+						<label class="control-label"></label>
+						<div class="controls">
+								<img id="imgshow3" src="" width="200px" height="200px">
+						</div>
+				   
+					</div>
+					<div class="control-group">
+						<label class="control-label">转账二维码：</label>
+						<div class="controls">
+							<input type="file" id="file4" @change="look_photo(4)" accept="image/gif, image/jpeg,image/png" />
+						</div>
+						<div class="">
+							<button class="btn btn-primary" type="button" v-on:click="upload_photo(4)">
+								上传
+							</button>
+						</div>		
+					</div>
+					<div class="control-group">
+						<label class="control-label"></label>
+						<div class="controls">
+								<img id="imgshow4" src="" width="200px" height="200px">
+						</div>
+				   
 					</div>
 					   <!-- <div class="control-group">
 						<label class="control-label">mch_id：</label>
 						<div class="controls">
-							<input type="text" v-model="registDto.mchId" name ="mchId"  placeholder="mch_id" class="input-xfat input-xlarge">
+							<input type="text" v-model="shop.mchId" name ="mchId"  placeholder="mch_id" class="input-xfat input-xlarge">
 						</div>
 					</div>
 					
 					<div class="control-group">
 						<label class="control-label">app_key：</label>
 						<div class="controls">
-							<input type="text" v-model="registDto.apiKey" name ="apiKey"  placeholder="app_key" class="input-xfat input-xlarge">
+							<input type="text" v-model="shop.apiKey" name ="apiKey"  placeholder="app_key" class="input-xfat input-xlarge">
 						</div>
 					</div> -->
 
@@ -161,7 +222,7 @@
 			el: '#app',
 			data: {
 				errors: [],
-				registDto: {
+				shop: {
 					username: null,
 					password: null,
 					shopName: null,
@@ -171,13 +232,19 @@
 					mchId: null,
 					apiKey: null,
 					shopNotice: null,
-					photoUrl: null
+					photoUrl: null,
+					businessPhoto: null,
+					idcardPhoto:null,
+					payPhoto:null
+
+				
 				}
 
 			},
 			methods: {
-				look_photo (){
-					var file = $('input[type="file"]')[0].files[0];
+				look_photo : function(flag){
+				
+					var file = $('input[type="file"]')[flag-1].files[0];
 					console.log(file);
 					var reader = new FileReader();
 					//使用该对象读取file文件
@@ -186,13 +253,14 @@
 					reader.onload = function (e) {
 						//读取成功后返回的一个参数e，整个的一个进度事件
                     
-						$('#imgshow').get(0).src = e.target.result;
+						$('#imgshow'+flag).get(0).src = e.target.result;
 					}
-					console.log("11111");
+				//	console.log("11111");
 				},
-				upload_photo: function (event) {
+			
+				upload_photo: function (flag) {
 
-					var file = $('input[type="file"]')[0].files[0];
+					var file = $('input[type="file"]')[flag-1].files[0];
 					var fileExt = file.name.substring(file.name.lastIndexOf("."))
 						.toLowerCase();
                     var _this = this;
@@ -201,9 +269,24 @@
 						//img.value = "";
 						return;
 					} else {
-
+						var oss_name="";
+						switch(flag)
+						{
+						case 1:
+							oss_name="shop";
+							break;
+						case 2:
+							oss_name="bussiness_photo";
+							break;
+						case 3:
+							oss_name="idcard";
+							break;
+						case 4:
+							oss_name="pay_photo";
+							break;
+						}
 						var photo_name = new Date().getTime() + "" + parseInt(Math.random() * 10000 + 1);
-						client.multipartUpload("/shop/" + photo_name, file).then(function (result) {
+						client.multipartUpload("/"+oss_name+"/" + photo_name, file).then(function (result) {
 
 							//判断系统
 							var agent = navigator.userAgent.toLowerCase();
@@ -211,20 +294,20 @@
 							var requestUrl = result.res.requestUrls[0];
 							if (isMac) {
 
-								console.log(requestUrl);
+							//	console.log(requestUrl);
 								if (requestUrl) {
 									var imgUrl = requestUrl.substring(0, requestUrl.indexOf("?"));
-									_this.registDto.photoUrl = imgUrl;
+
+									_this.insertPhotoname(flag,imgUrl);
+								
+								//	_this.shop.photoUrl = imgUrl;
 									console.log(imgUrl);
-
-
 									alert("上传成功");
 								}
 							} else {
 								if (requestUrl) {
-									_this.registDto.photoUrl = requestUrl;
-
-
+									_this.insertPhotoname(flag,requestUrl);
+								
 									alert("上传成功");
 								}
 							}
@@ -234,6 +317,23 @@
 					}
 
 				},
+				insertPhotoname(flag,photoName){
+					switch(flag)
+					{
+						case 1:
+							this.shop.photoUrl=photoName;
+							break;
+						case 2:
+							this.shop.businessPhoto=photoName;
+							break;
+						case 3:
+							this.shop.idcardPhoto=photoName;
+							break;
+						case 4:
+							this.shop.payPhoto=photoName;
+							break;
+					}
+				},
 				checkFileExt(ext) {
 					if (!ext.match(/.jpg|.gif|.png|.bmp/i)) {
 						return false;
@@ -242,40 +342,53 @@
 				},
 				register: function (e) {
 
-					if (!this.registDto.username) {
+					if (!this.shop.username) {
 						alert('用户名不能为空');
-					} else if (!this.validUsername(this.registDto.username)) {
+					} else if (!this.validUsername(this.shop.username)) {
 						alert('用户名只能输入5-20个 以字母开头、可带数字');
 					}
-					else if (!this.registDto.password) {
+					else if (!this.shop.password) {
 						alert('密码不能为空');
-					} else if (!this.validPassword(this.registDto.password)) {
+					} else if (!this.validPassword(this.shop.password)) {
 						alert('密码只能输入6-20个字母、数字、下划线 ');
 					}
-					else if (!this.registDto.shopName) {
+					else if (!this.shop.shopName) {
 						alert('店名不能为空');
 					}
-					else if (!this.registDto.shopAddress) {
+					else if (!this.shop.shopAddress) {
 						alert('地址不能为空');
 					}
 
-					else if (!this.registDto.shopEmail) {
-						alert('邮件不能为空');
-					} else if (!this.validEmail(this.registDto.shopEmail)) {
-						alert('邮件格式不正确 ');
-					}
-					else if (!this.registDto.shopPhone) {
+					// else if (!this.shop.shopEmail) {
+					// 	alert('邮件不能为空');
+					// } else if (!this.validEmail(this.shop.shopEmail)) {
+					// 	alert('邮件格式不正确 ');
+					// }
+					else if (!this.shop.shopPhone) {
 						alert('电话号码不能为空');
-					} else if (!this.validPhone(this.registDto.shopPhone)) {
+					} else if (!this.validPhone(this.shop.shopPhone)) {
 						alert('电话号码格式不正确');
-					} else if (!this.registDto.photoUrl) {
-						alert('图片不能为空');
+					} else if (!this.shop.photoUrl) {
+						alert('商家logo不能为空');
+					}else if (!this.shop.businessPhoto) {
+						alert('营业执照不能为空');
+					}else if (!this.shop.idcardPhoto) {
+						alert('身份证正反面不能为空');
+					}else if (!this.shop.payPhoto) {
+						alert('转帐二维码不能为空');
 					}else{
-						this.$http.post('http://localhost:9001/consumer/shopdetail/register', this.registDto, { emulateJSON: true }).then(function (response) {
-						alert(response.body.result);
-					}, function (res) {
-						console.log(res.status);
-					});
+						this.$http.post('http://127.0.0.1:9527/shop/consumer/shopdetail/register',this.shop, {
+								emulateJSON: true
+							}).then(function (response) {
+								// response.data中获取ResponseData实体
+									console.log(response);
+								alert(response.body.result);
+							}, function (response) {
+								// 发生错误
+								alert("发生错误");
+								console.log(response);
+						});
+						
 					}
 
 
