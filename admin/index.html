@@ -31,12 +31,25 @@
 			  }
 		 }
      
-		
+		 function setCookie(cname, cvalue, exdays) {
+			    var d = new Date();
+			    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+			    var expires = "expires="+d.toUTCString();
+			    document.cookie = cname + "=" + cvalue + "; " + expires+"; path=/";//path=/是根路径
+			}
+			
+		 
+		function clearCookie(){
+			 setCookie("username", "", -1);
+			 setCookie("JSESSIONID", "", -1);
+			 window.location.href="http://localhost:9527/shop/common/logout";
+		}
 		 
 		 
 		  window.onload=function(){
             $.ajax({         
-                url: "http://localhost:9527/shop/common/getUsername",
+
+                url: "http://127.0.0.1:9527/shop/common/getUsername",
                 type: 'GET',       
                 xhrFields: {                                           
                     withCredentials: true // 这里设置了withCredentials   
@@ -52,7 +65,9 @@
                     console.log(data)          
                  },            
                 error: function(err) {    
-                	 window.location.href="http://localhost:9527/shop/common/gotoAdmin";      
+
+                 //   window.location.href="http://127.0.0.1:9527/shop/common/gotoAdmin";           
+
                     console.error(err)            
                 }        
                 })
@@ -308,7 +323,7 @@
                                         <a href="#" class="btn btn-default btn-flat">修改密码</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="http://localhost:9527/shop/logout" class="btn btn-default btn-flat">注销</a>
+                                        <a  onclick="clearCookie()" class="btn btn-default btn-flat">注销</a>
                                     </div>
                                 </li>
                             </ul>
