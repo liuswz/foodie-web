@@ -35,25 +35,31 @@
 		 
 		 
 		  window.onload=function(){
+            $.ajax({         
+                url: "http://localhost:9527/shop/common/getUsername",
+                type: 'GET',       
+                xhrFields: {                                           
+                    withCredentials: true // 这里设置了withCredentials   
+                 },     
+                success: function(data) {
+                  //  window.location.href="http://foodie.com:9527/shop/common/gotoAdmin";  
+                   if(data.username == null){
+                	   window.location.href="http://localhost:9527/shop/common/gotoAdmin";  
+                   }
+                    var username = data.username; 
+                    $("#name").html(username);
+    		        $("#name1").html(username);      
+                    console.log(data)          
+                 },            
+                error: function(err) {    
+                	 window.location.href="http://localhost:9527/shop/common/gotoAdmin";      
+                    console.error(err)            
+                }        
+                })
 
-			  
-			  $.get('http://localhost:9527/shop/getUsername')
-             .then(function (response) {
-                //var username = response.data;
-                username="123";
-                 $("#name").html(username);
-    			 $("#name1").html(username);
-    			
-    			alert(response.code);
-    			
-    			  if(response.code == 1){
-				 window.location.href="http://localhost:9527/shop/gotoAdmin";
-			     }
-             }, function (response) {       
-            	 alert("请求错误");
             	 
             	
-             });  
+            //  });  
              
          }
 	</script>    
