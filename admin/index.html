@@ -35,15 +35,17 @@
 		 
 		 
 		  window.onload=function(){
-			 $.get('http://localhost:9527/shop/getUsername')
+			  
+			  $.get('http://localhost:9527/shop/getUsername')
              .then(function (response) {
-                var username = response.data;
+                //var username = response.data;
+                username="123";
                  $("#name").html(username);
     			 $("#name1").html(username);
-             }, function (response) {
-            	 window.location.href="http://localhost:9527/shop/admin";
+             }, function (response) {           	 
+            	 window.location.href="http://localhost:9527/shop/gotoAdmin";
                
-             }); 
+             });  
              
          }
 	</script>    
