@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>商家完善资料</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/add.dishes.css">
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <!-- <script src="https://cdn.bootcss.com/vue-validator/2.1.3/vue-validator.js"></script> -->
+
+    <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.4.4.min.js"></script>
+</head>
+
+<body class="hold-transition skin-red sidebar-mini">
+
+
+
+    <!-- 正文区域 -->
+    <section class="content" id="app">
+
+        <div class="box-body">
+
+            <!--tab页-->
+            <div class="nav-tabs-custom">
+
+                <!--tab头-->
+                <ul class="nav nav-tabs">
+
+                    <li class="active">
+                        <a href="#home" data-toggle="tab">商家信息</a>
+                    </li>
+                </ul>
+                <!--tab头/-->
+
+                <!--tab内容-->
+                <div class="tab-content">
+                    <!--表单内容-->
+                    <div class="tab-pane active" id="home">
+                        <div class="row data-type">
+
+                            <div class="col-md-2 title">商家名称</div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control" placeholder="商家名称" v-model='shop.shopName'>
+                            </div>
+
+                            <div class="col-md-2 title">商家电话</div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control" placeholder="商家电话" v-model="shop.shopPhone">
+                            </div>
+
+                            <div class="col-md-2 title">商家邮箱</div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control" placeholder="商家邮箱" v-model="shop.shopEmail">
+                            </div>
+
+                            <div class="col-md-2 title">商家地址</div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control" placeholder="商家地址" v-model="shop.shopAddress">
+                            </div>
+
+                            <div class="col-md-2 title rowHeight2x">公告</div>
+							<div class="col-md-10 data rowHeight2x">
+								<textarea rows="4" class="form-control" v-model="shop.shopNotice" placeholder="公告"></textarea>
+                            </div>
+                            
+                            <div class="col-md-2 title editer">商家logo</div>
+                            <div class="col-md-10 data editer">  
+                                 
+                                     <div class="dish_file">
+                                         <input type="file" id="file" @change="look_photo(1)" accept="image/gif, image/jpeg,image/png"/>	
+                                     </div>		
+                                     
+                                     <div class="">
+                                         <button class="btn btn-primary" type="button" v-on:click="upload_photo(1)">
+                                                    上传
+                                         </button>	
+                                         
+                                         <img class="dish_img" id="imgshow1" :src="shop.photoUrl" width="200px" height="200px">
+                                         
+
+                                     </div>
+                             </div>
+
+                             <div class="col-md-2 title editer">转帐二维码</div>
+                             <div class="col-md-10 data editer">  
+                                  
+                                      <div class="dish_file">
+                                          <input type="file" id="file" @change="look_photo(2)" accept="image/gif, image/jpeg,image/png"/>	
+                                      </div>		
+                                      
+                                      <div class="">
+                                          <button class="btn btn-primary" type="button" v-on:click="upload_photo(2)">
+                                                     上传
+                                          </button>	
+                                          
+                                          <img class="dish_img" id="imgshow2" :src="shop.payPhoto" width="200px" height="200px">
+                                          
+ 
+                                      </div>
+                              </div>
+                            <!-- <div class="col-md-2 title">mch_id</div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control" placeholder="mch_id" v-model="shop.mchId">
+                            </div>
+
+                            <div class="col-md-2 title">api_key</div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control" placeholder="api_key" v-model="shop.apiKey">
+                            </div> -->
+
+                            <!-- <div class="col-md-2 title">联系人手机</div>
+
+                                    <div class="col-md-10 data">
+                                        <input type="text" class="form-control"    placeholder="联系人手机" value="">
+                                    </div>
+                                    
+                                    <div class="col-md-2 title">联系人EMAIL</div>
+                                    <div class="col-md-10 data">
+                                        <input type="text" class="form-control"   placeholder="联系人EMAIL" value="">
+                                    </div>
+                                    
+                                    <div class="col-md-2 title">营业执照号</div>
+                                    <div class="col-md-10 data">
+                                        <input type="text" class="form-control"   placeholder="营业执照号" value="">
+                                    </div>
+                                     
+                                    <div class="col-md-2 title">税务登记证号</div>
+                                    <div class="col-md-10 data">
+                                        <input type="text" class="form-control"   placeholder="税务登记证号" value="">
+                                    </div>
+                                    
+ 									<div class="col-md-2 title">组织机构代码证</div>
+                                    <div class="col-md-10 data">
+                                        <input type="text" class="form-control"  placeholder="组织机构代码证" value="">
+                                    </div>
+                                    
+                                    <div class="col-md-2 title">法定代表人</div>
+                                    <div class="col-md-10 data">
+                                        <input type="text" class="form-control"   placeholder="法定代表人" value="">
+                                    </div>
+                                    
+ 									<div class="col-md-2 title">法定代表人身份证号</div>
+                                    <div class="col-md-10 data">
+                                        <input type="text" class="form-control"   placeholder="法定代表人身份证号" value="">
+                                    </div>
+
+ 									<div class="col-md-2 title">开户行名称</div>
+                                    <div class="col-md-10 data">
+                                        <input type="text" class="form-control" placeholder="开户行名称" value="">
+                                    </div>
+                                    
+                                    <div class="col-md-2 title">开户行支行</div>
+                                    <div class="col-md-10 data">
+                                        <input type="text" class="form-control"   placeholder="开户行支行" value="">
+                                    </div>
+
+                                    <div class="col-md-2 title">银行账号</div>
+                                    <div class="col-md-10 data">
+                                        <input type="text" class="form-control"   placeholder="银行账号" value="">
+                                    </div> -->
+                        </div>
+                        <p v-if="error">
+					
+                            <ul>
+                              <span v-model="error">{{ error }}</span>
+                            </ul>
+                        </p>
+                    </div>
+
+                </div>
+                <!--tab内容/-->
+                <!--表单内容/-->
+            </div>
+        </div>
+        <div class="btn-toolbar list-toolbar">
+            <button class="btn btn-primary" @click="updateshop">保存</button>
+            <!-- <a data-toggle="modal" class="btn btn-danger">提交</a> -->
+        </div>
+
+    </section>
+    <!-- 正文区域 /-->
+    <!-- <script type="text/javascript" src="seller.js"></script> -->
+    <script type="text/javascript">
+
+        var shop_photo=null;
+        var pay_photo=null;
+        var app = new Vue({
+            el: '#app',
+            data: {
+                error: null,
+                shop: {
+                    id: null,
+                    username: null,
+                    password: null,
+                    shopName: null,
+                    shopAddress: null,
+                    shopEmail: null,
+                    shopPhone: null,
+                    shopNotice:null,
+                    photoUrl:null,
+                    payPhoto:null
+                },
+                shopId:23,
+
+
+            },
+            created: function () {
+                this.getById();
+            },
+            methods: {
+                getById: function () {
+                    // var _this = this;
+                    this.$http.get('http://localhost:9001/consumer/shopdetail/getById/'+this.shopId).then(function (response) {
+                        this.shop = response.body.result;
+                    }, function (response) {
+                        // 发生错误
+                        alert("发生错误")
+                    });
+
+                },
+                look_photo:function (flag){
+					var file =$('input[type="file"]')[flag-1].files[0];
+                    console.log(file);	
+                 
+					var reader = new FileReader();
+					//使用该对象读取file文件
+					reader.readAsDataURL(file);
+					//读取文件成功后执行的方法函数
+					reader.onload=function(e){
+					//读取成功后返回的一个参数e，整个的一个进度事件
+					
+						$('#imgshow'+flag).get(0).src = e.target.result;
+					}
+				},
+				upload_photo:function (flag){
+					var file =$('input[type="file"]')[flag-1].files[0];
+					var fileExt = file.name.substring(file.name.lastIndexOf("."))
+                	.toLowerCase();
+
+					if (!this.checkFileExt(fileExt)) {
+						alert("您上传的文件不是图片,请重新上传！");
+						//img.value = "";
+						return;
+					}else{
+                        var oss_name="";
+						switch(flag)
+						{
+						case 1:
+							oss_name="shop";
+							break;					
+						case 2:
+							oss_name="pay_photo";
+							break;
+						}
+						var photo_name = new Date().getTime()+""+parseInt(Math.random()*10000+1);
+						client.multipartUpload("/"+oss_name+"/"+photo_name, file).then(function (result) {
+						//	console.log(result.url);
+							
+							
+							
+							//判断系统
+							var agent = navigator.userAgent.toLowerCase();
+							var isMac = /macintosh|mac os x/i.test(navigator.userAgent);
+						
+							var requestUrl = result.res.requestUrls[0];
+							if (isMac) {
+							
+								console.log(requestUrl);
+								if (requestUrl) {
+									var imgUrl = requestUrl.substring(0,requestUrl.indexOf("?"));
+									//shop_photo = imgUrl;
+									console.log(imgUrl);
+                                    _this.insertPhotoname(flag,imgUrl);
+
+									alert("上传成功");
+								}
+							}else{
+								if (requestUrl) {
+									//shop_photo = requestUrl;
+                                    _this.insertPhotoname(flag,requestUrl);
+
+									alert("上传成功");
+								}
+							}
+							
+						}).catch(function (err) {
+							console.log(err);
+						});
+					}
+
+					
+					
+					
+				},
+                insertPhotoname(flag,photoName){
+					switch(flag)
+					{
+						case 1:
+                            shop_photo = photoName;
+							break;
+						
+						case 2:
+                            pay_photo=photoName;
+							break;
+					}
+				},
+                updateshop: function (e) {
+                   
+                    if(shop_photo){
+                        this.shop.photoUrl=shop_photo;
+                    }
+                    if(pay_photo){
+                        this.shop.payPhoto=pay_photo;
+                    }
+                    if (!this.shop.shopName) {
+                        this.error='店名不能为空';
+                       
+                    } 
+                    else if (!this.shop.shopAddress) {
+                        this.error='地址不能为空';
+                       
+                    }
+                    // else if (!this.shop.shopEmail) {
+                    //     this.error='邮件不能为空';
+                       
+                    // } else if (!this.validEmail(this.shop.shopEmail)) {
+                    //     this.error='邮件格式不正确 ';
+                     
+                    // }
+                    else if (!this.shop.shopPhone) {
+                        this.error='电话号码不能为空';
+                      
+                    } else if (!this.validPhone(this.shop.shopPhone)) {
+                        this.error='电话号码格式不正确';
+                       
+                    } else if (!this.shop.shopNotice) {
+                        this.error='公告不能为空';
+                      
+                    } else if (!this.shop.photoUrl) {
+						
+                        this.error='图片不能为空';
+                       
+					}else{
+                        this.$http.post('http://127.0.0.1:9527/shop/consumer/shopdetail/update', this.shop, { emulateJSON: true }).then(function (response) {
+                            console.log(response);
+                            alert(response.body.result);
+                        // if(response.body.code == 0){
+                        //        alert("更改成功");
+                        // }else{
+                        //     alert("更改失败");
+                        // }
+                    }, function (res) {
+                        console.log(res.status);
+                    });
+                    }
+
+
+                    
+                   
+                },
+                validUsername: function (username) {
+                    var re = /^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$/;
+                    return re.test(username);
+                },
+                validPassword: function (password) {
+                    var re = /^(\w){6,20}$/;
+                    return re.test(password);
+                },
+                validEmail: function (email) {
+                    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return re.test(email);
+                },
+
+                validPhone: function (phone) {
+                    var re = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
+                    return re.test(phone);
+
+                },
+                checkFileExt(ext) {
+					if (!ext.match(/.jpg|.gif|.png|.bmp/i)) {
+						return false;
+					}
+					return true;
+				}
+            }
+        })
+
+        var client = new OSS.Wrapper({
+            region: 'oss-cn-beijing',//你的oss地址 ，具体位置见下图
+            accessKeyId: 'LTAICYbxfcsN4mvc',//你的ak
+            accessKeySecret: 'Q3JmnUHAV0OvREvyhfpsxDuFEUyQSH',//你的secret
+            secure:true,
+            //stsToken: '<Your securityToken(STS)>',//这里我暂时没用，注销掉
+            bucket: 'lanke-foodie'//你的oss名字
+        });
+	
+    </script>
+</body>
+
+</html>
