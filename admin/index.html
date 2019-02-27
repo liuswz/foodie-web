@@ -24,26 +24,7 @@
     
     <script type="text/javascript">
    
-		 function SetIFrameHeight(){
-		  	  var iframeid=document.getElementById("iframe"); //iframe id
-		  	  if (document.getElementById){
-		  		iframeid.height =document.documentElement.clientHeight;			   	   
-			  }
-		 }
-     
-		 function setCookie(cname, cvalue, exdays) {
-			    var d = new Date();
-			    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-			    var expires = "expires="+d.toUTCString();
-			    document.cookie = cname + "=" + cvalue + "; " + expires+"; path=/";//path=/是根路径
-			}
-			
-		 
-		function clearCookie(){
-			 setCookie("username", "", -1);
-			 setCookie("JSESSIONID", "", -1);
-			 window.location.href="http://localhost:9527/shop/common/logout";
-		}
+	
 		 
 		 
 		  window.onload=function(){
@@ -323,7 +304,7 @@
                                         <a href="#" class="btn btn-default btn-flat">修改密码</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a  onclick="clearCookie()" class="btn btn-default btn-flat">注销</a>
+                                        <a  href="http://localhost:9527/shop/common/logout" class="btn btn-default btn-flat">注销</a>
                                     </div>
                                 </li>
                             </ul>
@@ -443,7 +424,7 @@
 
         <!-- 内容区域 -->
         <div class="content-wrapper">
-			<iframe width="100%" id="iframe" name="iframe"	onload="SetIFrameHeight()" 
+			<iframe width="100%" id="iframe" name="iframe" 
 					frameborder="0" src="home.html"></iframe>
  
         </div>
