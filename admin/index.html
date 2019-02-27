@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="../css/style.css">
     
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+     <script src="../plugins/jQuery/jquery.cookie.js"></script>
     <script src="../plugins/jQueryUI/jquery-ui.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
   
@@ -31,18 +32,11 @@
 			  }
 		 }
      
-		 function setCookie(cname, cvalue, exdays) {
-			    var d = new Date();
-			    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-			    var expires = "expires="+d.toUTCString();
-			    document.cookie = cname + "=" + cvalue + "; " + expires+"; path=/";//path=/是根路径
-			}
-			
+		 
 		 
 		function clearCookie(){
-			 setCookie("username", "", -1);
-			 setCookie("JSESSIONID", "", -1);
-			 window.location.href="http://localhost:9527/shop/common/logout";
+		
+			 window.location.href="http://127.0.0.1:9527/shop/common/logout";
 		}
 		 
 		 
@@ -58,11 +52,13 @@
                   //  window.location.href="http://foodie.com:9527/shop/common/gotoAdmin";  
                    if(data.username == null){
                 	   window.location.href="http://localhost:9527/shop/common/gotoAdmin";  
-                   }
-                    var username = data.username; 
+                   }else{
+                    var username = data.username;                
                     $("#name").html(username);
-    		        $("#name1").html(username);      
-                    console.log(data)          
+    		        $("#name1").html(username);   
+    		        $.cookie("shopId",data.id);
+                    console.log($.cookie('shopId'));   
+                    }     
                  },            
                 error: function(err) {    
 

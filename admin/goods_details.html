@@ -17,7 +17,7 @@
 
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-
+    <script src="../plugins/jQuery/jquery.cookie.js"></script>
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 
@@ -155,7 +155,7 @@
           	   var id = decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
           	 // console.info(JSON.stringify(id.cost));
                 this.orderId = id.split("&")[0];
-                this.shopId=23;
+                this.shopId=$.cookie('shopId');
                     
                 this.getData();
                

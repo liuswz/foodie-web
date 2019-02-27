@@ -155,7 +155,7 @@
           	   var id = decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
           	 // console.info(JSON.stringify(id.cost));
                 this.orderId = id.split("&")[0];
-                this.shopId=23;
+                this.shopId=$.cookie('shopId');
                    
                 this.getData();
                

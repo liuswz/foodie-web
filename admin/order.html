@@ -162,7 +162,7 @@
                 
             },
             created: function () {
-                this.shopId=23;
+                this.shopId=$.cookie('shopId');
                 this.maxPage=this.total/this.pageSize+1,
                 this.pageHandler(1);
                 
