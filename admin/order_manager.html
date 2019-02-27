@@ -24,6 +24,7 @@
 <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 <script
 	src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+<script src="../plugins/jQuery/jquery.cookie.js"></script>
 
 <script src="../js/element.min.js"></script>
 <script src="../js/zpageNav.js"></script>
@@ -184,55 +185,52 @@
 
                     this.page = 1;
                  
-          
-                    this.$http.post('http://localhost:9527/shop/consumer/shoporder/findOrderByTime', {
-
-                        page: this.page,
-                        size: this.pageSize,
-                        fromTime: time1,
-                        toTime: time2,               
-                        shopId: this.shopId
-                        }, {
-                            emulateJSON: true
-                        }).then(function (response) {
-                        	response.header("Access-Control-Allow-Origin", "*"); //设置请求来源不受限制
-                        	response.header("Access-Control-Allow-Headers", "X-Requested-With");  
-                        	response.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS"); //请求方式
-                        	response.header("X-Powered-By", ' 3.2.1')
-                        	response.header("Content-Type", "application/json;charset=utf-8");
-
-                            this.dishList = response.body.rows;
-                           // alert(this.dishList);
-                            this.total=response.body.total;
-                        }, function (response) {
-                            // 发生错误
-                          
-                            alert("发生错误")
-                        });
-                
+                    $.ajax({         
+		                url: 'http://localhost:9527/shop/consumer/shoporder/findOrderByTime',
+		                type: 'POST',       
+		                xhrFields: {                                           
+		                    withCredentials: true // 这里设置了withCredentials   
+		                 },
+		                 data:{
+		                	 page: this.page,
+		                        size: this.pageSize,
+		                        fromTime: time1,
+		                        toTime: time2,               
+		                        shopId: this.shopId
+		                 },
+		                 emulateJSON: true,
+		                 
+		                success: function(data) {
+		                	 this.dishList = data.rows;
+		                	 this.total=data.total;
+		                 },            
+		                error: function(err) {    		               
+		                    console.error(err)    ;
+		                    alert("发生错误");
+		                }        
+		                });
                 },
            //详情查询          
                 pageHandler: function (page) {
-                    //here you can do custom state update
+                    
                     this.page = page;
                     
-                   //http://localhost:9527/shop/consumer/shoporder/findAllOrder/1/5/23
-
-                    this.$http.get('http://localhost:9527/shop/consumer/shoporder/findAllOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId)
-                    .then(function (response) {
-                    	
-               
-                        this.dishList = response.body.rows;
-                        
-                        this.total=response.body.total;
-                        
-                    }, function (response) {
-                    	
-                    	
-                            
-                        alert("发生错误")
-                    }); 
-                    
+                    $.ajax({         
+		                url: 'http://localhost:9527/shop/consumer/shoporder/findAllOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId,
+		                type: 'GET',       
+		                xhrFields: {                                           
+		                    withCredentials: true // 这里设置了withCredentials   
+		                 },     
+		                success: function(data) {
+		                	 this.dishList = data.rows;
+		                        
+		                        this.total=data.total;
+		                 },            
+		                error: function(err) {    		               
+		                    console.error(err)    ;
+		                    alert("发生错误");
+		                }        
+		                });         
                 },
               
             },

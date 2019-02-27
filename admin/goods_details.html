@@ -164,29 +164,22 @@
               
                 
                 getData: function () {
-                    //here you can do custom state update
-                  /*  console.log('http://localhost:9527/shop/consumer/shoporder/findOrderItem/'+
-                        this.orderId +'/'+this.shopId); */
-                   ///consumer/shoporder/findOrderItem/{orderId}/{shopId}
-                  
-                    this.$http.get('http://localhost:9527/shop/consumer/shoporder/findOrderItem/'+
-                        this.orderId +'/'+this.shopId).then(function (response) {
-                            
-                       // console.log(response);
-
-                        this.dishList = response.body;
-                       
-                       // alert(this.dishList);
-                        
-                    }, function (response) {
-                        // 发生错误
-                      //  console.log(response);
-                        alert("发生错误")
-                    }); 
-                    
-                },
-               
-                
+                   
+                	$.ajax({         
+		                url: 'http://localhost:9527/shop/consumer/shoporder/findOrderItem/'+this.orderId +'/'+this.shopId,
+		                type: 'GET',       
+		                xhrFields: {                                           
+		                    withCredentials: true // 这里设置了withCredentials   
+		                 },     
+		                success: function(data) {
+		                	this.dishList = data;
+		                 },            
+		                error: function(err) {    		               
+		                    console.error(err)    ;
+		                    alert("发生错误");
+		                }        
+		                }); 
+                },     
             },
             watch: {
                 "ids": function () {

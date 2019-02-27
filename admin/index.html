@@ -42,14 +42,13 @@
 		 
 		  window.onload=function(){
             $.ajax({         
-
                 url: "http://127.0.0.1:9527/shop/common/getUsername",
                 type: 'GET',       
                 xhrFields: {                                           
                     withCredentials: true // 这里设置了withCredentials   
                  },     
                 success: function(data) {
-                  //  window.location.href="http://foodie.com:9527/shop/common/gotoAdmin";  
+              
                    if(data.username == null){
                 	   window.location.href="http://localhost:9527/shop/common/gotoAdmin";  
                    }else{
@@ -61,8 +60,6 @@
                     }     
                  },            
                 error: function(err) {    
-
-                 //   window.location.href="http://127.0.0.1:9527/shop/common/gotoAdmin";           
 
                     console.error(err)            
                 }        

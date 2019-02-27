@@ -18,7 +18,7 @@
 
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-
+    <script src="../plugins/jQuery/jquery.cookie.js"></script>
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 
@@ -149,14 +149,12 @@
             },
             created: function () {
 
-                this.shopId = 1;
+                this.shopId = $.cookie('shopId');
                 this.maxPage = this.total / this.pageSize + 1,
                     this.pageHandler(1);
             },
             methods: {
-                getDishTypeList: function () {
-
-                },
+               
                 changeAllChecked: function () {
                     var _this = this;
                     if (!this.checked) {
@@ -177,52 +175,86 @@
                         str = str + this.ids[i] + ',';
 
                     }
-                    this.$http.post('http://localhost:9002/consumer/shopdishes/getIfDishByTypeId', { ids: str, shopId: 1 }, { emulateJSON: true }).then(function (response) {
-                        console.log(response.body.code);
-                       // alert(response.body.code);
-                        if (response.body.code == 0) {
-                            if (confirm("若删除分类，分类下的菜品也将删除，确定删除吗？")) {
-                                this.$http.get('http://localhost:9002/consumer/shopdishes/delDishTypeById/' + str).then(function (response) {
-                                    alert("删除成功");
-                                    this.pageHandler(this.page);
-                                }, function (response) {
-                                    // 发生错误
-                                    alert("发生错误")
-                                });
-                            } else {
-                                console.log("取消");
-                                return false;
-                            }
-
-                        }else{
-                            this.$http.get('http://localhost:9002/consumer/shopdishes/delDishTypeById/' + str).then(function (response) {
-                                    alert("删除成功");
-                                    this.pageHandler(this.page);
-                                }, function (response) {
-                                    // 发生错误
-                                    alert("发生错误")
-                                });
-                        }
-                    }, function (res) {
-                        console.log(res.status);
-                    });
-
+                    $.ajax({         
+		                url: 'http://127.0.0.1:9527/shop/consumer/shopdishes/getIfDishByTypeId',
+		                type: 'GET',       
+		                xhrFields: {                                           
+		                    withCredentials: true // 这里设置了withCredentials   
+		                 }, 
+		                 data:{
+		                	 ids: str, shopId: this.shopId,
+		                 },
+		                 emulateJSON: true,
+		                success: function(data) {
+		                	console.log(data.code);
+		                	 if (data.code == 0) {
+		                            if (confirm("若删除分类，分类下的菜品也将删除，确定删除吗？")) {
+		                              
+		                            	$.ajax({         
+		            		                url: 'http://127.0.0.1:9527/shop/consumer/shopdishes/delDishTypeById/' + str,
+		            		                type: 'GET',       
+		            		                xhrFields: {                                           
+		            		                    withCredentials: true // 这里设置了withCredentials   
+		            		                 },     
+		            		                success: function(data) {
+		            		                	alert("删除成功");
+		            	                        this.pageHandler(this.page);
+		            		                 },            
+		            		                error: function(err) {    		               
+		            		                    console.error(err)    ;
+		            		                    alert("发生错误");
+		            		                }        
+		            		                });
+		                            }else {
+		                                console.log("取消");
+		                                return false;
+		                            }
+		                	 }else{
+		                		 
+		                		 $.ajax({         
+	            		                url: 'http://127.0.0.1:9527/shop/consumer/shopdishes/delDishTypeById/' + str,
+	            		                type: 'GET',       
+	            		                xhrFields: {                                           
+	            		                    withCredentials: true // 这里设置了withCredentials   
+	            		                 },     
+	            		                success: function(data) {
+	            		                	alert("删除成功");
+	            	                        this.pageHandler(this.page);
+	            		                 },            
+	            		                error: function(err) {    		               
+	            		                    console.error(err)    ;
+	            		                    alert("发生错误");
+	            		                }        
+	            		                });
+		                        }
+		                 },            
+		                error: function(err) {    		               
+		                    console.error(err)    ;
+		                    alert("发生错误");
+		                }        
+		                });
+                    
                     console.log(str);
-
-
                 },
                 pageHandler: function (page) {
                     //here you can do custom state update
                     this.page = page;
-
-                    this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishType/' + this.shopId + '/' + this.page + '/' + this.pageSize).then(function (response) {
-                        this.dishTypeList = response.body.rows;
-                        this.total = response.body.total;
-
-                    }, function (response) {
-                        // 发生错误
-                        alert("发生错误")
-                    });
+                    
+                    $.ajax({         
+		                url: 'http://127.0.0.1:9527/shop/consumer/shopdishes/getAllDishType/' + this.shopId + '/' + this.page + '/' + this.pageSize,
+		                type: 'GET',       
+		                xhrFields: {                                           
+		                    withCredentials: true // 这里设置了withCredentials   
+		                 },     
+		                success: function(data) {
+		                	this.dishTypeList = data.rows;
+	                        this.total = data.total;
+		                 },            
+		                error: function(err) {    		               
+		                    console.error(err)    ;
+		                    alert("发生错误");
+		                }        
+		                });
 
                 }
             },
@@ -237,17 +269,7 @@
             }
         })
 
-        // var type_tab = new Vue({
-        //     el: '#type_tab',
-        //     data: {
-        //         ids: []
-        //     },
-        //     methods: {
-        //         delSelected: function () {
-        //             console.log(ids);
-        //         },
-        //     }
-        // })
+       
 
     </script>
 

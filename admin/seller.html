@@ -18,6 +18,7 @@
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <script src="../plugins/jQuery/jquery.cookie.js"></script>
     <!-- <script src="https://cdn.bootcss.com/vue-validator/2.1.3/vue-validator.js"></script> -->
 
     <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.4.4.min.js"></script>
@@ -212,7 +213,7 @@
                     photoUrl:null,
                     payPhoto:null
                 },
-                shopId:23,
+                shopId:$.cookie('shopId'),
 
 
             },
@@ -221,14 +222,21 @@
             },
             methods: {
                 getById: function () {
-                    // var _this = this;
-                    this.$http.get('http://localhost:9001/consumer/shopdetail/getById/'+this.shopId).then(function (response) {
-                        this.shop = response.body.result;
-                    }, function (response) {
-                        // 发生错误
-                        alert("发生错误")
-                    });
-
+                	
+                	$.ajax({         
+		                url: 'http://127.0.0.1:9527/shop/consumer/shopdetail/getById/'+this.shopId,
+		                type: 'GET',       
+		                xhrFields: {                                           
+		                    withCredentials: true // 这里设置了withCredentials   
+		                 },     
+		                success: function(data) {
+		                	 this.shop = data.result;
+		                 },            
+		                error: function(err) {    		               
+		                    console.error(err)    ;
+		                    alert("发生错误");
+		                }        
+		                });
                 },
                 look_photo:function (flag){
 					var file =$('input[type="file"]')[flag-1].files[0];
@@ -332,13 +340,7 @@
                         this.error='地址不能为空';
                        
                     }
-                    // else if (!this.shop.shopEmail) {
-                    //     this.error='邮件不能为空';
-                       
-                    // } else if (!this.validEmail(this.shop.shopEmail)) {
-                    //     this.error='邮件格式不正确 ';
-                     
-                    // }
+                    
                     else if (!this.shop.shopPhone) {
                         this.error='电话号码不能为空';
                       
@@ -353,17 +355,24 @@
                         this.error='图片不能为空';
                        
 					}else{
-                        this.$http.post('http://127.0.0.1:9527/shop/consumer/shopdetail/update', this.shop, { emulateJSON: true }).then(function (response) {
-                            console.log(response);
-                            alert(response.body.result);
-                        // if(response.body.code == 0){
-                        //        alert("更改成功");
-                        // }else{
-                        //     alert("更改失败");
-                        // }
-                    }, function (res) {
-                        console.log(res.status);
-                    });
+						
+						$.ajax({         
+			                url: 'http://127.0.0.1:9527/shop/consumer/shopdetail/update',
+			                type: 'post',       
+			                xhrFields: {                                           
+			                    withCredentials: true // 这里设置了withCredentials   
+			                 },
+			                 data:{shop:this.shop},
+			                 emulateJSON: true,
+			                success: function(data) {
+			                	 alert(data.result);
+			                 },            
+			                error: function(err) {    		               
+			                    console.error(err)    ;
+			                    alert("发生错误");
+			                }        
+			                });
+						
                     }
 
 

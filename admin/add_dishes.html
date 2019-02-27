@@ -16,7 +16,7 @@
 	<link rel="stylesheet" href="../css/add.dishes.css">
 	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-
+       <script src="../plugins/jQuery/jquery.cookie.js"></script>
 	<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 
@@ -176,30 +176,29 @@
 			},
 			//用于数据初始化
 			created: function () {
-				// 	client.list({
-				//       'max-keys': 10
-				//       }).then(function (result) {
-				// 		console.log(JSON.stringify(result.objects))
-				//       }).catch(function (err) {
-				// 		alert(err);
-				//   });
+				this.shop_id=$.cookie('shopId'),
+				
 				this.getDishType()
 			},
 			//用于存放所有的事件方法集合
 			methods: {
 
 				getDishType() {
-
-					this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishType/1').then(function (response) {
-						// response.data中获取ResponseData实体
-
-						this.typeList = response.body;
-						this.dish_type = this.typeList[0].id;
-						//   alert(response.body)
-					}, function (response) {
-						// 发生错误
-						alert("发生错误")
-					});
+					 $.ajax({         
+			                url: "http://127.0.0.1:9527/shop/consumer/shopdishes/getAllDishType/"+this.shop_id,
+			                type: 'GET',       
+			                xhrFields: {                                           
+			                    withCredentials: true // 这里设置了withCredentials   
+			                 },     
+			                success: function(data) {
+			                	this.typeList = data;
+								this.dish_type = this.typeList[0].id;
+			                 },            
+			                error: function(err) {    		               
+			                    console.error(err)    ;
+			                    alert("发生错误");
+			                }        
+			                });
 				},
 				look_photo: function (event) {
 					var file = $('input[type="file"]')[0].files[0];
@@ -287,27 +286,33 @@
 				},
 				upload_dish() {
 
-
-					this.$http.post('http://localhost:9002/consumer/shopdishes/adddishes', {
-
-						name: this.dish_name,
-						price: this.dish_price,
-						introduction: this.dish_introduce,
-						remark: this.dish_remark,
-						photoUrl: dish_photo,
-						typeId: this.dish_type,
-						shopId: this.shop_id
-
-					}, {
-							emulateJSON: true
-						}).then(function (response) {
-							// response.data中获取ResponseData实体
-							//	console.log(response);
-							alert(response.body.result);
-						}, function (response) {
-							// 发生错误
-							alert("发生错误");
-						});
+					 $.ajax({         
+			                url: "http://127.0.0.1:9527/shop/consumer/shopdishes/adddishes",
+			                type: 'POST',
+			                data:{
+			                	name: this.dish_name,
+								price: this.dish_price,
+								introduction: this.dish_introduce,
+								remark: this.dish_remark,
+								photoUrl: dish_photo,
+								typeId: this.dish_type,
+								shopId: this.shop_id
+								},
+							emulateJSON: true,
+								
+			                xhrFields: {                                           
+			                    withCredentials: true // 这里设置了withCredentials   
+			                 },
+			                 
+			                success: function(data) {
+			                	alert(data.result);
+			                 },            
+			                error: function(err) {    		               
+			                    console.error(err)    ;
+			                    alert("发生错误");
+			                }        
+			                })
+				
 				},
 				checkFileExt(ext) {
 					if (!ext.match(/.jpg|.gif|.png|.bmp/i)) {
@@ -329,26 +334,7 @@
 			//stsToken: '<Your securityToken(STS)>',//这里我暂时没用，注销掉
 			bucket: 'lanke-foodie'//你的oss名字
 		});
-	//  $("#file").change(function(){
-
-	// 	 console.log(this.files[0]);
-	// 	 var reader = new FileReader();
-	// 	//使用该对象读取file文件
-	// 	reader.readAsDataURL(this.files[0]);
-	// 	//读取文件成功后执行的方法函数
-	// 	reader.onload=function(e){
-	// 	//读取成功后返回的一个参数e，整个的一个进度事件
-	// 		console.log(e);
-
-	// 		$('#imgshow').get(0).src = e.target.result;
-	// 	}
-    //         //console.log("change");
-    //     //     client.multipartUpload("/dishes/testImg", this.files[0]).then(function (result) {
-    //     //         console.log(result);
-    //     //       }).catch(function (err) {
-    //     //         console.log(err);
-    //     //       });
-    //       });
+	
 
 	</script>
 

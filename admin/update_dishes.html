@@ -16,7 +16,7 @@
 	<link rel="stylesheet" href="../css/add.dishes.css">
 	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-    
+    <script src="../plugins/jQuery/jquery.cookie.js"></script>
 	<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 	
@@ -165,12 +165,7 @@ var dish_photo=null;
             //data用于存放数据或者变量
             data:{     
 				typeList:null,
-				error: null,
-				// dish_type:null,
-				 //dish_name: null,
-				// dish_price: null,
-				// dish_introduce: null,			
-                // dish_remark: null,
+				error: null,				
                 dish:{
                     typeId:null,
                     name:null,
@@ -179,7 +174,7 @@ var dish_photo=null;
                     remark:null,
                     photoUrl:null
                 },
-                shopId:1,
+                shopId:$.cookie('shopId'),
                 id:0,			//	dish_photo:null,
 			
             },
@@ -198,23 +193,23 @@ var dish_photo=null;
             methods: {
 			   
                 getDishAndType(){
-                this.shopId=1;
-				this.$http.get('http://localhost:9002/consumer/shopdishes/getDishAndTypeById/'+this.id +'/'+this.shopId).then(function(response){  
-							// response.data中获取ResponseData实体
-						
-							this.typeList = response.body.typelist;
-                           
-                            var dish = response.body.dish;
+               
+                	$.ajax({         
+		                url: 'http://127.0.0.1:9527/shop/consumer/shopdishes/getDishAndTypeById/'+this.id +'/'+this.shopId,
+		                type: 'GET',       
+		                xhrFields: {                                           
+		                    withCredentials: true // 这里设置了withCredentials   
+		                 },     
+		                success: function(data) {
+		                	this.typeList = data.typelist;
+                            var dish = data.dish;
                             this.dish= dish;
-                           // this.dish_name=dish.name;
-                           
-                           // alert(JSON.stringify(this.dish) );
-                        },function(response){  
-                            // 发生错误
-                            alert("发生错误")
-                        });
-                       
-
+		                 },            
+		                error: function(err) {    		               
+		                    console.error(err)    ;
+		                    alert("发生错误");
+		                }        
+		                });
 				},
 				look_photo:function (event){
 					var file =$('input[type="file"]')[0].files[0];
@@ -306,19 +301,25 @@ var dish_photo=null;
 				},
 				upload_dish(){
 
+					$.ajax({         
+		                url: 'http://127.0.0.1:9527/shop/consumer/shopdishes/updateDish',
+		                type: 'post',       
+		                xhrFields: {                                           
+		                    withCredentials: true // 这里设置了withCredentials   
+		                 },
+		                 data:{dish,this.dish},
+		                 emulateJSON:true,
+		                success: function(data) {
+		                    alert(data.result);
+		                	 window.location.reload();
+		                 },            
+		                error: function(err) {    		               
+		                    console.error(err)    ;
+		                    alert("发生错误");
+		                }        
+		                });
 
-					this.$http.post('http://localhost:9002/consumer/shopdishes/updateDish',this.dish,{  
-								emulateJSON:true  
-							}).then(function(response){  
-								// response.data中获取ResponseData实体
-							//	console.log(response);
-                                alert(response.body.result);
-                                window.location.reload();
-							},function(response){  
-                                // 发生错误
-                                console.log(response);
-								alert("发生错误")
-							});
+					
 				},
 				checkFileExt(ext) {
 					if (!ext.match(/.jpg|.gif|.png|.bmp/i)) {

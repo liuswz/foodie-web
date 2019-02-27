@@ -24,7 +24,7 @@
 <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 <script
 	src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-
+<script src="../plugins/jQuery/jquery.cookie.js"></script>
 <script src="../js/element.min.js"></script>
 <script src="../js/zpageNav.js"></script>
 
@@ -248,62 +248,74 @@
                   },
                 //修改上菜状态
                 updateServing(status,id){
-                	//http://localhost:9527/shop/consumer/shoporder/updatOrder/{orderStatus}/{id}
-                	//this.page = 1;
-                	//alert(status);             	
-                	   this.$http.get('http://localhost:9527/shop/consumer/shoporder/updatOrder/'+status+'/'+id).then(function (response) {
 
-                        
-                        this.dishList = response.body.rows;
-                        
-                        this.total=response.body.total;
-                        this.pageHandler(1);
-                    }, function (response) {
-                        // 发生错误
-                     
-                        alert("发生错误")
-                    });    
+                	  $.ajax({         
+  		                url: 'http://localhost:9527/shop/consumer/shoporder/updatOrder/'+status+'/'+id,
+  		                type: 'GET',       
+  		                xhrFields: {                                           
+  		                    withCredentials: true // 这里设置了withCredentials   
+  		                 },     
+  		                success: function(data) {
+  		                	this.dishList = data.rows;
+  	                        
+  	                        this.total=data.total;
+  	                        this.pageHandler(1);
+  		                 },            
+  		                error: function(err) {    		               
+  		                    console.error(err)    ;
+  		                    alert("发生错误");
+  		                }        
+  		                });
                 },
                 //修改支付状态
                 updatePay(status,id){
                 	
+                	$.ajax({         
+		                url: 'http://localhost:9527/shop/consumer/shoporder/updatOrder/'+status+'/'+id,
+		                type: 'GET',       
+		                xhrFields: {                                           
+		                    withCredentials: true // 这里设置了withCredentials   
+		                 },     
+		                success: function(data) {
+		                	 this.dishList = data.rows;
+		                        
+		                        this.total=data.total;
+		                        this.pageHandler(1);
+		                 },            
+		                error: function(err) {    		               
+		                    console.error(err)    ;
+		                    alert("发生错误");
+		                }        
+		                });
                 	
                 	
-                	 this.$http.get('http://localhost:9527/shop/consumer/shoporder/updatOrder/'+status+'/'+id).then(function (response) {
-
-                        
-                        this.dishList = response.body.rows;
-                        
-                        this.total=response.body.total;
-                        this.pageHandler(1);
-                    }, function (response) {
-                        // 发生错误
-                     
-                        alert("发生错误")
-                    });  
+                	 
                 },
                 
-           
-           //http://localhost:9527/shop/consumer/shoporder/findNotFinishOrder/{page}/{size}/{shopId}
+          
            //详情查询          
                 pageHandler: function (page) {
 				
-                    //here you can do custom state update
+                   
                     this.page = 1;
                     
-                   //http://localhost:9527/shop/consumer/shoporder/findAllOrder/1/5/23
-
-                    this.$http.get('http://localhost:9527/shop/consumer/shoporder/findNotFinishOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId).then(function (response) {
-
-               
-                        this.dishList = response.body.rows;
-                        
-                        this.total=response.body.total;
-                        
-                    }, function (response) {
-                       
-                        alert("发生错误")
-                    }); 
+                    $.ajax({         
+		                url: 'http://localhost:9527/shop/consumer/shoporder/findNotFinishOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId,
+		                type: 'GET',       
+		                xhrFields: {                                           
+		                    withCredentials: true // 这里设置了withCredentials   
+		                 },     
+		                success: function(data) {
+		                	this.dishList = data.rows;
+	                        
+	                        this.total=data.total;
+		                 },            
+		                error: function(err) {    		               
+		                    console.error(err)    ;
+		                    alert("发生错误");
+		                }        
+		                });
+                    
                     
                 },
               

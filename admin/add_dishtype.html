@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="../css/style.css">
 	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-    
+      <script src="../plugins/jQuery/jquery.cookie.js"></script>
     <!-- 富文本编辑器 -->
 	<!-- <link rel="stylesheet" href="../plugins/kindeditor/themes/default/default.css" />
 	<script charset="utf-8" src="../plugins/kindeditor/kindeditor-min.js"></script>
@@ -99,6 +99,7 @@
 	    el:'#box',
 	    data:{
 	        dish_name: null,
+	        shopId: $.cookie('shopId'),
 	    },
 	    methods:{
 	        upload:function(){
@@ -106,34 +107,28 @@
           
                 if (this.dish_name) {
              
-                    this.$http.post('http://localhost:9002/consumer/shopdishes/adddishtype',{  
-                            shopId:1,
-                            typeName:this.dish_name
-                        
-                        },{  
-                            emulateJSON:true  
-                        }).then(function(response){  
-                            // response.data中获取ResponseData实体
-                            alert(response.body.result)
-                        },function(response){  
-                            // 发生错误
-                            alert("发生错误")
-                        });
+                	 $.ajax({         
+			                url: "http://127.0.0.1:9527/shop/consumer/shopdishes/adddishtype",
+			                type: 'POST',       
+			                xhrFields: {                                           
+			                    withCredentials: true // 这里设置了withCredentials   
+			                 },
+			                 emulateJSON:true,
+			                 data:{
+			                	 typeName:this.dish_name,
+			                	 shopId: this.shopId
+			                 },
+			                success: function(data) {
+			                	alert(data.result);
+			                 },            
+			                error: function(err) {    		               
+			                    console.error(err)    ;
+			                    alert("发生错误");
+			                }        
+			                });
                 }else{
                     alert("菜品名不能为空")
-                }
-
-
-
-                // $.post("http://localhost:9002/consumer/shopdishes/adddishtype",{name:"sss"},function(result){
-                //     alert(JSON.stringify(result))
-                //     //alert(result)
-                 
-                // });
-
-	        
-
-			
+                }			
 	        }
 	    }
 	});
