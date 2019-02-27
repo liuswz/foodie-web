@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="../css/style.css">
     <link href="../css/zpageNav.css" rel="stylesheet" />
-
+<script src="../plugins/jQuery/jquery.cookie.js"></script>
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
 
@@ -142,6 +142,7 @@
 
     <!-- 正文区域 /-->
     <script type="text/javascript">
+    var shopId =  $.cookie('shopId');
         new Vue({
             el: '#all',
             data: {
@@ -153,11 +154,11 @@
                 pageSize: 5, //每一页显示的数据条数
                 total: 10, //记录总数
                 maxPage:2,
-                shopId:1,
+                shopId:shopId,
                 value:''
             },
             created: function () {
-                this.shopId=1;
+               
                 this.maxPage=this.total/this.pageSize+1,
                 this.pageHandler(1);
             },
@@ -183,7 +184,7 @@
                        
                     }
                    // console.log(str);
-                    this.$http.get('http://localhost:9527/shop/consumer/shopdishes/delDishById/'+str).then(function (response) {
+                    this.$http.get('http://localhost:9527/shop/consumer/shopdishes/delDishById/'+str, {credentials: true }).then(function (response) {
                         alert("删除成功");
                         this.pageHandler(this.page);
                     }, function (response) {
@@ -197,7 +198,7 @@
                     this.page = page;
                    
                     this.$http.get('http://localhost:9527/shop/consumer/shopdishes/getAllDishes?shopId='+
-                        this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value).then(function (response) {
+                        this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value, {credentials: true }).then(function (response) {
                     //     console.log('http://localhost:9527/shop/consumer/shopdishes/getAllDishes?shopId='+
                     // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
                         this.dishList = response.body.rows;
@@ -213,7 +214,7 @@
                 findDishes(){
                
                     this.$http.get('http://localhost:9527/shop/consumer/shopdishes/getAllDishes?shopId='+
-                        this.shopId+'&page=1&size='+this.pageSize+'&value='+this.value).then(function (response) {
+                        this.shopId+'&page=1&size='+this.pageSize+'&value='+this.value, {credentials: true }).then(function (response) {
                     //     console.log('http://localhost:9527/shop/consumer/shopdishes/getAllDishes?shopId='+
                     // this.shopId+'&page='+this.page+'&size='+this.pageSize+'&value='+this.value);
                         this.dishList = response.body.rows;

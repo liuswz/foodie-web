@@ -22,7 +22,7 @@
 	<script charset="utf-8" src="../plugins/kindeditor/lang/zh_CN.js"></script> -->
 	<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-    
+     <script src="../plugins/jQuery/jquery.cookie.js"></script>
       
     
     
@@ -94,7 +94,7 @@
             
             <!-- 正文区域 /-->
 <script type="text/javascript">
-	
+	var shopId = $.cookie('shopId');
 	var vm = new Vue({
 	    el:'#box',
 	    data:{
@@ -106,8 +106,8 @@
           
                 if (this.dish_name) {
              
-                    this.$http.post('http://localhost:9002/consumer/shopdishes/adddishtype',{  
-                            shopId:1,
+                    this.$http.post('http://localhost:9527/shop/consumer/shopdishes/adddishtype',  {credentials: true },{  
+                            shopId:shopId,
                             typeName:this.dish_name
                         
                         },{  
@@ -125,13 +125,7 @@
 
 
 
-                // $.post("http://localhost:9002/consumer/shopdishes/adddishtype",{name:"sss"},function(result){
-                //     alert(JSON.stringify(result))
-                //     //alert(result)
-                 
-                // });
-
-	        
+         
 
 			
 	        }

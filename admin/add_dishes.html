@@ -16,7 +16,7 @@
 	<link rel="stylesheet" href="../css/add.dishes.css">
 	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-
+<script src="../plugins/jQuery/jquery.cookie.js"></script>
 	<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 
@@ -157,7 +157,7 @@
 	<!-- 正文区域 /-->
 	<script type="text/javascript">
 		var dish_photo = null;
-
+        var shopId =  $.cookie('shopId');
 
 		new Vue({
 			el: "#app",
@@ -169,7 +169,7 @@
 				dish_name: null,
 				dish_price: null,
 				dish_introduce: null,
-                shop_id: 1,
+                shop_id: shopId,
 				dish_remark: null,
 				//	dish_photo:null,
 
@@ -190,7 +190,8 @@
 
 				getDishType() {
 
-					this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishType/1').then(function (response) {
+					this.$http.get('http://localhost:9527/shop/consumer/shopdishes/getAllDishType/1',
+							 {credentials: true }).then(function (response) {
 						// response.data中获取ResponseData实体
 
 						this.typeList = response.body;
@@ -288,7 +289,7 @@
 				upload_dish() {
 
 
-					this.$http.post('http://localhost:9002/consumer/shopdishes/adddishes', {
+					this.$http.post('http://localhost:9527/shop/consumer/shopdishes/adddishes', {credentials: true },{
 
 						name: this.dish_name,
 						price: this.dish_price,

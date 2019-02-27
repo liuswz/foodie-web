@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="../css/element.min.css">
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-
+ <script src="../plugins/jQuery/jquery.cookie.js"></script>
 <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 <script
 	src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
@@ -145,6 +145,8 @@
 	<!-- 正文区域 /-->
 	<script type="text/javascript">
 	var	orderStatus;
+	var shopId = $.cookie('shopId');
+	
         new Vue({
             el: '#all',
             data: {
@@ -157,12 +159,12 @@
                 pageSize: 20, //每一页显示的数据条数
                 total: 10, //记录总数
                 maxPage:2,
-                shopId:1,
+                shopId:shopId,
                 value:'',
                 
             },
             created: function () {
-                this.shopId=23;
+                
                 this.maxPage=this.total/this.pageSize+1,
                 this.pageHandler(1);
                 
@@ -248,10 +250,8 @@
                   },
                 //修改上菜状态
                 updateServing(status,id){
-                	//http://localhost:9527/shop/consumer/shoporder/updatOrder/{orderStatus}/{id}
-                	//this.page = 1;
-                	//alert(status);             	
-                	   this.$http.get('http://localhost:9527/shop/consumer/shoporder/updatOrder/'+status+'/'+id).then(function (response) {
+                     	
+                	   this.$http.get('http://localhost:9527/shop/consumer/shoporder/updateOrderStatus/'+status+'/'+id, {credentials: true }).then(function (response) {
 
                         
                         this.dishList = response.body.rows;
@@ -265,13 +265,9 @@
                     });    
                 },
                 //修改支付状态
-                updatePay(status,id){
-                	
-                	
-                	
-                	 this.$http.get('http://localhost:9527/shop/consumer/shoporder/updatOrder/'+status+'/'+id).then(function (response) {
+                updatePay(status,id){   	
+                	 this.$http.get('http://localhost:9527/shop/consumer/shoporder/updateOrderStatus/'+status+'/'+id {credentials: true }).then(function (response) {
 
-                        
                         this.dishList = response.body.rows;
                         
                         this.total=response.body.total;
@@ -293,9 +289,9 @@
                     
                    //http://localhost:9527/shop/consumer/shoporder/findAllOrder/1/5/23
 
-                    this.$http.get('http://localhost:9527/shop/consumer/shoporder/findNotFinishOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId).then(function (response) {
+                    this.$http.get('http://localhost:9527/shop/consumer/shoporder/findNotFinishOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId, {credentials: true }).then(function (response) {
 
-               
+                     
                         this.dishList = response.body.rows;
                         
                         this.total=response.body.total;

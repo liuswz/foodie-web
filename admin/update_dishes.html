@@ -20,6 +20,7 @@
 	<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 	
+ <script src="../plugins/jQuery/jquery.cookie.js"></script>
     
     <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.4.4.min.js"></script>
       
@@ -158,7 +159,7 @@
             <!-- 正文区域 /-->
 <script type="text/javascript">
 var dish_photo=null;
-
+var shopId =  $.cookie('shopId');
 
  new Vue({
             el:"#app",
@@ -179,7 +180,7 @@ var dish_photo=null;
                     remark:null,
                     photoUrl:null
                 },
-                shopId:1,
+                shopId:shopId,
                 id:0,			//	dish_photo:null,
 			
             },
@@ -199,7 +200,7 @@ var dish_photo=null;
 			   
                 getDishAndType(){
                 this.shopId=1;
-				this.$http.get('http://localhost:9002/consumer/shopdishes/getDishAndTypeById/'+this.id +'/'+this.shopId).then(function(response){  
+				this.$http.get('http://localhost:9527/shop/consumer/shopdishes/getDishAndTypeById/'+this.id +'/'+this.shopId,{credentials: true }).then(function(response){  
 							// response.data中获取ResponseData实体
 						
 							this.typeList = response.body.typelist;
@@ -307,7 +308,7 @@ var dish_photo=null;
 				upload_dish(){
 
 
-					this.$http.post('http://localhost:9002/consumer/shopdishes/updateDish',this.dish,{  
+					this.$http.post('http://localhost:9527/shop/consumer/shopdishes/updateDish',this.dish,{credentials: true },{  
 								emulateJSON:true  
 							}).then(function(response){  
 								// response.data中获取ResponseData实体

@@ -17,7 +17,7 @@
 
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-
+ <script src="../plugins/jQuery/jquery.cookie.js"></script>
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 
@@ -133,6 +133,7 @@
 
     <!-- 正文区域 /-->
     <script type="text/javascript">
+    var shopId =  $.cookie('shopId');
         new Vue({
             el: '#all',
             data: {
@@ -144,7 +145,7 @@
                 pageSize: 10, //每一页显示的数据条数
                 total: 10, //记录总数
                 maxPage:2,
-                shopId:1,
+                shopId:shopId,
                 value:'',
                 orderId : 0
             },
@@ -155,7 +156,7 @@
           	   var id = decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
           	 // console.info(JSON.stringify(id.cost));
                 this.orderId = id.split("&")[0];
-                this.shopId=23;
+               
                    
                 this.getData();
                
@@ -170,7 +171,7 @@
                    ///consumer/shoporder/findOrderItem/{orderId}/{shopId}
                   
                     this.$http.get('http://localhost:9527/shop/consumer/shoporder/findOrderItem/'+
-                        this.orderId +'/'+this.shopId).then(function (response) {
+                        this.orderId +'/'+this.shopId, {credentials: true }).then(function (response) {
                         
                        // console.log(response);
 

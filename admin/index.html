@@ -17,7 +17,7 @@
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/jQueryUI/jquery-ui.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-  
+   <script src="../plugins/jQuery/jquery.cookie.js"></script>
     <script src="../plugins/adminLTE/js/app.min.js"></script>
     
 
@@ -31,20 +31,7 @@
 			  }
 		 }
      
-		 function setCookie(cname, cvalue, exdays) {
-			    var d = new Date();
-			    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-			    var expires = "expires="+d.toUTCString();
-			    document.cookie = cname + "=" + cvalue + "; " + expires+"; path=/";//path=/是根路径
-			}
-			
-		 
-		function clearCookie(){
-			 setCookie("username", "", -1);
-			 setCookie("JSESSIONID", "", -1);
-			 window.location.href="http://localhost:9527/shop/common/logout";
-		}
-		 
+		
 		 
 		  window.onload=function(){
             $.ajax({         
@@ -62,7 +49,7 @@
                     var username = data.username; 
                     $("#name").html(username);
     		        $("#name1").html(username);      
-                    console.log(data)          
+    		        $.cookie('shopId',data.id);      
                  },            
                 error: function(err) {    
 
