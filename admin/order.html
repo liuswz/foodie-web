@@ -83,7 +83,8 @@
 										<th class="sorting">订单号</th>
 										<th class="sorting">桌号</th>									
 										<th class="sorting">订单总价</th>
-										<th class="sorting">订单状态</th>
+										<th class="sorting">支付状态</th>
+										<th class="sorting">上菜状态</th>
 										<th class="sorting">下单时间</th>
 										<th class="text-center">操作</th>
 									</tr>
@@ -93,19 +94,23 @@
 										<td>{{dish.orderNo}}</td>
 										<td>{{dish.tableNum}}</td>										
 										<td>{{dish.cost}}元</td>
-										<td v-if="dish.orderStatus == 0" ><h5 ref="status">未支付 未上菜</h5></td>
-										<td v-else-if="dish.orderStatus == 1" ><h5 value="1" id="status2">已支付 未上菜</h5></td>
-										<td v-else-if="dish.orderStatus == 2" ><h5 value="2" id="status3">未支付 已上菜</h5></td>
-										<td v-else > <h5 value="3" id="status4">已支付 已上菜</h5></td>
+										<td v-if="dish.orderStatus == 0" ><h5 ref="status">未支付</h5></td>
+										<td v-else-if="dish.orderStatus == 1" ><h5 value="1" id="status1">已支付商家</h5></td>
+										<td v-else="dish.orderStatus == 2" ><h5 value="2" id="status2">已支付吃货</h5></td>
+										
+										<td v-if="dish.dishStatus == 0" ><h5 ref="status">未上菜</h5></td>
+										<td v-else="dish.dishStatus == 1" ><h5 value="1" id="status3">已上菜</h5></td>
+											
 										<td>{{dish.createTime}}</td>
 										<td class="text-center">
 											<button type="button" class="btn bg-olive btn-xs"
 												@click="detailDish(dish.id)">详情</button>
-												
 												<button type="button" class="btn bg-olive btn-xs"
-												@click="boxDish(dish.orderStatus,dish.id)">已上菜</button>
+												@click="boxDish(dish.dishStatus,dish.id)">上菜</button>
 												<button type="button" class="btn bg-olive btn-xs"
-												@click="boxPay(dish.orderStatus,dish.id)">已支付</button>
+												@click="boxPayShop(dish.orderStatus,dish.id)">支付商家</button>
+												<button type="button" class="btn bg-olive btn-xs"
+												@click="boxPayEat(dish.orderStatus,dish.id)">支付吃货</button>
 										</td>
 									</tr>
 								</tbody>
@@ -164,7 +169,7 @@
                 
             },
             created: function () {
-                
+                this.shopId =23;
                 this.maxPage=this.total/this.pageSize+1,
                 this.pageHandler(1);
                 
@@ -180,12 +185,13 @@
                //massagebox
                boxDish(status,id){
                   if(status == 0){
-                	  status=2; 
+                	  
                 	  this.$confirm('是否上菜?', '提示', {
     			          confirmButtonText: '确定',
     			          cancelButtonText: '取消',
     			          type: 'warning'
     			        }).then(() => {
+    			        	status=1; 
     			          this.updateServing(status,id);
     			        }).catch(() => {
     			          this.$message({
@@ -194,64 +200,54 @@
     			          });          
     			        });
                 	   	              		
-                	}else if(status ==1){
-                		status=3;
-                		this.$confirm('是否上菜?', '提示', {
-      			          confirmButtonText: '确定',
-      			          cancelButtonText: '取消',
-      			          type: 'warning'
-      			        }).then(() => {
-      			          this.updateServing(status,id);
-      			        }).catch(() => {
-      			          this.$message({
-      			            type: 'info',
-      			            message: '取消'
-      			          });          
-      			        });
                 	}else{
-                		status=3;
+                		status=1;
                 	}
                 
                 }, 
-                boxPay(status,id){
+                boxPayShop(status,id){
                     if(status == 0){
-                  	  status=1; 
-                  	  this.$confirm('是否支付?', '提示', {
-      			          confirmButtonText: '确定',
-      			          cancelButtonText: '取消',
-      			          type: 'warning'
-      			        }).then(() => {
-      			          this.updatePay(status,id);
-      			        }).catch(() => {
-      			          this.$message({
-      			            type: 'info',
-      			            message: '取消'
-      			          });          
-      			        });
+                    	 this.$confirm('是否支付给商家?', '提示', {
+       			          confirmButtonText: '确定',
+       			          cancelButtonText: '取消',
+       			          type: 'warning'
+       			        }).then(() => {
+       			         status=1; 
+       			          this.updatePayShop(status,id);
+       			        }).catch(() => {
+       			          this.$message({
+       			            type: 'info',
+       			            message: '取消'
+       			          });          
+       			        });
                   	   	              		
-                  	}else if(status ==2){
-                  		status=3;
-                  		this.$confirm('是否支付?', '提示', {
-        			          confirmButtonText: '确定',
-        			          cancelButtonText: '取消',
-        			          type: 'warning'
-        			        }).then(() => {
-        			          this.updatePay(status,id);
-        			        }).catch(() => {
-        			          this.$message({
-        			            type: 'info',
-        			            message: '取消'
-        			          });          
-        			        });
-                  	}else{
-                  		status=3;
                   	}
                   
                   },
+                  
+                  boxPayEat(status,id){
+                      if(status == 0){
+                      	 this.$confirm('是否支付给吃货?', '提示', {
+         			          confirmButtonText: '确定',
+         			          cancelButtonText: '取消',
+         			          type: 'warning'
+         			        }).then(() => {
+         			         status=2; 
+         			          this.updatePayEat(status,id);
+         			        }).catch(() => {
+         			          this.$message({
+         			            type: 'info',
+         			            message: '取消'
+         			          });          
+         			        });
+                    	   	              		
+                    	}
+                    },
+                  
                 //修改上菜状态
                 updateServing(status,id){
                      	
-                	   this.$http.get('http://localhost:9527/shop/consumer/shoporder/updateOrderStatus/'+status+'/'+id, {credentials: true }).then(function (response) {
+                	   this.$http.get('http://localhost:9527/shop/consumer/shoporder/updateDishStatus/'+status+'/'+id, {credentials: true }).then(function (response) {
 
                         
                         this.dishList = response.body.rows;
@@ -265,8 +261,8 @@
                     });    
                 },
                 //修改支付状态
-                updatePay(status,id){   	
-                	 this.$http.get('http://localhost:9527/shop/consumer/shoporder/updateOrderStatus/'+status+'/'+id {credentials: true }).then(function (response) {
+                updatePayShop(status,id){   	
+                	 this.$http.get('http://localhost:9527/shop/consumer/shoporder/updateOrderStatus/'+status+'/'+id, {credentials: true }).then(function (response) {
 
                         this.dishList = response.body.rows;
                         
@@ -278,7 +274,19 @@
                         alert("发生错误")
                     });  
                 },
-                
+                updatePayEat(status,id){   	
+               	 this.$http.get('http://localhost:9527/shop/consumer/shoporder/updateOrderStatus/'+status+'/'+id, {credentials: true }).then(function (response) {
+
+                       this.dishList = response.body.rows;
+                       
+                       this.total=response.body.total;
+                       this.pageHandler(1);
+                   }, function (response) {
+                       // 发生错误
+                    
+                       alert("发生错误")
+                   });  
+               },
            
            //http://localhost:9527/shop/consumer/shoporder/findNotFinishOrder/{page}/{size}/{shopId}
            //详情查询          
