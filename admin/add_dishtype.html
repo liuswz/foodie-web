@@ -105,7 +105,7 @@
 				//发送 post 请求
                 if (this.dish_name) {
              
-                    this.$http.get('http://localhost:9527/shop/consumer/shopdishes/adddishtype?shopId='+shopId+"&typeName="+this.dish_name ,  {credentials: true },{  
+                    this.$http.get('http://localhost:9527/shop/consumer/shopdishes/adddishtype/'+shopId+'/'+this.dish_name ,  {credentials: true },{  
                            
                         },{  
                             emulateJSON:true  
