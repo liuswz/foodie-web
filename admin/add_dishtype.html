@@ -22,7 +22,7 @@
 	<script charset="utf-8" src="../plugins/kindeditor/lang/zh_CN.js"></script> -->
 	<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-    
+     <script src="../plugins/jQuery/jquery.cookie.js"></script>
       
     
     
@@ -94,44 +94,60 @@
             
             <!-- 正文区域 /-->
 <script type="text/javascript">
-	
+	var shopId = $.cookie('shopId');
+//   
+
+
 	var vm = new Vue({
 	    el:'#box',
 	    data:{
 	        dish_name: null,
 	    },
+        created: function () {
+ 
+             
+        },
 	    methods:{
 	        upload:function(){
 				//发送 post 请求
           
                 if (this.dish_name) {
-             
-                    this.$http.post('http://localhost:9002/consumer/shopdishes/adddishtype',{  
-                            shopId:1,
-                            typeName:this.dish_name
-                        
-                        },{  
-                            emulateJSON:true  
-                        }).then(function(response){  
-                            // response.data中获取ResponseData实体
-                            alert(response.body.result)
-                        },function(response){  
-                            // 发生错误
-                            alert("发生错误")
-                        });
+                    this.$http.get('http://localhost:9527/shop/consumer/shopdishes/adddishtype/'+this.dish_name+'/'+shopId, {credentials: true }).then(function (response) {
+                        alert(response.body.result);
+                            console.info(response)
+                    }, function (response) {
+                        // 发生错误
+                        console.info(response)
+                             alert("发生错误")
+                    });
+  
+                    // this.$http.post('http://localhost:9527/shop/consumer/shopdishes/adddishtype',
+                    // 		 {credentials: true }, {
+
+                    //     typeName: this.dish_name,
+                    //     shopId:shopId
+                       
+                    //     }, {
+                    //         emulateJSON: true
+                    //     }).then(function (response) {
+                
+                         
+                    //         alert(response.body.result);
+                    //         console.info(response)
+                    //     },function(response){  
+                    //         // 发生错误
+                    //         console.info(response)
+                    //         alert("发生错误")
+                    //     });
+                  
+               
                 }else{
                     alert("菜品名不能为空")
                 }
 
 
 
-                // $.post("http://localhost:9002/consumer/shopdishes/adddishtype",{name:"sss"},function(result){
-                //     alert(JSON.stringify(result))
-                //     //alert(result)
-                 
-                // });
-
-	        
+         
 
 			
 	        }

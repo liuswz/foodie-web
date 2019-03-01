@@ -18,7 +18,7 @@
 
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-
+<script src="../plugins/jQuery/jquery.cookie.js"></script>
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 
@@ -134,6 +134,8 @@
 
     <!-- 正文区域 /-->
     <script type="text/javascript">
+    var shopId =  $.cookie('shopId');
+    
         new Vue({
             el: '#all',
             data: {
@@ -145,11 +147,11 @@
                 pageSize: 10, //每一页显示的数据条数
                 total: 10, //记录总数
                 maxPage: 2,
-                shopId: 1
+                shopId: shopId
             },
             created: function () {
 
-                this.shopId = 1;
+                
                 this.maxPage = this.total / this.pageSize + 1,
                     this.pageHandler(1);
             },
@@ -177,12 +179,12 @@
                         str = str + this.ids[i] + ',';
 
                     }
-                    this.$http.post('http://localhost:9002/consumer/shopdishes/getIfDishByTypeId', { ids: str, shopId: 1 }, { emulateJSON: true }).then(function (response) {
+                    this.$http.post('http://localhost:9527/shop/consumer/shopdishes/getIfDishByTypeId', { ids: str, shopId: shopId }, { emulateJSON: true },{credentials: true }).then(function (response) {
                         console.log(response.body.code);
                        // alert(response.body.code);
                         if (response.body.code == 0) {
                             if (confirm("若删除分类，分类下的菜品也将删除，确定删除吗？")) {
-                                this.$http.get('http://localhost:9002/consumer/shopdishes/delDishTypeById/' + str).then(function (response) {
+                                this.$http.get('http://localhost:9527/shop/consumer/shopdishes/delDishTypeById/' + str,{credentials: true }).then(function (response) {
                                     alert("删除成功");
                                     this.pageHandler(this.page);
                                 }, function (response) {
@@ -195,7 +197,7 @@
                             }
 
                         }else{
-                            this.$http.get('http://localhost:9002/consumer/shopdishes/delDishTypeById/' + str).then(function (response) {
+                            this.$http.get('http://localhost:9527/shop/consumer/shopdishes/delDishTypeById/' + str,{credentials: true }).then(function (response) {
                                     alert("删除成功");
                                     this.pageHandler(this.page);
                                 }, function (response) {
@@ -215,7 +217,7 @@
                     //here you can do custom state update
                     this.page = page;
 
-                    this.$http.get('http://localhost:9002/consumer/shopdishes/getAllDishType/' + this.shopId + '/' + this.page + '/' + this.pageSize).then(function (response) {
+                    this.$http.get('http://localhost:9527/shop/consumer/shopdishes/getAllDishType/' + this.shopId + '/' + this.page + '/' + this.pageSize,{credentials: true }).then(function (response) {
                         this.dishTypeList = response.body.rows;
                         this.total = response.body.total;
 

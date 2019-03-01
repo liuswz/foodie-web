@@ -24,7 +24,7 @@
 <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 <script
 	src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-
+<script src="../plugins/jQuery/jquery.cookie.js"></script>
 <script src="../js/element.min.js"></script>
 <script src="../js/zpageNav.js"></script>
 
@@ -150,6 +150,8 @@
 
 	<!-- 正文区域 /-->
 	<script type="text/javascript">
+	
+	var shopId =  $.cookie('shopId');
         new Vue({
             el: '#all',
             data: {
@@ -161,12 +163,12 @@
                 pageSize: 10, //每一页显示的数据条数
                 total: 10, //记录总数
                 maxPage:2,
-                shopId:1,
+                shopId:shopId,
                 value:'',
                 value9: ''
             },
             created: function () {
-                this.shopId=23;
+         
                 this.maxPage=this.total/this.pageSize+1,
                 this.pageHandler(1);
             },
@@ -185,7 +187,8 @@
                     this.page = 1;
                  
           
-                    this.$http.post('http://localhost:9527/shop/consumer/shoporder/findOrderByTime', {
+                    this.$http.post('http://localhost:9527/shop/consumer/shoporder/findOrderByTime',
+                    		 {credentials: true }, {
 
                         page: this.page,
                         size: this.pageSize,
@@ -195,11 +198,11 @@
                         }, {
                             emulateJSON: true
                         }).then(function (response) {
-                        	response.header("Access-Control-Allow-Origin", "*"); //设置请求来源不受限制
-                        	response.header("Access-Control-Allow-Headers", "X-Requested-With");  
-                        	response.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS"); //请求方式
-                        	response.header("X-Powered-By", ' 3.2.1')
-                        	response.header("Content-Type", "application/json;charset=utf-8");
+                        	// response.header("Access-Control-Allow-Origin", "*"); //设置请求来源不受限制
+                        	// response.header("Access-Control-Allow-Headers", "X-Requested-With");  
+                        	// response.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS"); //请求方式
+                        	// response.header("X-Powered-By", ' 3.2.1')
+                        	// response.header("Content-Type", "application/json;charset=utf-8");
 
                             this.dishList = response.body.rows;
                            // alert(this.dishList);
@@ -218,7 +221,7 @@
                     
                    //http://localhost:9527/shop/consumer/shoporder/findAllOrder/1/5/23
 
-                    this.$http.get('http://localhost:9527/shop/consumer/shoporder/findAllOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId)
+                    this.$http.get('http://localhost:9527/shop/consumer/shoporder/findAllOrder/'+this.page+'/'+this.pageSize+'/'+this.shopId, {credentials: true })
                     .then(function (response) {
                     	
                
