@@ -289,23 +289,9 @@
 
 				},
 				upload_dish() {
-			    var  dishs = [];		   
-			        var name = [];
-			        name.push(this.dish_name);
-			        var price = [];
-			        price.push(this.dish_price);
-			        var introduction = [];
-			        introduction.push(this.dish_introduce);
-			        var remark = [];
-			        remark.push(this.dish_remark);
-			        var photoUrl = [];
-			        photoUrl.push(this.dish_photo);
-			        var typeId = [];
-			        typeId.push(this.dish_type);
-			        var shopId = [];
-			        shopId.push(this.shop_id);
-			        dishs.push({"name":name,"price":price,"introduction":introduction,"remark":remark,"photoUrl":photoUrl,"typeId":typeId,"shopId":shopId});
-			        var json = JSON.stringify(params);
+			    var  dishs = [];
+			        dishs.push({"name":this.dish_name,"price":this.dish_price,"introduction":this.dish_introduce,"remark":this.dish_remark,"photoUrl":this.dish_photo,"typeId":this.dish_type,"shopId":this.shop_id});
+			        var json = JSON.stringify(dishs);
 			        console.log(json);
 				 this.$http.get('http://localhost:9527/shop/consumer/shopdishes/adddishes?dish='+json, {credentials: true },{
 					}, {
