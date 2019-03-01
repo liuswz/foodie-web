@@ -110,8 +110,8 @@
 	    methods:{
 	        upload:function(){
 				//发送 post 请求
-          
                 if (this.dish_name) {
+<<<<<<< HEAD
                     this.$http.get('http://localhost:9527/shop/consumer/shopdishes/adddishtype/'+this.dish_name+'/'+shopId, {credentials: true }).then(function (response) {
                         alert(response.body.result);
                             console.info(response)
@@ -141,8 +141,22 @@
                     //     });
                   
                
+=======
+             
+                    this.$http.get('http://localhost:9527/shop/consumer/shopdishes/adddishtype/'+shopId+'/'+this.dish_name ,  {credentials: true },{  
+                           
+                        },{  
+                            emulateJSON:true  
+                        }).then(function(response){  
+                            // response.data中获取ResponseData实体
+                            console.info(response)
+                        },function(response){  
+                            // 发生错误
+                            alert("发生错误")
+                        });
+>>>>>>> af009f7d56260c489c8ac569c9e99d33d794ee5b
                 }else{
-                    alert("菜品名不能为空")
+                    alert("菜品类别不能为空")
                 }
 
 
