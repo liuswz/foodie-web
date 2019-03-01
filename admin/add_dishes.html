@@ -287,26 +287,27 @@
 
 				},
 				upload_dish() {
-
-
-					this.$http.post('http://localhost:9527/shop/consumer/shopdishes/adddishes', {credentials: true },{
-
-						name: this.dish_name,
-						price: this.dish_price,
-						introduction: this.dish_introduce,
-						remark: this.dish_remark,
-						photoUrl: dish_photo,
-						typeId: this.dish_type,
-						shopId: this.shop_id
-
-					}, {
-							emulateJSON: true
-						}).then(function (response) {
+			    var  dish = {
+					"name":this.dish_name,
+					"price":this.dish_price,
+					"introduction":this.dish_introduce,
+					"remark":this.dish_remark,
+					"photoUrl":this.dish_photo,
+					"typeId":this.dish_type,
+					"shopId":this.shop_id
+				};
+			//	var dish=[];
+				//dish.push(dishs);
+			       // dishs.push({"name":this.dish_name,"price":this.dish_price,"introduction":this.dish_introduce,"remark":this.dish_remark,"photoUrl":this.dish_photo,"typeId":this.dish_type,"shopId":this.shop_id});
+			        var dishes = JSON.stringify(dish);
+			        console.log('http://localhost:9527/shop/consumer/shopdishes/adddishes?dish='+dishes);
+				 this.$http.get('http://localhost:9527/shop/consumer/shopdishes/adddishes?name='+this.dish_name, {credentials: true }).then(function (response) {
 							// response.data中获取ResponseData实体
-							//	console.log(response);
+								console.log(response);
 							alert(response.body.result);
 						}, function (response) {
 							// 发生错误
+							console.log(response);
 							alert("发生错误");
 						});
 				},
