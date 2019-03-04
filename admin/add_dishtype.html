@@ -111,37 +111,6 @@
 	        upload:function(){
 				//发送 post 请求
                 if (this.dish_name) {
-<<<<<<< HEAD
-                    this.$http.get('http://localhost:9527/shop/consumer/shopdishes/adddishtype/'+this.dish_name+'/'+shopId, {credentials: true }).then(function (response) {
-                        alert(response.body.result);
-                            console.info(response)
-                    }, function (response) {
-                        // 发生错误
-                        console.info(response)
-                             alert("发生错误")
-                    });
-  
-                    // this.$http.post('http://localhost:9527/shop/consumer/shopdishes/adddishtype',
-                    // 		 {credentials: true }, {
-
-                    //     typeName: this.dish_name,
-                    //     shopId:shopId
-                       
-                    //     }, {
-                    //         emulateJSON: true
-                    //     }).then(function (response) {
-                
-                         
-                    //         alert(response.body.result);
-                    //         console.info(response)
-                    //     },function(response){  
-                    //         // 发生错误
-                    //         console.info(response)
-                    //         alert("发生错误")
-                    //     });
-                  
-               
-=======
              
                     this.$http.get('http://localhost:9527/shop/consumer/shopdishes/adddishtype/'+shopId+'/'+this.dish_name ,  {credentials: true },{  
                            
@@ -154,7 +123,6 @@
                             // 发生错误
                             alert("发生错误")
                         });
->>>>>>> af009f7d56260c489c8ac569c9e99d33d794ee5b
                 }else{
                     alert("菜品类别不能为空")
                 }
