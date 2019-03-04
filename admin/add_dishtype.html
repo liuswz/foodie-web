@@ -95,11 +95,18 @@
             <!-- 正文区域 /-->
 <script type="text/javascript">
 	var shopId = $.cookie('shopId');
+//   
+
+
 	var vm = new Vue({
 	    el:'#box',
 	    data:{
 	        dish_name: null,
 	    },
+        created: function () {
+ 
+             
+        },
 	    methods:{
 	        upload:function(){
 				//发送 post 请求
