@@ -1,8 +1,10 @@
-.dish_img{
+.picture_div{
 
-    margin-left: 250px;
+    float: left;
 }
-.dish_file{
-
-    margin-top: 50px;
+.url_div {
+    float: left;
+}
+a{
+    text-decoration:none;
 }

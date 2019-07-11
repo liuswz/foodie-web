@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>代金卷管理</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+  
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+	<link href="../css/zpageNav.css" rel="stylesheet" />
+	<link rel="stylesheet" href="../css/element.min.css">
+
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../js/vue.min.js"></script>
+   <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+   <script src="../js/element.min.js"></script>
+   <script src="../js/zpageNav.js"></script>
+   
+   <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    
+</head>
+
+<body class="hold-transition skin-red sidebar-mini" >
+
+            <!-- 正文区域 -->
+            <section class="content"  id="box">
+
+                <div class="box-body">
+
+                    <!--tab页-->
+                    <div class="nav-tabs-custom">
+
+                        <!--tab头-->
+                        <ul class="nav nav-tabs">                       		
+                            <li class="active">
+                                <a  data-toggle="tab">代金卷管理</a>                                                        
+                            </li>   
+                                          
+                        </ul>
+                        <!--tab头/-->
+						
+                        <!--tab内容-->
+                        <div class="tab-content">
+
+                            <!--表单内容-->
+                            <div class="tab-pane active" id="home">
+                                <div class="row data-type">                                  
+                                    <div class="col-md-2 title">开始截至日期：</div>
+                                    <div class="col-md-10 data">
+                                        <el-date-picker v-model="voucherTime" type="daterange"
+                                            value-format="yyyy-MM-dd" start-placeholder="开始日期"
+                                            end-placeholder="结束日期" >
+                                        </el-date-picker>
+                                    </div>                 
+		                          	  
+									
+		                           <div class="col-md-2 title">代金卷金额</div>
+		                           <div class="col-md-10 data">
+		                               <input type="text" class="form-control"   v-model.trim="voucher.money" placeholder="代金卷金额" value="">
+		                           </div>
+		                           
+		                          
+                                  
+                                    
+                                </div>
+                            </div>
+                            
+                           
+                         
+                         
+                            
+                        </div>
+                        <!--tab内容/-->
+						<!--表单内容/-->
+							 
+                    </div>
+                 	
+                 	
+                 	
+                 	
+                   </div>
+                  <div class="btn-toolbar list-toolbar">
+                      <button class="btn btn-primary" @click="upload()"><i class="fa fa-save"></i>添加</button>
+                      <button class="btn btn-primary" @click="canceltVoucher()"><i class="fa fa-save"></i>取消代金卷</button>
+				    
+				  </div>
+			
+            </section>
+            
+            
+
+
+            
+            <!-- 正文区域 /-->
+<script type="text/javascript">
+    var shopId = 1;//cookie('shopId');
+    var city = '长春';
+//   
+
+
+	var vm = new Vue({
+	    el:'#box',
+	    data:{
+            voucher:{
+                money: null,
+                shopId:shopId,
+                city:city,
+                startDate:'',
+                deadLine:''
+            },
+            voucherTime:[]
+	       
+	    },
+        created: function () {
+          this.getVoucher();
+             
+        },
+	    methods:{
+            getVoucher(){
+                this.$http.get('http://localhost/shopconsumer/product/getVoucherById/'+shopId ,{credentials: true }).then(function(response){  
+							// response.data中获取ResponseData实体
+                            this.voucher = response.body;
+                            if(!this.voucher.shopId){
+                                this.voucher.shopId=shopId;
+                            }
+                            if(!this.voucher.city){
+                                this.voucher.city=city;
+                            }
+                            if(this.voucher.startDate!=null){
+                               
+                                this.voucherTime.splice(0,1,this.voucher.startDate);
+                                this.voucherTime.splice(1,1,this.voucher.deadLine);
+                               
+                             
+                            }
+                            
+                        },function(response){  
+                            // 发生错误
+							console.info(response)
+                            alert("发生错误")
+                        });         
+            },
+            canceltVoucher(){
+            
+                
+                if (confirm("确定取消代金卷吗")) {
+                        
+                       
+                    this.$http.get('http://localhost/shopconsumer/product/delVoucherById/'+shopId ,{credentials: true }).then(function(response){  
+							// response.data中获取ResponseData实体
+                            
+                            alert(response.body.result);
+                            window.location.reload();
+                        },function(response){  
+                            // 发生错误
+							console.info(response)
+                            alert("发生错误")
+                        });         
+                }
+            },
+	        upload:function(){
+                //发送 post 请求
+               
+                if(this.voucherTime.length==0){
+						alert("请选择时间");
+				}else if(!this.checkPoNum(this.voucher.money)){
+						alert("请输入正确的金额");
+				}else{
+                    if (confirm("确定发放代金卷吗")) {
+                        
+                            this.voucher.startDate = this.voucherTime[0];//JSON.stringify(this.voucherTime).split(",")[0].split("[")[1].replace(/\"/g, "");
+                            this.voucher.deadLine = this.voucherTime[1];//JSON.stringify(this.voucherTime).split(",")[1].split("]")[0].replace(/\"/g, "");
+                            console.log(this.voucher)
+                            this.$http.post('http://localhost/shopconsumer/product/addShopVoucher', this.voucher, {credentials: true },{  
+                           
+                            },{  
+                                emulateJSON:true  
+                            }).then(function(response){  
+                                // response.data中获取ResponseData实体
+                               
+                                alert(response.body.result);
+                            },function(response){  
+                                // 发生错误
+                                alert("发生错误")
+                            });
+                    }
+                     
+                }
+
+
+
+         
+
+			
+            },
+            checkPoNum(val){
+					
+				var reg = /^([1-9][0-9]*)(\.\d+)?$/;
+				//	alert(reg.test(val));
+				return reg.test(val);
+			}
+	    }
+	});
+
+</script>
+       
+</body>
+
+</html>

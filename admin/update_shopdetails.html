@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- 页面meta -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>详情信息</title>
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+
+	<link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+	<link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+	<link rel="stylesheet" href="../css/style.css">
+	<!-- <link rel="stylesheet" href="../css/add.dishes.css"> -->
+	
+
+	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../plugins/jQuery/jquery.cookie.js"></script>
+	<script src="../js/vue.min.js"></script>
+	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+
+
+	<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.4.4.min.js"></script>
+
+
+
+</head>
+
+<body class="hold-transition skin-red sidebar-mini">
+
+	<!-- 正文区域 -->
+	<section class="content" id="app">
+		<!-- <form @submit.prevent="upload" method="post" enctype="multipart/form-data"> -->
+		<div class="box-body">
+
+			<!--tab页-->
+			<div class="nav-tabs-custom">
+
+				<!--tab头-->
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#home" data-toggle="tab">详情信息</a>
+					</li>
+
+				</ul>
+				<!--tab头/-->
+
+				<!--tab内容-->
+				<div class="tab-content">
+
+
+					<!--表单内容-->
+					<div class="tab-pane active" id="home">
+						<div class="row data-type">
+							
+
+							<div class="col-md-2 title">店铺公告(优惠活动等)</div>
+							<div class="col-md-10 data">
+								<input type="text" class="form-control" v-model.trim="shopDetails.shopNotice" placeholder="店铺公告（可为空）" value="">
+							</div>
+
+							<div class="col-md-2 title rowHeight2x">店铺介绍</div>
+							<div class="col-md-10 data rowHeight2x">
+								<textarea rows="4" class="form-control" v-model.trim="shopDetails.shopIntro" placeholder="店铺介绍"></textarea>
+							</div>
+
+							<div class="col-md-2 title">经纬度</div>
+							<div class="col-md-10 data">
+								经度：
+								<input type="text" v-model.trim="shopDetails.longitude"  value="">
+								纬度：
+								<input type="text" v-model.trim="shopDetails.latitude"  value="">
+
+								<a href= "http://www.gpsspg.com/maps.htm" target="view_window">查看经纬度</a>
+							</div>
+
+							<div class="col-md-2 title rowHeight2x" style="height:150px;line-height: 150px;">满减优惠</div>
+						
+							<div class="col-md-10 data rowHeight2x" style="height:150px;">
+								<div v-for="(v,i) in list" >
+
+									<select  v-model="list[i]">
+										<option :value="moneyOff.id" v-for="moneyOff in moneyOffList">满{{moneyOff.fullNum}}减{{moneyOff.minusNum}}</option>
+									</select>
+									<button class="btn btn-primary" type="button" v-on:click="deleteMoneyOff(i)">
+										删除
+									</button>
+								</div>
+								<div>
+									<button class="btn btn-primary" type="button" v-on:click="addMoneyOff">
+												添加
+									</button>
+								</div>
+							</div>
+
+							<div class="col-md-2 title editer" style="height:200px;line-height: 200px;">店内图片1</div>
+							<div class="col-md-10 data editer" style="height:200px;">
+
+								<div class="dish_file">
+									<input type="file" id="file1" @change="look_photo(1)" accept=".jpg,.png" />
+								</div>
+								<div class="picture_div">							
+									<img class="dish_img" id="imgshow1" :src="shopDetails.shopPhoto1" width="200px" height="150px" >
+									<button class="btn btn-primary" type="button" v-on:click="upload_photo(1)">
+											上传
+									</button>
+								</div>
+							
+							</div>
+
+
+
+							<div class="col-md-2 title editer" style="height:200px;line-height: 200px;">店内图片2</div>
+							<div class="col-md-10 data editer" style="height:200px;">
+
+								<div class="dish_file">
+									<input type="file" id="file2" @change="look_photo(2)" accept=".jpg,.png" />
+								</div>
+								<div class="picture_div">							
+									<img class="dish_img" id="imgshow2" :src="shopDetails.shopPhoto2" width="200px" height="150px" >
+									<button class="btn btn-primary" type="button" v-on:click="upload_photo(2)">
+											上传
+									</button>
+								</div>
+							</div>
+
+
+
+
+							<div class="col-md-2 title editer" style="height:200px;line-height: 200px;">店内图片3</div>
+							<div class="col-md-10 data editer" style="height:200px;">
+
+								<div class="dish_file">
+									<input type="file" id="file3" @change="look_photo(3)" accept=".jpg,.png" />
+								</div>
+								<div class="picture_div">							
+									<img class="dish_img" id="imgshow3" :src="shopDetails.shopPhoto3" width="200px" height="150px" >
+									<button class="btn btn-primary" type="button" v-on:click="upload_photo(3)">
+											上传
+									</button>
+								</div>
+							</div>
+
+
+
+							<div class="col-md-2 title editer" style="height:200px;line-height: 200px;">店内图片4</div>
+							<div class="col-md-10 data editer" style="height:200px;">
+
+								<div class="dish_file">
+									<input type="file" id="file4" @change="look_photo(4)" accept=".jpg,.png" />
+								</div>
+								<div class="picture_div">							
+									<img class="dish_img" id="imgshow4" :src="shopDetails.shopPhoto4" width="200px" height="150px" >
+									<button class="btn btn-primary" type="button" v-on:click="upload_photo(4)">
+											上传
+									</button>
+								</div>
+							</div>
+
+
+
+							<div class="col-md-2 title editer" style="height:200px;line-height: 200px;">店内图片5</div>
+							<div class="col-md-10 data editer" style="height:200px;">
+
+								<div class="dish_file">
+									<input type="file" id="file5" @change="look_photo(5)" accept=".jpg,.png" />
+								</div>
+								<div class="picture_div">							
+									<img class="dish_img" id="imgshow5" :src="shopDetails.shopPhoto5" width="200px" height="150px" >
+									<button class="btn btn-primary" type="button" v-on:click="upload_photo(5)">
+											上传
+									</button>
+								</div>
+							</div>
+
+
+						</div>
+					</div>
+
+
+
+
+				</div>
+				<!--tab内容/-->
+				<!--表单内容/-->
+
+			</div>
+
+
+			<p v-if="error">
+					
+				<ul>
+					<span v-model="error" style="color: red;">{{ error }}</span>
+				</ul>
+			</p>
+
+		</div>
+		
+		<div class="btn-toolbar list-toolbar">
+			<button class="btn btn-primary" v-on:click="submit_dish"><i class="fa fa-save"></i>修改</button>
+			<!-- v-on:click="submit_dish" -->
+		</div>
+		<!-- </form> -->
+
+	</section>
+
+
+
+
+
+	<!-- 正文区域 /-->
+	<script type="text/javascript">
+
+   		var shopId =1; // $.cookie('shopId');
+      
+		var app = new Vue({
+			el: "#app",
+			//data用于存放数据或者变量
+			data: {
+       
+				error: null, 
+				shopDetails:{ 
+					shopIntro:'',
+					shopNotice:'',
+					longitude:null,
+					latitude:null,
+					moneyOffIds:'',
+					shopPhoto1:null,
+					shopPhoto2:null,
+					shopPhoto3:null,
+					shopPhoto4:null,
+					shopPhoto5:null,
+					shopId:shopId
+				},    
+				moneyOffList:[],
+				list:[],
+				
+			},
+			//用于数据初始化
+			created: function () {
+				
+				this.getData();
+				
+			},
+			//用于存放所有的事件方法集合
+			methods: {
+				getData(){
+				
+					this.$http.get('http://localhost/shopconsumer/shopdetail/getShopDetailsById/'+shopId,
+							 {credentials: true }).then(function (response) {
+						// response.data中获取ResponseData实体
+						this.shopDetails = response.body.shopDetails;
+						this.moneyOffList = response.body.moneyOffList;
+						
+						this.list = this.shopDetails.moneyOffIds.split(',');
+						var index = this.list.indexOf('');
+						if (index > -1) {
+							this.list.splice(index, 1);
+						}
+						
+						//   alert(response.body)
+					}, function (response) {
+						// 发生错误
+						alert("发生错误")
+					});
+				},
+				deleteMoneyOff(i){
+					this.list.splice(i,1); 
+					
+				}, 
+				addMoneyOff(){
+					if(this.list.length>2){
+						alert("满减优惠不能超过3个");
+					}else{
+						this.list.push(0);
+						this.list[this.list.length-1]=this.moneyOffList[0].id;
+					}
+					
+				}, 
+			
+				look_photo: function (index) {
+					var file = $('input[type="file"]')[index-1].files[0];
+				//	console.log(file);
+					var reader = new FileReader();
+					//使用该对象读取file文件
+					reader.readAsDataURL(file);
+					//读取文件成功后执行的方法函数
+					reader.onload = function (e) {
+						//读取成功后返回的一个参数e，整个的一个进度事件
+                    
+						$('#imgshow'+index).get(0).src = e.target.result;
+					}
+				},
+				upload_photo: function (index) {
+
+					var file = $('input[type="file"]')[index-1].files[0];
+					var fileExt = file.name.substring(file.name.lastIndexOf("."))
+						.toLowerCase();
+                    var _this = this;
+					if (!this.checkFileExt(fileExt)) {
+						alert("您上传的文件不是图片,请重新上传！");
+						//img.value = "";
+						return;
+					} else {
+						var photo_name = new Date().getTime() + "" + parseInt(Math.random() * 10000 + 1);
+						var last_name = "/shop_photo/" + photo_name;
+						client.multipartUpload(last_name, file).then(function (result) {
+
+						
+							var imgUrl="https://lanke-foodie.oss-cn-beijing.aliyuncs.com"+last_name;
+							_this.insertPhotoname(index,imgUrl);
+								
+								
+							//console.log(imgUrl);
+							alert("上传成功");
+						
+						}).catch(function (err) {
+							console.log(err);
+						});
+					}
+				},
+				insertPhotoname(index,photoName){
+					switch(index)
+					{
+						case 1: 
+							this.shopDetails.shopPhoto1=photoName;
+							break;
+						case 2:
+							this.shopDetails.shopPhoto2=photoName;
+							break;
+						case 3:
+							this.shopDetails.shopPhoto3=photoName;
+							break;
+						case 4:
+							this.shopDetails.shopPhoto4=photoName;
+							break;
+						case 5:
+							this.shopDetails.shopPhoto5=photoName;
+							break;	
+					}
+				},
+				submit_dish() {
+					
+						if (!this.shopDetails.shopIntro) {
+							this.error='店铺介绍1不能为空';
+						} else if (!this.checkPoNum(this.shopDetails.longitude)) {
+							this.error='请输入正确的经度';
+						} else if (!this.checkPoNum(this.shopDetails.latitude)) {
+							this.error='请输入正确的纬度';
+						} else if (this.checkMoneyOff()) {
+							this.error='满减不能重复';
+						} else if (!this.shopDetails.shopPhoto1) {
+							this.error='店铺图片1不能为空';
+						}  else {
+							this.upload_dish();
+						
+						}
+
+				
+				},
+				upload_dish() {
+					var _list = this.list;
+					this.shopDetails.moneyOffIds='';
+					for(var i=0;i<_list.length;i++){
+						this.shopDetails.moneyOffIds+=_list[i]+',';
+					}
+				 	this.$http.post('http://localhost/shopconsumer/shopdetail/updateShopDetails',this.shopDetails, {credentials: true },{
+						}, 
+						).then(function (response) {
+							// response.data中获取ResponseData实体
+							console.log(response);
+							alert(response.body.result);
+						}, function (response) {
+							// 发生错误
+							console.log(response);
+							alert("发生错误");
+						});
+				},
+			
+				checkFileExt(ext) {
+					if (!ext.match(/.jpg|.gif|.png|.bmp/i)) {
+						return false;
+					}
+					return true;
+				},
+				checkPoNum(val){
+					
+					var reg = /^[0-9]*$/;
+					//	alert(reg.test(val));
+					return reg.test(val);
+				},
+				checkMoneyOff(){
+					var _list=this.list;
+					var flag=false;
+					for(var i=0;i<_list.length-1;i++){
+						for(var j=i+1;j<_list.length;j++){
+							if(_list[i]==_list[j]){
+								flag=true;
+								break;
+							}
+						}
+					}
+					return flag;
+				},
+
+			}
+
+		})
+
+
+		var client = new OSS.Wrapper({
+			region: 'oss-cn-beijing',//你的oss地址 ，具体位置见下图
+			accessKeyId: 'LTAICYbxfcsN4mvc',//你的ak
+			accessKeySecret: 'Q3JmnUHAV0OvREvyhfpsxDuFEUyQSH',//你的secret
+			secure: true,
+			//stsToken: '<Your securityToken(STS)>',//这里我暂时没用，注销掉
+			bucket: 'lanke-foodie'//你的oss名字
+		});
+
+
+	</script>
+
+</body>
+
+</html>

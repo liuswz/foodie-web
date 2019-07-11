@@ -19,7 +19,7 @@
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="../plugins/jQuery/jquery.cookie.js"></script>
-    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="../js/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 
     <script src="../js/zpageNav.js"></script>
@@ -60,7 +60,7 @@
                             <div class="pull-left">
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
-                                        <a href="add_dishtype.html" class="btn btn-default" title="新建"><i class="fa fa-file-o"></i>
+                                        <a href="add_dish_type.html" class="btn btn-default" title="新建"><i class="fa fa-file-o"></i>
                                             新建</a>
                                         <button type="button" class="btn btn-default" title="删除" @click="delSelected"><i
                                                 class="fa fa-trash-o"></i>
@@ -134,7 +134,7 @@
 
     <!-- 正文区域 /-->
     <script type="text/javascript">
-    var shopId =  $.cookie('shopId');
+    var shopId =  1;//$.cookie('shopId');
     
         new Vue({
             el: '#all',
@@ -153,12 +153,10 @@
 
                 
                 this.maxPage = this.total / this.pageSize + 1,
-                    this.pageHandler(1);
+                this.pageHandler(1);
             },
             methods: {
-                getDishTypeList: function () {
-
-                },
+               
                 changeAllChecked: function () {
                     var _this = this;
                     if (!this.checked) {
@@ -174,50 +172,51 @@
 
                 },
                 delSelected: function () {
-                    var str = '';
-                    for (var i = 0; i < this.ids.length; i++) {
-                        str = str + this.ids[i] + ',';
+                    if(this.ids.length!=0){
+                        var str = '';
+                        for (var i = 0; i < this.ids.length; i++) {
+                            str = str + this.ids[i] + ',';
 
-                    }
-                    this.$http.post('http://localhost:9527/shop/consumer/shopdishes/getIfDishByTypeId', { ids: str, shopId: shopId }, { emulateJSON: true },{credentials: true }).then(function (response) {
-                        console.log(response.body.code);
-                       // alert(response.body.code);
-                        if (response.body.code == 0) {
-                            if (confirm("若删除分类，分类下的菜品也将删除，确定删除吗？")) {
-                                this.$http.get('http://localhost:9527/shop/consumer/shopdishes/delDishTypeById/' + str,{credentials: true }).then(function (response) {
-                                    alert("删除成功");
-                                    this.pageHandler(this.page);
-                                }, function (response) {
-                                    // 发生错误
-                                    alert("发生错误")
-                                });
-                            } else {
-                                console.log("取消");
-                                return false;
-                            }
-
-                        }else{
-                            this.$http.get('http://localhost:9527/shop/consumer/shopdishes/delDishTypeById/' + str,{credentials: true }).then(function (response) {
-                                    alert("删除成功");
-                                    this.pageHandler(this.page);
-                                }, function (response) {
-                                    // 发生错误
-                                    alert("发生错误")
-                                });
                         }
-                    }, function (res) {
-                        console.log(res.status);
-                    });
+                        this.$http.post('http://localhost/shopconsumer/shopdishes/getIfDishByTypeId', { ids: str, shopId: shopId }, { emulateJSON: true },{credentials: true }).then(function (response) {
+                            console.log(response.body.code);
+                        // alert(response.body.code);
+                            if (response.body.code == 0) {
+                                if (confirm("若删除分类，分类下的菜品也将删除，确定删除吗？")) {
+                                    this.$http.get('http://localhost/shopconsumer/shopdishes/delDishTypeById/' + str+'/'+shopId,{credentials: true }).then(function (response) {
+                                        alert("删除成功");
+                                        this.pageHandler(this.page);
+                                    }, function (response) {
+                                        // 发生错误
+                                        alert("发生错误")
+                                    });
+                                } else {
+                                    console.log("取消");
+                                    return false;
+                                }
 
-                    console.log(str);
+                            }else{
+                                this.$http.get('http://localhost/shopconsumer/shopdishes/delDishTypeById/' + str,{credentials: true }).then(function (response) {
+                                        alert("删除成功");
+                                        this.pageHandler(this.page);
+                                    }, function (response) {
+                                        // 发生错误
+                                        alert("发生错误")
+                                    });
+                            }
+                        }, function (res) {
+                            console.log(res.status);
+                        });
 
+                        console.log(str);
+                    }
 
                 },
                 pageHandler: function (page) {
                     //here you can do custom state update
                     this.page = page;
 
-                    this.$http.get('http://localhost:9527/shop/consumer/shopdishes/getAllDishType/' + this.shopId + '/' + this.page + '/' + this.pageSize,{credentials: true }).then(function (response) {
+                    this.$http.get('http://localhost/shopconsumer/shopdishes/getAllDishType/' + this.shopId + '/' + this.page + '/' + this.pageSize,{credentials: true }).then(function (response) {
                         this.dishTypeList = response.body.rows;
                         this.total = response.body.total;
 

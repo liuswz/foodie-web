@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="../css/style.css">
     
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
-    <script src="../plugins/jQueryUI/jquery-ui.min.js"></script>
+  
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
    <script src="../plugins/jQuery/jquery.cookie.js"></script>
     <script src="../plugins/adminLTE/js/app.min.js"></script>
@@ -34,30 +34,43 @@
 		
 		 
 		  window.onload=function(){
-            $.ajax({         
+                $.ajax({         
 
-                url: "http://127.0.0.1:9527/shop/common/getUsername",
+                url: "http://localhost/shopconsumer/shopdetail/getDetails",
                 type: 'GET',       
-                xhrFields: {                                           
-                    withCredentials: true // 这里设置了withCredentials   
-                 },     
-                success: function(data) {
+                dataType: "json",//预期服务器返回的数据类型
+                xhrFields:{
+                    withCredentials:true
+                },
+                crossDomain:true,
+                success: function(response) {
                   //  window.location.href="http://foodie.com:9527/shop/common/gotoAdmin";  
-                   if(data.username == null){
-                	   window.location.href="http://localhost:9527/shop/common/gotoAdmin";  
+                 // console.info(response);
+                  
+                   if(response.code == 1){
+                	//   window.location.href="../shoplogin.html";  
+                   }else{
+                    var details = response.result; 
+                 
+                    $("#name").html(details.username);
+                    $("#name1").html(details.username);    
+                    $.cookie('username',details.username);    
+                    $.cookie('shopId',details.id);    
+                    $.cookie('city',details.shopCity);   
+                   
                    }
-                    var username = data.username; 
-                    $("#name").html(username);
-    		        $("#name1").html(username);      
-    		        $.cookie('shopId',data.id);      
+                 
+                  
+    		      
                  },            
                 error: function(err) {    
-
+                	// window.location.href="../shoplogin.html";  
                  //   window.location.href="http://127.0.0.1:9527/shop/common/gotoAdmin";           
 
                     console.error(err)            
                 }        
                 })
+
 
             	 
             	
@@ -306,11 +319,9 @@
                                 
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
-                                    <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">修改密码</a>
-                                    </div>
+                                    
                                     <div class="pull-right">
-                                        <a  href="http://localhost:9527/shop/common/logout" class="btn btn-default btn-flat">注销</a>
+                                        <a  href="http://localhost/shopconsumer/shopdetail/logout" class="btn btn-default btn-flat">注销</a>
                                     </div>
                                 </li>
                             </ul>
@@ -339,7 +350,7 @@
                 <ul class="sidebar-menu"  >
                     <li class="header">菜单</li>
                     <li id="admin-index"><a href="index.html"><i class="fa fa-dashboard"></i> <span>首页</span></a></li>
-					<li id="admin-index"><a href="order.html" target="iframe"><i class="fa fa-dashboard"></i> <span>####</span></a></li>
+					
 
 				    <!-- 菜单 -->
 				    <li class="treeview">
@@ -353,13 +364,13 @@
 				        <ul class="treeview-menu">
 				
 				            <li id="admin-login">
-				                <a href="seller.html" target="iframe">
-				                    <i class="fa fa-circle-o"></i> 修改资料
+				                <a href="update_shop.html" target="iframe">
+				                    <i class="fa fa-circle-o"></i> 基本信息
 				                </a>
 				            </li>
 							<li id="admin-login">
-				                <a href="password.html" target="iframe">
-				                    <i class="fa fa-circle-o"></i> 修改密码
+				                <a href="update_shopdetails.html" target="iframe">
+				                    <i class="fa fa-circle-o"></i> 基本信息详情信息
 				                </a>
 
                             </li> 
@@ -374,7 +385,7 @@
 					<li class="treeview">
 				        <a href="#">
 				            <i class="fa fa-folder"></i> 
-				            <span>商品管理</span>
+				            <span>菜品管理</span>
 				            <span class="pull-right-container">
 				       			<i class="fa fa-angle-left pull-right"></i>
 				   		 	</span>
@@ -382,7 +393,7 @@
 				        <ul class="treeview-menu">
 				
 				            <li id="admin-login">
-				                <a href="add_dishtype.html" target="iframe">
+				                <a href="add_dish_type.html" target="iframe">
 				                    <i class="fa fa-circle-o"></i> 新增类别
 				                </a>
 				            </li>
@@ -402,7 +413,24 @@
 				                </a>
 				            </li>
 				        </ul>                        
-				    </li>
+                    </li>
+                    <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-folder"></i> 
+                                <span>优惠活动</span>
+                                <span class="pull-right-container">
+                                       <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li id="admin-login">
+                                    <a href="voucher_manager.html" target="iframe">
+                                        <i class="fa fa-circle-o"></i> 代金卷管理
+                                    </a>
+    
+                                </li> 
+                            </ul>                        
+                        </li>
 					<li class="treeview">
 				        <a href="#">
 				            <i class="fa fa-folder"></i> 
@@ -430,7 +458,7 @@
 
         <!-- 内容区域 -->
         <div class="content-wrapper">
-			<iframe width="100%" id="iframe" name="iframe" 
+			<iframe width="100%" id="iframe" name="iframe"	onload="SetIFrameHeight()" 
 					frameborder="0" src="home.html"></iframe>
  
         </div>
